@@ -1,0 +1,127 @@
+---
+title: "Spotify Wrapped"
+subtitle: "The Flavour"
+author: "Matteo Torres"
+date: "January 01, 2025"
+execute: 
+  output: false
+format: 
+  html:
+    theme: darkly
+    toc: true
+editor_options: 
+  chunk_output_type: console
+---
+
+## Load Packages
+```{r}
+#| code-fold: true
+
+library(tidyverse)
+library(googlesheets4)
+```
+
+## Read Data
+```{r}
+# Create a reproducible file path
+url <- "https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A/edit?usp=sharing"
+spotify_data <- read_sheet(url)
+```
+
+## Data Exploration
+```{r, output = TRUE}
+# Look at the first six rows of the dataset
+head(spotify_data)
+```
+
+## Data Cleaning
+```{r, output = TRUE}
+# Save the current column names
+current_colnames <- colnames(spotify_data)
+
+# Add the current column names as the first row
+spotify_data <- rbind(current_colnames, spotify_data)
+
+# Assign new column names
+new_colnames <- c("date", "track_name", "artist", "track_id", "link")
+colnames(spotify_data) <- new_colnames
+
+# Verify update
+head(spotify_data)
+```
+
+```{r, output = TRUE}
+# Remove unnecessary characters from the date
+spotify_data$date <- gsub(" at", "", spotify_data$date)
+
+# Update the data type for the date column
+spotify_data$date <- mdy_hm(spotify_data$date)
+
+# Verify update
+head(spotify_data)
+```
+
+## Data Analysis
+
+*insert text about top 5 artists...*
+```{r, output = TRUE}
+#| code-fold: true
+
+# Count streams per artist
+n_streams <- spotify_data %>%
+  group_by(artist) %>%
+  summarize(total_streams = sum(n())) %>%
+  arrange(desc(total_streams))
+
+# Save the top five artists
+top_5_artists <- head(n_streams, n = 5)
+
+# Create a barplot
+ggplot(data = top_5_artists, 
+       aes(x = reorder(artist, -total_streams), 
+           y = total_streams)) +
+  geom_bar(stat = "identity", 
+           fill = "#8ACE00") +
+  labs(x = "Artist",
+       y = "Total Number of Streams (n)",
+       title = "Top 5 Artists of the Month!") + 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
+    axis.text.y = element_text(family = "Courier"),
+    axis.title.x = element_text(family = "Courier"),
+    axis.title.y = element_text(family = "Courier"),
+    plot.title = element_text(family = "Courier", size = 14))
+```
+
+*insert text about top 5 songs...*
+
+```{r, output = TRUE}
+#| code-fold: true
+
+# Count the top tracks
+top_tracks <- spotify_data %>%
+  group_by(track_name) %>%
+  summarize(total_streams = sum(n())) %>%
+  arrange(desc(total_streams))
+
+# Save the top five tracks
+top_5_tracks <- head(top_tracks, n = 5)
+
+# Create a barplot
+ggplot(data = top_5_tracks, 
+       aes(x = reorder(track_name, -total_streams), 
+           y = total_streams)) +
+  geom_bar(stat = "identity", 
+           fill = "#8ACE00") +
+  labs(x = "Track Title",
+       y = "Total Number of Streams (n)",
+       title = "Top 5 Songs of the Month!") + 
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
+    axis.text.y = element_text(family = "Courier"),
+    axis.title.x = element_text(family = "Courier"),
+    axis.title.y = element_text(family = "Courier"),
+    plot.title = element_text(family = "Courier", size = 14))
+```
+
+## Data Citations
