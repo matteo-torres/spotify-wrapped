@@ -1,10 +1,10 @@
 # Spotify Wrapped
 
-![Kyle MacLachlan as Lorde](images/kyle.jpg)
+![Kyle MacLachlan as Lorde](images/kyle.jpg){width=300}
 
 ## About
 
-This project is inspired by the iconic Spotify Wrapped event that occurs at the end of each year. Instead of waiting for the yearly summary, this initiative evaluates my monthly streaming habits, ultimately leading to my annual wrapped summary. Monthly results will be posted on my website. [Check it out!](https://matteo-torres.github.io/about.html)
+This project is inspired by the iconic Spotify Wrapped that takes place at the end of each year. Instead of waiting for the yearly summary, I will assess my monthly streaming habits, ultimately leading to my end-of-the-year Wrapped summary. Monthly results will be posted on my [website](https://matteo-torres.github.io), so be sure to check it out!
 
 - Utilizing an API to extract streaming data
 - Developing functions to tidy and organize monthly data
@@ -17,7 +17,9 @@ spotify-wrapped
 ├── README.md
 ├── .gitignore
 ├── spotify-wrapped.qmd
-└── Rmd/Proj files
+├── Rmd/Proj files
+└── images
+    └── kyle.jpg
 ```
 
 ## Data
