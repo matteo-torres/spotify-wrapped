@@ -39,4 +39,6 @@ spotify_data_raw <- read_sheet(url)
 
 IFTTT. (n.d.). My Spotify Wrapped [Applet]. https://ifttt.com/applets/ptQiGLyZ-my-spotify-wrapped
 
+Spotify. (n.d.). *Spotify* [Music streaming service]. Retrieved from https://www.spotify.com
+
 Torres, M. (2025). Spotify Wrapped 2025 [Google Sheets]. Google. https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A/edit?gid=0#gid=0
