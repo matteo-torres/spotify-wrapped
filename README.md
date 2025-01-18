@@ -1,6 +1,6 @@
 # Spotify Wrapped
 
-![Kyle MacLachlan as Lorde](images/kyle.jpg){width = 300}
+<img src="images/kyle.jpg" alt="Kyle MacLachlan as Lorde" width="300" />
 
 ## About
 
