@@ -1,6 +1,6 @@
 ---
 title: "Spotify Wrapped"
-subtitle: "The Flavour: A Deep Dive into My Monthly Streaming"
+subtitle: "A Deep Dive into My Monthly Streaming"
 author: "Matteo Torres"
 date: "January 01, 2025"
 execute: 
@@ -73,10 +73,11 @@ head(spotify_data_clean, n = 5)
 ```{r}
 # Create monthly datasets
 monthly_datasets <- spotify_data_clean %>%
-  mutate(month = month(date, label = TRUE)) %>% 
+  mutate(ymd_date = as.Date(date),
+         md_date = format(ymd_date, "%b %d"),
+         month = month(date, label = TRUE),
+         time = as_hms(date)) %>%
   group_by(month) %>%
-  mutate(ymd_date = as.Date(date)) %>%
-  mutate(time = as_hms(date)) %>%
   group_split()
 
 # Month
@@ -87,83 +88,81 @@ i <- 1
 ```{r, message  = TRUE}
 #| code-fold: true
 
-# Summarize the number of unique artists
+# Summarize the number of unique artists for the given month
 u_artists <- monthly_datasets[[i]] %>%
   summarize(month = month[i], total_unique_artists = n_distinct(artist))
 
-# Print a message with the total unique tracks and the month
+# Print a message with the total number of unique artists and the month
 message(paste("You listened to", u_artists$total_unique_artists, "different artists in", u_artists$month, "!"))
 ```
 
 ```{r, output = TRUE}
 #| code-fold: true
 
-# Count streams per artist
-n_streams <- monthly_datasets[[i]] %>%
+# Summarize the top 5 artists for the given month
+top_5_artists <- monthly_datasets[[i]] %>%
   group_by(artist) %>%
   summarize(total_streams = sum(n())) %>%
-  arrange(desc(total_streams))
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 5)
 
-# Save the top five artists
-top_5_artists <- head(n_streams, n = 5)
-
-# Create a barplot
+# Create a bar plot for the top 5 artists
 ggplot(data = top_5_artists, 
-       aes(x = reorder(artist, -total_streams), 
-           y = total_streams)) +
+       aes(x = reorder(artist, -total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
   labs(x = "Artist",
        y = "Total Number of Streams (n)",
-       title = paste("Top 5 Artists in", monthly_datasets[[i]]$month, "!")) + 
+       title = paste("Top 5 Artists in", monthly_datasets[[i]]$month, "!")) +
+  scale_x_discrete(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
-    axis.text.y = element_text(family = "Courier"),
-    axis.title.x = element_text(family = "Courier"),
-    axis.title.y = element_text(family = "Courier"),
-    plot.title = element_text(family = "Courier", size = 14))
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),
+        axis.text.y = element_text(family = "Courier"),
+        axis.title.x = element_text(family = "Courier"),
+        axis.title.y = element_text(family = "Courier"),
+        plot.title = element_text(family = "Courier", size = 14))
 ```
 
 ### Top Songs
 ```{r, message = TRUE}
 #| code-fold: true
 
-# Print a message with the total number of track streams
+# Print a message with the total number of track streams for the given month
 message(paste("You listened to a total of", nrow(monthly_datasets[[i]]), "songs in", monthly_datasets[[i]]$month[1], "!"))
 ```
 
 ```{r, message  = TRUE}
 #| code-fold: true
 
-# Summarize the number of unique tracks
+# Summarize the number of unique tracks for the given month
 u_tracks <- monthly_datasets[[i]] %>%
   summarize(month = month[i], total_unique_tracks = n_distinct(track_name))
 
-# Print a message with the total unique tracks for the month
+# Print a message with the total number of unique tracks and the month
 message(paste("Out of those", nrow(monthly_datasets[[i]]), ",", u_tracks$total_unique_tracks, "were different songs !"))
 ```
 
 ```{r, output = TRUE}
 #| code-fold: true
 
-# Count the top tracks
-top_tracks <- monthly_datasets[[i]] %>%
+# Summarize the top 5 tracks for the given month
+top_5_tracks <- monthly_datasets[[i]] %>%
   group_by(track_name) %>%
   summarize(total_streams = sum(n())) %>%
-  arrange(desc(total_streams))
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 5)
 
-# Save the top five tracks
-top_5_tracks <- head(top_tracks, n = 5)
-
-# Create a barplot
+# Create a bar plot for the top 5 tracks
 ggplot(data = top_5_tracks, 
-       aes(x = reorder(track_name, -total_streams), 
-           y = total_streams)) +
+       aes(x = reorder(track_name, -total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
   labs(x = "Track Title",
        y = "Total Number of Streams (n)",
-       title = paste("Top 5 Songs in", monthly_datasets[[i]]$month, "!"))+ 
+       title = paste("Top 5 Songs in", monthly_datasets[[i]]$month, "!")) +
+  scale_x_discrete(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
         axis.text.y = element_text(family = "Courier"),
@@ -176,38 +175,39 @@ ggplot(data = top_5_tracks,
 ```{r, message = TRUE}
 #| code-fold: true
 
-# Summarize the number of songs per day
+# Summarize the number of songs streamed per day for the given month
 daily_songs <- monthly_datasets[[i]] %>%
   group_by(ymd_date) %>%
   summarize(n_songs = n()) %>%
-  mutate(month_day = format(ymd_date, "%b %d")) %>%
+  mutate(md_date = format(ymd_date, "%b %d")) %>%
   arrange(desc(n_songs))
 
 # Print a message for the highest streaming day
-message(paste("Your highest streaming day was", daily_songs$month_day[i], "with", daily_songs$n_songs[i], "songs streamed !"))
+message(paste("Your highest streaming day was", daily_songs$md_date[1], "with", daily_songs$n_songs[1], "songs streamed !"))
 ```
 
 ```{r, message = TRUE}
 #| code-fold: true
 
-# Extract the last position of the dataset
-last_position <- nrow(daily_songs)
+# Extract the last row of the dataframe (lowest streaming day)
+lowest_streaming_day <- daily_songs %>% 
+  slice_tail(n = 1)
 
 # Print a message for the lowest streaming day
-message(paste("Your lowest streaming day was", daily_songs$month_day[last_position], "with", daily_songs$n_songs[last_position], "songs streamed !"))
+message(paste("Your lowest streaming day was", lowest_streaming_day$md_date, "with", lowest_streaming_day$n_songs, "songs streamed !"))
 ```
 
 ```{r, output = TRUE}
 #| code-fold: true
 
-# Creat a line plot
-ggplot(data = daily_songs, 
-       aes(x = month_day, y = n_songs, group = 1)) +
+# Create a line plot of daily streaming habits
+ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
   geom_point(color = "#8ACE00") +
   geom_line(color = "#8ACE00", linewidth = 1) +
   labs(x = "Date",
        y = "Total Number of Streams (n)",
-       title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month)) + 
+       title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month, "!")) +
+  scale_x_date(expand = c(0, 0), date_breaks = "2 days", date_labels = "%b %d") + 
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
         axis.text.y = element_text(family = "Courier"),
@@ -220,15 +220,16 @@ ggplot(data = daily_songs,
 #| code-fold: true
 
 # Extract the day with the highest streams
-high_streams <- inner_join(monthly_datasets[[i]], daily_songs[1, 1:2], by = "ymd_date")
+highest_streaming_day <- inner_join(monthly_datasets[[i]], daily_songs[1, 1:2], by = "ymd_date")
 
-# Create a density plot
-ggplot(data = high_streams, 
-       aes(x = time)) +
+# Create a histogram of streaming times for the highest streaming day 
+ggplot(data = highest_streaming_day, aes(x = time)) +
   geom_histogram(bins = 30, fill = "#8ACE00") +
   labs(x = "Time",
        y = "Total Number of Streams (n)",
-       title = paste("Highest Streaming Day,", daily_songs$month_day[1], "!")) +
+       title = paste("Highest Streaming Day,", daily_songs$md_date[1], "!")) +
+  scale_x_time(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
         axis.text.y = element_text(family = "Courier"),
