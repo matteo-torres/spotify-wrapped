@@ -108,7 +108,7 @@ top_5_artists <- monthly_datasets[[i]] %>%
 
 # Create a bar plot for the top 5 artists
 ggplot(data = top_5_artists, 
-       aes(x = reorder(artist, -total_streams), y = total_streams)) +
+       aes(x = reorder(artist, total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
   labs(x = "Artist",
@@ -117,11 +117,12 @@ ggplot(data = top_5_artists,
   scale_x_discrete(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),
+  theme(axis.text.x = element_text(family = "Courier"),
         axis.text.y = element_text(family = "Courier"),
         axis.title.x = element_text(family = "Courier"),
         axis.title.y = element_text(family = "Courier"),
-        plot.title = element_text(family = "Courier", size = 14))
+        plot.title = element_text(family = "Courier", size = 14)) +
+  coord_flip()
 ```
 
 ### Top Songs
@@ -155,7 +156,7 @@ top_5_tracks <- monthly_datasets[[i]] %>%
 
 # Create a bar plot for the top 5 tracks
 ggplot(data = top_5_tracks, 
-       aes(x = reorder(track_name, -total_streams), y = total_streams)) +
+       aes(x = reorder(track_name, total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
   labs(x = "Track Title",
@@ -164,11 +165,12 @@ ggplot(data = top_5_tracks,
   scale_x_discrete(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0)) +
   theme_bw() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, family = "Courier"),  
+  theme(axis.text.x = element_text(family = "Courier"),  
         axis.text.y = element_text(family = "Courier"),
         axis.title.x = element_text(family = "Courier"),
         axis.title.y = element_text(family = "Courier"),
-        plot.title = element_text(family = "Courier", size = 14))
+        plot.title = element_text(family = "Courier", size = 14)) +
+  coord_flip()
 ```
 
 ### Streaming Habits
