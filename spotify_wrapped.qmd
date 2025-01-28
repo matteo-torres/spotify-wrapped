@@ -18,6 +18,7 @@ editor_options:
 #| code-fold: true
 
 library(hms)
+library(ggstar)
 library(lubridate)
 library(tidyverse)
 library(googlesheets4)
@@ -222,6 +223,7 @@ message(paste("Your lowest streaming day was", lowest_streaming_day$md_date, "wi
 ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
   geom_point(color = "#8ACE00") +
   geom_line(color = "#8ACE00", linewidth = 1) +
+  geom_star(data = daily_songs[1, ], fill = "black", size = 3) +
   labs(x = "Date",
        y = "Total Number of Streams (n)",
        title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month, "!")) +
