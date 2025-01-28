@@ -111,7 +111,8 @@ ggplot(data = top_5_artists,
        aes(x = reorder(artist, total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
-  labs(x = "Artist",
+  geom_text(aes(label = total_streams), hjust = 1.5, family = "Courier") +
+  labs(x = "",
        y = "Total Number of Streams (n)",
        title = paste("Top 5 Artists in", monthly_datasets[[i]]$month, "!")) +
   scale_x_discrete(expand = c(0, 0)) +
@@ -123,6 +124,20 @@ ggplot(data = top_5_artists,
         axis.title.y = element_text(family = "Courier"),
         plot.title = element_text(family = "Courier", size = 14)) +
   coord_flip()
+```
+
+```{r, message = TRUE}
+#| code-fold: true
+
+# Summarize the most-streamed song by the top artist
+top_artist_song <- inner_join(monthly_datasets[[i]], top_5_artists[1, 1:2], by = "artist") %>%
+  group_by(track_name) %>%
+  summarize(total_streams = sum(n())) %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 1)
+
+# Print a message showing the most-streamed song by the top artist and its total streams
+message(paste(top_artist_song$track_name, "is your most-played song by", top_5_artists$artist[1], ", with a total of", top_artist_song$total_streams, "streams !"))
 ```
 
 ### Top Songs
@@ -159,7 +174,8 @@ ggplot(data = top_5_tracks,
        aes(x = reorder(track_name, total_streams), y = total_streams)) +
   geom_bar(stat = "identity", 
            fill = "#8ACE00") +
-  labs(x = "Track Title",
+  geom_text(aes(label = total_streams), hjust = 2, family = "Courier") +
+  labs(x = "",
        y = "Total Number of Streams (n)",
        title = paste("Top 5 Songs in", monthly_datasets[[i]]$month, "!")) +
   scale_x_discrete(expand = c(0, 0)) +
