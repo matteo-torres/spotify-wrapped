@@ -21,9 +21,7 @@ spotify-wrapped
 ├── README.md
 ├── .gitignore
 ├── spotify-wrapped.qmd
-├── Rmd/Proj files
-└── images
-    └── kyle.jpg
+└── Rmd/Proj files
 ```
 
 ## Data
