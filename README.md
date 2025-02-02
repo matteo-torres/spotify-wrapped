@@ -8,7 +8,7 @@
 
 ## About
 
-This project is inspired by the iconic Spotify Wrapped, but with a twist: rather than waiting for the annual summary, I'll be analyzing my streaming habits on a monthly basis. These monthly insights will build up to my year-end Wrapped, providing a more frequent look at my listening trends. The results will be shared on my [website](https://matteo-torres.github.io), so make sure to check it out!
+This project is inspired by the iconic Spotify Wrapped, but with a twist: rather than waiting for the annual summary, I'll be analyzing my streaming habits on a monthly basis. These monthly insights will build up to my year-end Wrapped, providing a more frequent look at my listening trends. The results will be shared on my [website](https://matteo-torres.github.io/about.html), so make sure to check it out!
 
 - Utilizing an API to extract streaming data
 - Developing functions to tidy and organize monthly data
