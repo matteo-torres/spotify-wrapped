@@ -26,7 +26,7 @@ spotify-wrapped
 
 ## Data
 
-All of my streaming data is logged onto a Google Sheet using an applet from IFTTT. You can access the raw Google Sheet, which contains my streaming data, via the link below. If you're interested, you can replace the link with your own to log your data.
+All of my streaming data is logged onto a Google Sheet using an applet from IFTTT. You can access the raw Google Sheet with my streaming data through the link below. If you're interested, feel free to replace the link with your own to analyze your data!
 
 ```bash
 spotify_data_raw <- read_sheet("https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A/edit?usp=sharing")
