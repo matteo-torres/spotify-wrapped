@@ -1,0 +1,57 @@
+/*-- scss:defaults --*/
+
+// Colors 
+$brat-green: #8ACE00;
+$black: #000000;
+
+// Navbar
+$navbar-bg: $brat-green;
+
+// Increase Navbar Height
+.navbar {
+  height: 80px; 
+  font-size: 25px;
+}
+
+// Header Styling
+th {
+  font-size: 18px;
+  color: #8ACE00;
+}
+
+td {
+  font-size: 18px;
+}
+
+// Hover Effect
+tr:hover {
+  background-color: #8AEC00;
+  transition: 0.3s;
+  opacity: 0.8;
+}
+
+// SlickR
+.slick-slider .slick-dots li button:before {
+  color: white !important;
+  font-size: 12px !important;
+  opacity: 0.5;
+}
+
+.slick-slider .slick-dots li.slick-active button:before {
+  color: #8ACE00 !important;
+  opacity: 1;
+}
+
+.slick-dots {
+  bottom: -50px !important; 
+}
+
+// Dashboard Size
+.fixed-size {
+  width: 500px !important;
+  max-width: 500px !important;
+  min-width: 500px !important;
+  flex: 0 0 40% !important; 
+}
+
+

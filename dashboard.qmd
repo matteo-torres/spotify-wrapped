@@ -1,0 +1,98 @@
+---
+title: "Spotify Wrapped"
+format: 
+  dashboard:
+    orientation: columns
+    scrolling: false
+    expandable: false
+    theme: 
+      - darkly
+      - custom.scss
+    mainfont: arial narrow
+    nav-buttons:
+      - icon: spotify
+        href: https://open.spotify.com/playlist/7CvSIl6mwMGNTaCCpmAQH7?si=5ad4e462bdc54b31
+      - icon: github
+        href: https://github.com/matteo-torres/spotify-wrapped
+editor_options: 
+  chunk_output_type: console
+---
+
+## Column {width=40%}
+
+### Top Charts {.tabset}
+```{r}
+#| title: "Top 5 Artists"
+
+library(kableExtra)
+
+artists_data <- data.frame(
+  Artist = c("Charli XCX", "Lorde", "Britney Spears", "Gwen Stefani", "2hollis"),
+  Streams = c(103, 72, 69, 33, 27)
+)
+
+kable(artists_data)
+```
+
+```{r}
+#| title: "Top 5 Songs"
+
+songs_data <- data.frame(
+  Song = c("Childlike Things", "3", "Yummy", "Wind It Up", "Freakshow"),
+  Streams = c(11, 11, 9, 7, 7)
+)
+
+kable(songs_data)
+```
+
+### Row {width=50%}
+```{r}
+library(bslib)
+library(bsicons)
+library(htmltools)
+
+value_box(
+  title = div("Artists", style = "font-size: 20px;"),
+  value = div(116, style = "font-size: 50px; font-weight: bold;"),
+  showcase = div(bs_icon("people-fill", size = "125%"), style = "margin-top: 5px;"),
+  theme = "dark"
+)
+
+value_box(
+  title = div("Songs", style = "font-size: 20px;"),
+  value = div(348, style = "font-size: 50px; font-weight: bold;"),
+  showcase = div(bs_icon("music-note-list", size = "125%"), style = "margin-top: 5px;"),
+  theme = "dark"
+)
+```
+
+## Column {width=60%}
+```{r}
+library(slickR)
+
+# Define the path to your image folder
+objpath <- "images/january"
+
+# List all PNG images in the folder
+image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
+
+slickR(
+  image_list,  
+  height = 450,  
+  width = "95%",  
+  slideId = 'spotifyCarousel'
+) + 
+  settings(
+    slidesToShow = 1,
+    slidesToScroll = 1,
+    arrows = FALSE,
+    dots = TRUE,
+    autoplay = TRUE,
+    autoplaySpeed = 5000 
+  )
+```
+
+###
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/25uiPmTg16RbhZWAqwLBy5?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+<iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5GmXpNIK6yGwTtKBITIqzK?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

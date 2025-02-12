@@ -223,17 +223,20 @@ message(paste("Your lowest streaming day was", lowest_streaming_day$md_date, "wi
 ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
   geom_point(color = "#8ACE00") +
   geom_line(color = "#8ACE00", linewidth = 1) +
-  geom_star(data = daily_songs[1, ], fill = "black", size = 3) +
+  geom_star(data = daily_songs[1, ], fill = "black", size = 4) +
   labs(x = "Date",
        y = "Total Number of Streams (n)",
-       title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month, "!")) +
-  scale_x_date(expand = c(0, 0), date_breaks = "3 days", date_labels = "%b %d") + 
-  theme_bw() +
-  theme(axis.text.x = element_text(family = "Courier", color = "black"),  
-        axis.text.y = element_text(family = "Courier", color = "black"),
-        axis.title.x = element_text(family = "Courier"),
-        axis.title.y = element_text(family = "Courier"),
-        plot.title = element_text(family = "Courier", size = 15, hjust = 0.5))
+       title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month),
+       subtitle = "Tracking daily streaming activity trends",
+       caption = "Source: Spotify Streaming Data") +
+  scale_x_date(expand = c(0, 0.05), date_breaks = "3 days", date_labels = "%b %d") + 
+  theme_bw(base_family = "Arial Narrow") +
+  theme(axis.text = element_text(color = "black", size = 10),  
+        axis.title = element_text(color = "black", size = 12),
+        axis.title.x = element_blank(),
+        plot.title = element_text(size = 20, face = "bold"),
+        plot.subtitle = element_text(color = "black", size = 16),
+        plot.caption = element_text(color = "black", size = 10))
 ```
 
 ```{r, output = TRUE}
@@ -244,18 +247,26 @@ highest_streaming_day <- inner_join(monthly_datasets[[i]], daily_songs[1, 1:2], 
 
 # Create a histogram of streaming times for the highest streaming day 
 ggplot(data = highest_streaming_day, aes(x = time)) +
-  geom_histogram(bins = 30, fill = "#8ACE00") +
+  geom_histogram(bins = 9, fill = "#8ACE00") +
   labs(x = "Time",
        y = "Total Number of Streams (n)",
-       title = paste("Highest Streaming Day,", daily_songs$md_date[1], "!")) +
-  scale_x_time(expand = c(0, 0)) +
+       title = paste0("Streaming Activity During Peak Day (", daily_songs$md_date[1], ")"),
+       subtitle = "A closer analysis of my most active listening periods",
+       caption = "Source: Spotify Streaming Data") +
+  scale_x_time(expand = c(0, 0),
+               labels = scales::time_format("%H:%M")) +
   scale_y_continuous(expand = c(0, 0)) +
-  theme_bw() +
-  theme(axis.text.x = element_text(family = "Courier", color = "black"),  
-        axis.text.y = element_text(family = "Courier", color = "black"),
-        axis.title.x = element_text(family = "Courier"),
-        axis.title.y = element_text(family = "Courier"),
-        plot.title = element_text(family = "Courier", size = 15, hjust = 0.5))
+  theme_bw(base_family = "Arial Narrow") +
+  theme(axis.text = element_text(color = "black", size = 10),  
+        axis.title = element_text(color = "black", size = 12),
+        axis.title.x = element_blank(),
+        plot.title = element_text(size = 20, face = "bold"),
+        plot.subtitle = element_text(color = "black", size = 16),
+        plot.caption = element_text(color = "black", size = 10))
+```
+
+```{r}
+max(highest_streaming_day$time)
 ```
 
 ## Data Citations
