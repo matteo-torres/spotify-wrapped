@@ -49,11 +49,51 @@ kable(songs_data)
 
 #### {width=40%}
 
-<div style="display: flex; flex-direction: column; align-items: center; height: 100%; padding: 10px; background-color: transparent;">
-  <img src="images/albums/melodrama.png" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
-  <img src="images/albums/pop2.png" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
-  <img src="images/albums/desire.png" alt="Picks Image" style="width: 100%; height: 30%;">
-</div>
+```{r}
+library(slickR)
+
+# Define the path to your image folder
+objpath <- "images/albums"
+
+# List all PNG images in the folder
+image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
+
+slickR(
+  image_list,  
+  height = 190,  
+  width = "100%",  
+  slideId = 'albumCarousel'
+) + 
+  settings(
+    slidesToShow = 1,
+    slidesToScroll = 1,
+    arrows = FALSE,
+    dots = FALSE,
+    autoplay = TRUE,
+    autoplaySpeed = 3000 
+  )
+
+# Define the path to your image folder
+objpath <- "images/songs"
+
+# List all PNG images in the folder
+image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
+
+slickR(
+  image_list,  
+  height = 190,  
+  width = "100%",  
+  slideId = 'songCarousel'
+) + 
+  settings(
+    slidesToShow = 1,
+    slidesToScroll = 1,
+    arrows = FALSE,
+    dots = FALSE,
+    autoplay = TRUE,
+    autoplaySpeed = 3000 
+  )
+```
 
 ### Row {width=50%}
 ```{r}
