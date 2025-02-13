@@ -60,7 +60,7 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 
 slickR(
   image_list,  
-  height = 190,  
+  height = 200,  
   width = "100%",  
   slideId = 'albumCarousel'
 ) + 
@@ -72,7 +72,9 @@ slickR(
     autoplay = TRUE,
     autoplaySpeed = 3000 
   )
+```
 
+```{r}
 # Define the path to your image folder
 objpath <- "images/songs"
 
@@ -81,7 +83,7 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 
 slickR(
   image_list,  
-  height = 190,  
+  height = 200,  
   width = "100%",  
   slideId = 'songCarousel'
 ) + 

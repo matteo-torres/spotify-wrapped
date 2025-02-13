@@ -46,12 +46,12 @@ tr:hover {
   bottom: -50px !important; 
 }
 
-// Dashboard Size
+/* Dashboard Size */
 .fixed-size {
-  width: 500px !important;
-  max-width: 500px !important;
-  min-width: 500px !important;
-  flex: 0 0 40% !important; 
+  width: 100%; /* Allows flexibility in different screens */
+  max-width: 500px; /* Prevents it from growing too large */
+  min-width: 300px; /* Ensures it doesn't shrink too much */
+  flex: 1 1 auto; /* Adjusts flex behavior for better responsiveness */
 }
 
 
