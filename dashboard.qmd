@@ -18,9 +18,13 @@ editor_options:
   chunk_output_type: console
 ---
 
+## {.sidebar}
+
 ## Column {width=40%}
 
-### Top Charts {.tabset}
+### Row
+
+#### Chart {width=60% .tabset}
 ```{r}
 #| title: "Top 5 Artists"
 
@@ -45,6 +49,16 @@ songs_data <- data.frame(
 kable(songs_data)
 ```
 
+#### {width=40%}
+
+<div style="display: flex; justify-content: center; align-items: center; text-align: center; gap: 4px; width: 100%;">
+  <img src="images/melodrama.webp" alt="Picks Image" height="140px" style="margin: 5px;">
+  <img src="images/pop2.webp" alt="Picks Image" height="140px" style="margin: 5px;">
+  <img src="images/desire.webp" alt="Picks Image" height="140px" style="margin: 5px;">
+</div>
+
+
+
 ### Row {width=50%}
 ```{r}
 library(bslib)
@@ -67,11 +81,12 @@ value_box(
 ```
 
 ## Column {width=60%}
+
 ```{r}
 library(slickR)
 
 # Define the path to your image folder
-objpath <- "images/"
+objpath <- "images/plots"
 
 # List all PNG images in the folder
 image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
@@ -92,7 +107,7 @@ slickR(
   )
 ```
 
-###
+### Row {width=50%}
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/artist/25uiPmTg16RbhZWAqwLBy5?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
 
 <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/5GmXpNIK6yGwTtKBITIqzK?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>

@@ -18,7 +18,7 @@ editor_options:
 #| code-fold: true
 
 library(hms)
-library(ggstar)
+library(ggimage)
 library(lubridate)
 library(tidyverse)
 library(googlesheets4)
@@ -219,11 +219,17 @@ message(paste("Your lowest streaming day was", lowest_streaming_day$md_date, "wi
 ```{r, output = TRUE}
 #| code-fold: true
 
+miley <- "images/miley.png"
+
 # Create a line plot of daily streaming habits
 ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
   geom_point(color = "#8ACE00") +
-  geom_line(color = "#8ACE00", linewidth = 1) +
-  geom_star(data = daily_songs[1, ], fill = "black", size = 4) +
+  geom_line(color = "#8ACE00", linewidth = 2) +
+  geom_image(data = daily_songs[1, ], aes(image = miley), size = 0.06) +
+  geom_text(data = daily_songs[1, ], aes(label = n_songs),
+            family = "Arial Narrow",
+            face = "bold",
+            hjust = -0.8) +
   labs(x = "Date",
        y = "Total Number of Streams (n)",
        title = paste("Monthly Streaming Habits for", monthly_datasets[[i]]$month),
@@ -238,7 +244,7 @@ ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
         plot.subtitle = element_text(color = "black", size = 16),
         plot.caption = element_text(color = "black", size = 10))
 
-ggsave(filename = "month.png", path = "images/")
+ggsave(filename = "month.png", path = "images/plots")
 ```
 
 ```{r, output = TRUE}
@@ -266,7 +272,7 @@ ggplot(data = highest_streaming_day, aes(x = time)) +
         plot.subtitle = element_text(color = "black", size = 16),
         plot.caption = element_text(color = "black", size = 10))
 
-ggsave(filename = "day.png", path = "images/")
+ggsave(filename = "day.png", path = "images/plots")
 ```
 
 ## Data Citations
