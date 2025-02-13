@@ -61,8 +61,8 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 150,  
-  width = 150,  
+  height = 180,  
+  width = 180,  
   slideId = 'albumCarousel'
 ) + 
   settings(
@@ -134,7 +134,7 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 slickR(
   image_list,  
   height = 400,  
-  width = "80%",  
+  width =  600,  
   slideId = 'spotifyCarousel'
 ) + 
   settings(
