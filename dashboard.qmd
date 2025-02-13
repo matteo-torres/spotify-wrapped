@@ -61,8 +61,8 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 70,  
-  width = 70,  
+  height = 100,  
+  width = 100,  
   slideId = 'albumCarousel'
 ) + 
   settings(
@@ -71,8 +71,7 @@ slickR(
     arrows = FALSE,
     dots = FALSE,
     autoplay = TRUE,
-    autoplaySpeed = 3000,
-    adaptiveHeight = TRUE
+    autoplaySpeed = 3000
   )
 ```
 
@@ -86,8 +85,8 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 70,  
-  width = 90,  
+  height = 100,  
+  width = 100,  
   slideId = 'songCarousel'
 ) + 
   settings(
@@ -96,8 +95,7 @@ slickR(
     arrows = FALSE,
     dots = FALSE,
     autoplay = TRUE,
-    autoplaySpeed = 3000,
-    adaptiveHeight = TRUE
+    autoplaySpeed = 3000
   )
 ```
 
