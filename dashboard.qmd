@@ -50,9 +50,9 @@ kable(songs_data)
 #### {width=40%}
 
 <div style="display: flex; flex-direction: column; align-items: center; height: 100%; padding: 10px; background-color: transparent;">
-  <img src="images/melodrama.webp" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
-  <img src="images/pop2.webp" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
-  <img src="images/desire.webp" alt="Picks Image" style="width: 100%; height: 30%;">
+  <img src="images/albums/melodrama.png" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
+  <img src="images/albums/pop2.png" alt="Picks Image" style="width: 100%; height: 30%; margin-bottom: 5px;">
+  <img src="images/albums/desire.png" alt="Picks Image" style="width: 100%; height: 30%;">
 </div>
 
 ### Row {width=50%}
