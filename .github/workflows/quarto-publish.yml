@@ -3,7 +3,7 @@ name: Quarto Publish
 on:
   push:
     branches:
-      - main
+      - gh-pages
 
   workflow_dispatch:
 
