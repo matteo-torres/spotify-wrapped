@@ -71,7 +71,7 @@ value_box(
 library(slickR)
 
 # Define the path to your image folder
-objpath <- "images/january"
+objpath <- "images/"
 
 # List all PNG images in the folder
 image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
