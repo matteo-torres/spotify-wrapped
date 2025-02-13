@@ -237,6 +237,8 @@ ggplot(data = daily_songs, aes(x = ymd_date, y = n_songs)) +
         plot.title = element_text(size = 20, face = "bold"),
         plot.subtitle = element_text(color = "black", size = 16),
         plot.caption = element_text(color = "black", size = 10))
+
+ggsave(filename = "month.png", path = "images/")
 ```
 
 ```{r, output = TRUE}
@@ -263,10 +265,8 @@ ggplot(data = highest_streaming_day, aes(x = time)) +
         plot.title = element_text(size = 20, face = "bold"),
         plot.subtitle = element_text(color = "black", size = 16),
         plot.caption = element_text(color = "black", size = 10))
-```
 
-```{r}
-max(highest_streaming_day$time)
+ggsave(filename = "day.png", path = "images/")
 ```
 
 ## Data Citations
