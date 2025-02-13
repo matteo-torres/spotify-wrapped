@@ -134,7 +134,7 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 slickR(
   image_list,  
   height = 400,  
-  width =  600,  
+  width =  "90%",  
   slideId = 'spotifyCarousel'
 ) + 
   settings(
