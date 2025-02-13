@@ -57,20 +57,12 @@ library(magick)
 objpath <- "images/albums"
 
 # List all PNG images in the folder
-image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
-
-# Resize and overwrite images
-for (img in image_list) {
-  image <- image_read(img) %>% 
-           image_resize("150x150")  # Adjust to your preferred size
-  
-  image_write(image, path = img)  # Overwrites the original file
-}
+image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 60,  
-  width = 60,  
+  height = 200,  
+  width = 200,  
   slideId = 'albumCarousel'
 ) + 
   settings(
@@ -90,20 +82,12 @@ slickR(
 objpath <- "images/songs"
 
 # List all PNG images in the folder
-image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
-
-# Resize and overwrite images
-for (img in image_list) {
-  image <- image_read(img) %>% 
-           image_resize("150x150")  # Adjust to your preferred size
-  
-  image_write(image, path = img)  # Overwrites the original file
-}
+image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 60,  
-  width = 60,  
+  height = 200,  
+  width = 200,  
   slideId = 'songCarousel'
 ) + 
   settings(
