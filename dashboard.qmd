@@ -51,17 +51,26 @@ kable(songs_data)
 
 ```{r}
 library(slickR)
+library(magick)
 
-# Define the path to your image folder
+# Define the image folder
 objpath <- "images/albums"
 
 # List all PNG images in the folder
 image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 
+# Resize and overwrite images
+for (img in image_list) {
+  image <- image_read(img) %>% 
+           image_resize("150x150")  # Adjust to your preferred size
+  
+  image_write(image, path = img)  # Overwrites the original file
+}
+
 slickR(
   image_list,  
-  height = 150,  
-  width = "100%",  
+  height = 60,  
+  width = 60,  
   slideId = 'albumCarousel'
 ) + 
   settings(
@@ -70,21 +79,31 @@ slickR(
     arrows = FALSE,
     dots = FALSE,
     autoplay = TRUE,
-    autoplaySpeed = 3000 
+    autoplaySpeed = 3000,
+    adaptiveHeight = TRUE
   )
 ```
 
 ```{r}
-# Define the path to your image folder
+
+# Define the image folder
 objpath <- "images/songs"
 
 # List all PNG images in the folder
 image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 
+# Resize and overwrite images
+for (img in image_list) {
+  image <- image_read(img) %>% 
+           image_resize("150x150")  # Adjust to your preferred size
+  
+  image_write(image, path = img)  # Overwrites the original file
+}
+
 slickR(
   image_list,  
-  height = 150,  
-  width = "100%",  
+  height = 60,  
+  width = 60,  
   slideId = 'songCarousel'
 ) + 
   settings(
@@ -93,7 +112,8 @@ slickR(
     arrows = FALSE,
     dots = FALSE,
     autoplay = TRUE,
-    autoplaySpeed = 3000 
+    autoplaySpeed = 3000,
+    adaptiveHeight = TRUE
   )
 ```
 

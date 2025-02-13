@@ -46,12 +46,19 @@ tr:hover {
   bottom: -50px !important; 
 }
 
-/* Dashboard Size */
+#albumCarousel img, #songCarousel img {
+  object-fit: contain;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+// Dashboard Size
 .fixed-size {
-  width: 100%; /* Allows flexibility in different screens */
-  max-width: 500px; /* Prevents it from growing too large */
-  min-width: 300px; /* Ensures it doesn't shrink too much */
-  flex: 1 1 auto; /* Adjusts flex behavior for better responsiveness */
+  width: 100%;
+  max-width: 500px; 
+  min-width: 300px; 
+  flex: 1 1 auto;
 }
 
 
