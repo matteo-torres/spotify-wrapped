@@ -8,7 +8,7 @@ format:
     theme: 
       - darkly
       - custom.scss
-    mainfont: arial narrow
+    mainfont: lato
     nav-buttons:
       - icon: spotify
         href: https://open.spotify.com/playlist/7CvSIl6mwMGNTaCCpmAQH7?si=5ad4e462bdc54b31
@@ -60,8 +60,8 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 150,  
-  width = 150,  
+  height = 185,  
+  width = 185,  
   slideId = 'albumCarousel'
 ) + 
   settings(
@@ -84,8 +84,8 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = "jpeg")
 
 slickR(
   image_list,  
-  height = 150,  
-  width = 150,  
+  height = 185,  
+  width = 185,  
   slideId = 'songCarousel'
 ) + 
   settings(
@@ -133,7 +133,7 @@ image_list <- list.files(objpath, full.names = TRUE, pattern = 'png')
 slickR(
   image_list,  
   height = 400,  
-  width = "100%",  
+  width = "80%",  
   slideId = 'spotifyCarousel'
 ) + 
   settings(
