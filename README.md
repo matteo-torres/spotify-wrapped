@@ -1,1 +1,1 @@
-# spotify_wrapped
+# spotify-wrapped
