@@ -12,7 +12,7 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     
     menuItem(text = "Home", tabName = "home", icon = icon("house")),
-    menuItem(text = "Stats", tabName = "stats", icon = icon("arrow-trend-up")),
+    menuItem(text = "Monthly Stats", tabName = "stats", icon = icon("arrow-trend-up")),
     menuItem(text = "Data", tabName = "data", icon = icon("headphones"))
     
   ) # END sidebarMenu
@@ -97,9 +97,9 @@ body <- dashboardBody(
                      box(width = NULL,
                          
                          pickerInput(inputId = "month_input",
-                                     label = "Please choose a month:",
+                                     label = "Select a month:",
                                      choices = names(spotify_data),
-                                     selected = names(spotify_data)[2],
+                                     selected = names(spotify_data)[3],
                                      multiple = FALSE,
                                      options = pickerOptions(actionsBox = TRUE))
                          
@@ -122,7 +122,14 @@ body <- dashboardBody(
                          DTOutput(outputId = "table_output") %>%
                            withSpinner(color = "black", type = 1, size = 1)
                          
-                     ) # END DT box
+                     ), # END DT box
+                     
+                     #
+                     box(width = NULL,
+                         
+                         textOutput(outputId = "song_output")
+                         
+                         ) # END
                      
                    ), # END second fluidRow
                    
@@ -139,11 +146,8 @@ body <- dashboardBody(
                    
             ), # END left-hand column
             
-            # center buffer column ----
-            column(width = 1),
-            
             # right-hand column ----
-            column(width = 5,
+            column(width = 6,
                    
                    # first fluidRow ----
                    fluidRow(
@@ -154,7 +158,14 @@ body <- dashboardBody(
                          plotOutput(outputId = "month_output") %>%
                            withSpinner(color = "black", type = 1, size = 1)
                          
-                     ) # END month output box
+                     ), # END month output box
+                     
+                     # peak day box ----
+                     box(width = NULL,
+                         
+                         textOutput(outputId = "peak_output")
+                         
+                     ) # END peak day box
                      
                    ), # END fluidRow
                    
@@ -167,7 +178,7 @@ body <- dashboardBody(
                          plotOutput(outputId = "day_output") %>%
                            withSpinner(color = "black", type = 1, size = 1)
                          
-                     ) # END day output box
+                     ), # END day output box
                      
                    ) # END fluidRow
                    
