@@ -24,7 +24,7 @@ body <- dashboardBody(
   
   use_theme("dashboard-fresh-theme.css"),
   
-  tags$head(tags$style(HTML(".main-sidebar {font-size: 18px;}"))),
+  tags$head(tags$style(HTML(".main-sidebar {font-size: 16px;}"))),
   
   # tabItems ----
   tabItems(
@@ -90,97 +90,80 @@ body <- dashboardBody(
             # left-hand column ----
             column(width = 4,
                    
-                   # first fluidRow ----
-                   fluidRow(
-                     
-                     # month input box ----
-                     box(width = NULL,
-                         
-                         pickerInput(inputId = "month_input",
-                                     label = "Select a month:",
-                                     choices = names(spotify_data),
-                                     selected = names(spotify_data)[3],
-                                     multiple = FALSE,
-                                     options = pickerOptions(actionsBox = TRUE))
-                         
-                     ) # END month input box
-                     
-                   ), # END first fluiRow
+                   # month input box ----
+                   box(width = NULL,
+                       
+                       pickerInput(inputId = "month_input",
+                                   label = "Select a month:",
+                                   choices = names(spotify_data),
+                                   selected = names(spotify_data)[3],
+                                   multiple = FALSE,
+                                   options = pickerOptions(actionsBox = TRUE,
+                                                           size = 2))
+                       
+                   ), # END month input box
                    
-                   # second fluidRow ----
-                   fluidRow(
-                     
-                     # DT box ----
-                     box(width = NULL,
-                         
-                         radioGroupButtons(inputId = "table_input", 
-                                           label = "Please choose an option:", 
-                                           choices = c("Top 10 Artists", "Top 10 Tracks"), 
-                                           selected = "Top 10 Artists",
-                                           size = "normal"),
-                         
-                         DTOutput(outputId = "table_output") %>%
-                           withSpinner(color = "black", type = 1, size = 1)
-                         
-                     ), # END DT box
-                     
-                     #
-                     box(width = NULL,
-                         
-                         textOutput(outputId = "song_output")
-                         
-                         ) # END
-                     
-                   ), # END second fluidRow
+                   # DT box ----
+                   box(width = NULL,
+                       
+                       radioGroupButtons(inputId = "table_input", 
+                                         label = "Choose an option:", 
+                                         choices = c("Top 10 Artists", "Top 10 Tracks"), 
+                                         selected = "Top 10 Artists",
+                                         size = "normal"),
+                       
+                       DTOutput(outputId = "table_output") %>%
+                         withSpinner(color = "black", type = 1, size = 1)
+                       
+                   ), # END DT box
                    
-                   # third fluidRow ----
-                   fluidRow(
-                     
-                     valueBoxOutput("artist_output",
-                                    width = 6),
-                     
-                     valueBoxOutput("track_output",
-                                    width = 6),
-                     
-                   ) # END fluidRow
+                   # top song box ----
+                   box(width = NULL,
+                       
+                       uiOutput("song_output")
+                       
+                   ), # top song box END
+                   
+                   # valueboxes box
+                   box(width = NULL,
+                       
+                       valueBoxOutput("artist_output",
+                                      width = 6),
+                       
+                       valueBoxOutput("track_output",
+                                      width = 6)
+                   ) # END valueBoxes box
                    
             ), # END left-hand column
             
+            # center buffer column ----
+            column(width = 1),
+            
             # right-hand column ----
-            column(width = 6,
+            column(width = 5,
                    
-                   # first fluidRow ----
-                   fluidRow(
-                     
-                     # month output box ----
-                     box(width = NULL,
-                         
-                         plotOutput(outputId = "month_output") %>%
-                           withSpinner(color = "black", type = 1, size = 1)
-                         
-                     ), # END month output box
-                     
-                     # peak day box ----
-                     box(width = NULL,
-                         
-                         textOutput(outputId = "peak_output")
-                         
-                     ) # END peak day box
-                     
-                   ), # END fluidRow
+                   # month output box ----
+                   box(width = NULL,
+                       
+                       plotOutput(outputId = "month_output") %>%
+                         withSpinner(color = "black", type = 1, size = 1)
+                       
+                   ), # END month output box
                    
-                   # second fluidRow ----
-                   fluidRow(
-                     
-                     # day output box ----
-                     box(width = NULL,
-                         
-                         plotOutput(outputId = "day_output") %>%
-                           withSpinner(color = "black", type = 1, size = 1)
-                         
-                     ), # END day output box
-                     
-                   ) # END fluidRow
+                   # peak day box ----
+                   box(width = NULL,
+                       
+                       uiOutput("peak_output")
+                       
+                   ), # END peak day box
+                   
+                   # day output box ----
+                   box(width = NULL,
+                       
+                       plotOutput(outputId = "day_output") %>%
+                         withSpinner(color = "black", type = 1, size = 1)
+                       
+                   ), # END day output box
                    
             ), # END right-hand column
             
