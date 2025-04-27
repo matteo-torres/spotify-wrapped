@@ -32,52 +32,90 @@ body <- dashboardBody(
     # home tabItem ----
     tabItem(tabName = "home",
             
-            # left buffer column ----
-            column(width = 1),
+            # first fluidRow ----
+            fluidRow(
+              
+              # left buffer column ----
+              column(width = 1),
+              
+              # box ----
+              box(width = 10,
+                  
+                  # fluidRow ----
+                  fluidRow(
+                    
+                    # left-hand column ----
+                    column(width = 9,
+                           
+                           includeMarkdown("text/welcome.md")
+                           
+                    ), # END left-han column
+                    
+                    # right-hand column ----
+                    column(width = 3,
+                           
+                           div(style = "text-align: center;",
+                               tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
+                                        class = "mx-auto d-block",
+                                        width = "100%"))
+                           
+                    ), # END right-hand column
+                    
+                  ), # END fluidRow
+                  
+              ), # END box
+              
+              # center buffer column ----
+              column(width = 1),
+              
+            ), # END first fluidRow
             
-            # left-hand column ----
-            column(width = 5,
-                   
-                   includeMarkdown("text/welcome.md")
-                   
-            ), # END left-hand column
-            
-            # center buffer column ----
-            column(width = 1),
-            
-            # right-hand column ----
-            column(width = 4,
-                   
-                   # first fluidRow ----
-                   fluidRow(
+            # second fluidRow ----
+            fluidRow(
+              
+              # left buffer column ----
+              column(width = 1),
+              
+              # column  ----
+              column(width = 10,
                      
-                     slickROutput(outputId = "carousel_images_output",
-                                  width = "80%")
+                     # box ----
+                     box(width = NULL,
+                         
+                         # fluidRow ----
+                         fluidRow(
+                           
+                           # left-hand column ----
+                           column(width = 6,
+                                  
+                                  tags$iframe(style="border-radius:12px", 
+                                              src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
+                                              width="100%", 
+                                              height="400", 
+                                              frameBorder="0", 
+                                              allowfullscreen="", 
+                                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
+                                              loading="lazy")
+                                  
+                           ), # END left-hand column
+                           
+                           # right-hand column ----
+                           column(width = 6,
+                                  
+                                  slickROutput(outputId = "carousel_images_output", width = "100%")
+                                  
+                           ), # END right-hand column
+                           
+                         ), # END fluidRow
+                         
+                     ), # END box
                      
-                   ), # END first fluidRow
-                   
-                   # second fluidRow ----
-                   fluidRow(
-                     
-                     tags$div(style = "text-align: center;",
-                              tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
-                                       width = "40%")),
-                     
-                     tags$iframe(style="border-radius:12px", 
-                                 src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
-                                 width="100%", 
-                                 height="450", 
-                                 frameBorder="0", 
-                                 allowfullscreen="", 
-                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
-                                 loading="lazy")
-                     
-                   ) # END second fluidRow
-                   
-            ), # END right-hand column
-            
-            # right buffer column
-            column(width = 1)
+              ), # END column
+              
+              # right buffer column ----
+              column(width = 1),
+              
+            ), # END second fluidRow
             
     ), # END home tabItem
     

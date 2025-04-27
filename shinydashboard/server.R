@@ -164,7 +164,7 @@ server <- function(input, output) {
     
     # slickR carousel ----
     slickR(image_list(),  
-           height = 350,  
+           height = 400,  
            width = "100%",  
            slideId = "Carousel") + 
       settings(slidesToShow = 1,
