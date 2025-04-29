@@ -1,18 +1,29 @@
 # dashboardHeader ----
 header <- dashboardHeader(
   
-  title = span("Spotify Wrapped", style = "font-size: 26px")
+  # title ----
+  title = span(img(src = "spotify-logo.png", height = 115,)),
+  titleWidth = 300,
+  
+  # navbar adjustments ----
+  tags$li(class = "dropdown",
+          tags$style(".main-header .logo {height: 115px;}"),
+          tags$style(".sidebar-toggle {font-size: 25px; padding-top: 10px !important;}"))
   
 ) # END dashboardHeader
 
 # dashboardSidebar ----
 sidebar <- dashboardSidebar(
   
+  # sidebar adjustments ----
+  tags$style(".left-side, .main-sidebar {padding-top: 115px; font-size: 15px;}"),
+  width = 300,
+  
   # sidebarMenu ----
   sidebarMenu(
     
     menuItem(text = "Home", tabName = "home", icon = icon("house")),
-    menuItem(text = "Monthly Stats", tabName = "stats", icon = icon("arrow-trend-up")),
+    menuItem(text = "Monthly Streaming", tabName = "stats", icon = icon("arrow-trend-up")),
     menuItem(text = "Data", tabName = "data", icon = icon("headphones"))
     
   ) # END sidebarMenu
@@ -21,6 +32,8 @@ sidebar <- dashboardSidebar(
 
 # dashboardBody ----
 body <- dashboardBody(
+  
+  tags$style(".content-wrapper, .right-side {padding-top: 25px;}"),
   
   use_theme("dashboard-fresh-theme.css"),
   
@@ -211,11 +224,7 @@ body <- dashboardBody(
     ), # END stats tabItem
     
     # data tabItem ----
-    tabItem(tabName = "data",
-            
-            tags$h1(strong("COMING SOON..."))
-            
-    ) # END data tabItem
+    tabItem(tabName = "data") # END data tabItem
     
   ) # END tabItems
   
