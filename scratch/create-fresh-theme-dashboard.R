@@ -8,7 +8,7 @@ create_theme(
   adminlte_color(light_blue = "#8ACE00"),
   
   # dashboardBody color
-  adminlte_global(content_bg = "white"),
+  adminlte_global(content_bg = "#EAE8F5"),
   
   # dashboardSidebar color
   adminlte_sidebar(dark_bg = "black",

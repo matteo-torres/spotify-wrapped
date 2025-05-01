@@ -23,7 +23,7 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     
     menuItem(text = "Home", tabName = "home", icon = icon("house")),
-    menuItem(text = "Monthly Streaming", tabName = "stats", icon = icon("arrow-trend-up")),
+    menuItem(text = "Monthly Streaming", tabName = "monthly", icon = icon("arrow-trend-up")),
     menuItem(text = "Data", tabName = "data", icon = icon("headphones"))
     
   ) # END sidebarMenu
@@ -37,7 +37,7 @@ body <- dashboardBody(
   
   use_theme("dashboard-fresh-theme.css"),
   
-  tags$head(tags$style(HTML(".main-sidebar {font-size: 16px;}"))),
+  tags$head(tags$style(HTML(".main-sidebar {font-size: 18px;}"))),
   
   # tabItems ----
   tabItems(
@@ -132,96 +132,209 @@ body <- dashboardBody(
             
     ), # END home tabItem
     
-    # stats tabItem ----
-    tabItem(tabName = "stats",
+    # monthly tabItem ----
+    tabItem(tabName = "monthly",
             
-            # left buffer column ---
-            column(width = 1),
+            # first fluidRow ----
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # pickerInput box ----
+              box(width = 10,
+                  
+                  # first fluidRow
+                  fluidRow(
+                    
+                    column(width = 1),
+                    
+                    column(width = 10,
+                           
+                           img(src = "month.png",
+                               width = "12%"),
+                           
+                           tags$style(".js-irs-0 .irs-bar {background: #8ACE00;}"),
+                           tags$style(".js-irs-0 .irs-line {background: black;}"),
+                           tags$style(".js-irs-0 .irs-single {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
+                           tags$style(".js-irs-0 .irs-grid-text {color: black; font-size: 12px; font-weight: bold;"),
+                           tags$style(".js-irs-0 .irs-grid-pol {background-color: black;"),
+                           tags$style(".js-irs-0 .irs-min {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
+                           tags$style(".js-irs-0 .irs-max {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
+                           tags$style(".js-irs-0 .irs-handle {background-image: url('spotify_black_logo_icon_147079.webp');
+                  background-size: cover; background-position: center; width: 40px; height: 40px; border-radius: 100%;"),
+                           
+                           sliderInput(
+                             inputId = "month_input",
+                             label = NULL,
+                             min = 1,
+                             max = 4,
+                             value = 4,
+                             step = 1,
+                             ticks = TRUE)
+                           
+                           ),
+                    
+                    column(width = 1)
+                    
+                  ), # END first fluidRow
+                  
+                  # second fluidRow
+                  fluidRow(
+                    
+                    column(width = 5),
+                    
+                    column(width = 2,
+                           
+                           img(src = "play.png",
+                               width = "100%")
+                           
+                           ),
+                    
+                    column(width = 5)
+                    
+                  ), # END second fluidRow
+                  
+              ), # END pickerInput box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END first fluidRow
             
-            # left-hand column ----
-            column(width = 4,
-                   
-                   # month input box ----
-                   box(width = NULL,
-                       
-                       pickerInput(inputId = "month_input",
-                                   label = "Select a month:",
-                                   choices = names(spotify_data),
-                                   selected = names(spotify_data)[3],
-                                   multiple = FALSE,
-                                   options = pickerOptions(actionsBox = TRUE,
-                                                           size = 2))
-                       
-                   ), # END month input box
-                   
-                   # DT box ----
-                   box(width = NULL,
-                       
-                       radioGroupButtons(inputId = "table_input", 
-                                         label = "Choose an option:", 
-                                         choices = c("Top 10 Artists", "Top 10 Tracks"), 
-                                         selected = "Top 10 Artists",
-                                         size = "normal"),
-                       
-                       DTOutput(outputId = "table_output") %>%
-                         withSpinner(color = "black", type = 1, size = 1)
-                       
-                   ), # END DT box
-                   
-                   # top song box ----
-                   box(width = NULL,
-                       
-                       uiOutput("song_output")
-                       
-                   ), # top song box END
-                   
-                   # valueboxes box
-                   box(width = NULL,
-                       
-                       valueBoxOutput("artist_output",
-                                      width = 6),
-                       
-                       valueBoxOutput("track_output",
-                                      width = 6)
-                   ) # END valueBoxes box
-                   
-            ), # END left-hand column
+            # second fluidRow ----
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # DT box ----
+              box(width = 10,
+                  
+                  # fluidRow
+                  fluidRow(
+                    
+                    # left-hand column
+                    column(width = 4,
+                           
+                           # first fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                                    
+                                    radioGroupButtons(inputId = "table_input", 
+                                                      choices = c("Top 10 Artists", "Top 10 Tracks"), 
+                                                      selected = "Top 10 Artists",
+                                                      size = "normal")
+                                    
+                                    ),
+                             
+                             # right buffer column
+                             column(width = 1)
+                             
+                           ), # END first fluidRow
+                           
+                           # second fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                               
+                               valueBoxOutput("artist_output",
+                                              width = NULL)
+                               
+                             ),
+                             
+                             column(width = 1)
+                             
+                             
+                           ), # END second fluidRow
+                           
+                           # third fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                                    
+                                    valueBoxOutput("track_output",
+                                                   width = NULL)
+                                    
+                             ),
+                             
+                             column(width = 1)
+                             
+                           ) # END third fluidRow
+                           
+                           ), # END left-hand column
+                    
+                    # right-hand column
+                    column(width = 8,
+                           
+                           DTOutput(outputId = "table_output") %>%
+                             withSpinner(color = "black", type = 1, size = 1),
+                           
+                           uiOutput("song_output")
+                           
+                           ) # END right-hand column
+                    
+                  ) # END fluidRow
+                  
+                  ), # END DT box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END second fluidRow
             
-            # center buffer column ----
-            column(width = 1),
+            # third fluidRow ----
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # plots box ----
+              box(width = 10,
+                  
+                  # fluidRow
+                  fluidRow(
+                    
+                    # left-hand column
+                    column(width = 6,
+                           
+                           plotOutput(outputId = "month_output") %>%
+                             withSpinner(color = "black", type = 1, size = 1),
+                           
+                           uiOutput("peak_output")
+                           
+                    ), # END left-hand column
+                    
+                    # right-hand column
+                    column(width = 6,
+                           
+                           plotOutput(outputId = "day_output") %>%
+                             withSpinner(color = "black", type = 1, size = 1),
+                           
+                           uiOutput(outputId = "time_output")
+                           
+                    ) # END right-hand column
+                    
+                  ) # END fluidRow
+                  
+              ), # END plots box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END third fluidRow
             
-            # right-hand column ----
-            column(width = 5,
-                   
-                   # month output box ----
-                   box(width = NULL,
-                       
-                       plotOutput(outputId = "month_output") %>%
-                         withSpinner(color = "black", type = 1, size = 1)
-                       
-                   ), # END month output box
-                   
-                   # peak day box ----
-                   box(width = NULL,
-                       
-                       uiOutput("peak_output")
-                       
-                   ), # END peak day box
-                   
-                   # day output box ----
-                   box(width = NULL,
-                       
-                       plotOutput(outputId = "day_output") %>%
-                         withSpinner(color = "black", type = 1, size = 1)
-                       
-                   ), # END day output box
-                   
-            ), # END right-hand column
-            
-            # right buffer column ----
-            column(width = 1)
-            
-    ), # END stats tabItem
+    ), # END monthly tabItem
     
     # data tabItem ----
     tabItem(tabName = "data") # END data tabItem

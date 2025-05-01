@@ -37,7 +37,7 @@ spotify_data <- clean_data(raw_data)
 ## Monthly stats
 ```{r}
 # Month
-i <- 3
+i <- 4
 ```
 
 ```{r}
@@ -115,6 +115,29 @@ spotify_data[[i]] %>%
 ```{r}
 #| code-fold: true
 
+# Identify activity time of day during peak day
+spotify_data[[i]] %>%
+  group_by(day) %>%
+  mutate(total_streams = n()) %>%
+  ungroup() %>%
+  filter(total_streams == max(total_streams)) %>%
+  mutate(hour = hour(time),
+         time_of_day = case_when(hour >= 5 & hour < 12 ~ "morning",
+                                 hour >= 12 & hour < 17 ~ "afternoon",
+                                 hour >= 17 & hour < 21 ~ "evening",
+                                 hour >= 21 | hour < 5 ~ "night")) %>% 
+  group_by(time_of_day) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 1) %>%
+  mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
+  pull(message) %>%
+  print()
+```
+
+```{r}
+#| code-fold: true
+
 # Create DT for top 10 artists
 spotify_data[[i]] %>%
   group_by(artist) %>%
@@ -132,12 +155,12 @@ spotify_data[[i]] %>%
 
 # Create DT for top 10 songs
 spotify_data[[i]] %>%
-  group_by(track) %>%
+  group_by(track, artist) %>%
   summarize(total_streams = n()) %>%
   arrange(desc(total_streams)) %>%
   ungroup() %>%
   slice_head(n = 10) %>%
-  datatable(colnames = c("Track", "Total Streams (n)"),
+  datatable(colnames = c("Track", "Artist", "Total Streams"),
             class = "hover",
             options = list(dom = "t"))
 ```

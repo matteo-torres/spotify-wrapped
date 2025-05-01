@@ -49,7 +49,7 @@ server <- function(input, output) {
                              "with a total of", total_streams, "streams!")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:14px;'>", message, "</div>"))
+    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
     
   })
   
@@ -94,15 +94,15 @@ server <- function(input, output) {
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("Artist", "Total Streams"), class = "hover", options = list(dom = "t"))
+        datatable(colnames = c("Artist", "Total Streams"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
     } else if (input$table_input == "Top 10 Tracks") {
       spotify_data_df() %>%
-        group_by(track) %>%
+        group_by(track, artist) %>%
         summarize(total_streams = n()) %>%
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("Track", "Total Streams"), class = "hover", options = list(dom = "t"))
+        datatable(colnames = c("Track", "Artist", "Total Streams"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
     } 
     
   })
@@ -123,10 +123,34 @@ server <- function(input, output) {
       mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:14px;'>", message, "</div>"))
+    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
     
   })
   
+  # identify activity time of day during peak day
+  output$time_output <- renderUI({
+    
+    message <- spotify_data_df() %>%
+      group_by(day) %>%
+      mutate(total_streams = n()) %>%
+      ungroup() %>%
+      filter(total_streams == max(total_streams)) %>%
+      mutate(hour = hour(time),
+             time_of_day = case_when(hour >= 5 & hour < 12 ~ "morning",
+                                     hour >= 12 & hour < 17 ~ "afternoon",
+                                     hour >= 17 & hour < 21 ~ "evening",
+                                     hour >= 21 | hour < 5 ~ "night")) %>% 
+      group_by(time_of_day) %>%
+      summarize(total_streams = n()) %>%
+      arrange(desc(total_streams)) %>%
+      slice_head(n = 1) %>%
+      mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
+      pull(message)
+    
+    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
+      
+    
+  })
   
   # build artist valueBox ----
   output$artist_output <- renderValueBox({
@@ -135,7 +159,7 @@ server <- function(input, output) {
                distinct(artist) %>%
                summarize(total_artists = n()),
              subtitle = "Artists",
-             icon = icon("user", style = "color: #6ca200;"),
+             icon = icon("circle-user", style = "color: #6ca200;"),
              color = "black")
     
   })
@@ -147,7 +171,7 @@ server <- function(input, output) {
                distinct(track) %>%
                summarize(total_songs= n()),
              subtitle = "Tracks",
-             icon = icon("play", style = "color: #6ca200;"),
+             icon = icon("circle-play", style = "color: #6ca200;"),
              color = "black")
     
   })

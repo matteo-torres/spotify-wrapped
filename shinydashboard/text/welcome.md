@@ -1,4 +1,4 @@
-## **Welcome** 
+## **WELCOME** 
 
 Yay! You've made it to my Spotify Wrapped dashboard!
 
