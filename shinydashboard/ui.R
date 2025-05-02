@@ -280,6 +280,8 @@ body <- dashboardBody(
                     # right-hand column
                     column(width = 8,
                            
+                           tags$style("table.dataTable tbody tr:hover {background-color: #8ACE00 !important;}"),
+                           
                            DTOutput(outputId = "table_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
                            
