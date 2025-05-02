@@ -1,5 +1,3 @@
-## **WELCOME** 
-
 Yay! You've made it to my Spotify Wrapped dashboard!
 
 This has been a passion project of mine that I've been working on during my *"free"* time. I initially wanted to create something fun using the data science skills I've gained from my graduate program. Additionally, I aimed to develop a project that reflects my personality and interests. As someone who always has a set of headphones on, I thought it would be really cool to create a dashboard to analyze my monthly Spotify streaming data. 

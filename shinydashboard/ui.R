@@ -60,6 +60,9 @@ body <- dashboardBody(
                     # left-hand column ----
                     column(width = 9,
                            
+                           img(src = "welcome.png",
+                               width = "25%"),
+                           
                            includeMarkdown("text/welcome.md")
                            
                     ), # END left-han column
@@ -152,7 +155,7 @@ body <- dashboardBody(
                     column(width = 10,
                            
                            img(src = "month.png",
-                               width = "12%"),
+                               width = "15%"),
                            
                            tags$style(".js-irs-0 .irs-bar {background: #8ACE00;}"),
                            tags$style(".js-irs-0 .irs-line {background: black;}"),

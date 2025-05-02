@@ -49,7 +49,7 @@ server <- function(input, output) {
                              "with a total of", total_streams, "streams!")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
+    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold;'>", message, "</div>"))
     
   })
   
@@ -94,7 +94,7 @@ server <- function(input, output) {
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("Artist", "Total Streams"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
+        datatable(colnames = c("ARTIST", "STREAMS"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
     } else if (input$table_input == "Top 10 Tracks") {
       spotify_data_df() %>%
         group_by(track, artist) %>%
@@ -102,7 +102,7 @@ server <- function(input, output) {
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("Track", "Artist", "Total Streams"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
+        datatable(colnames = c("TRACK", "ARTIST", "STREAMS"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
     } 
     
   })
@@ -123,7 +123,7 @@ server <- function(input, output) {
       mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
+    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold'>", message, "</div>"))
     
   })
   
@@ -147,7 +147,8 @@ server <- function(input, output) {
       mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:16px;'>", message, "</div>"))
+    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold'>", message, "</div>"))
+    
       
     
   })
