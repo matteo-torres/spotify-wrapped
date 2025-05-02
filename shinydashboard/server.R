@@ -25,11 +25,11 @@ server <- function(input, output) {
            title = "Monthly Streaming Habits",
            subtitle = "Tracking daily listening activity") +
       theme_bw() +
-      theme(plot.title = element_text(size = 22, face = "bold", color = "#6ca200"),
-            plot.subtitle = element_text(size = 16, face = "italic"),
-            axis.title.x = element_text(size = 14, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 14, margin = margin(r = 10)),
-            axis.text = element_text(size = 12),
+      theme(plot.title = element_text(size = 20, face = "bold", color = "#6ca200"),
+            plot.subtitle = element_text(size = 14, face = "italic"),
+            axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+            axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+            axis.text = element_text(size = 10),
             axis.ticks = element_line(color = "#303030"),
             plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
             panel.border = element_rect(linewidth = 2, color = "#303030"),
@@ -71,11 +71,11 @@ server <- function(input, output) {
            title = "Streaming Activity During Peak Day",
            subtitle = "Analyzing the distribution of activity throughout the day") +
       theme_bw() +
-      theme(plot.title = element_text(size = 22, face = "bold", color = "#6ca200"),
-            plot.subtitle = element_text(size = 16, face = "italic"),
-            axis.title.x = element_text(size = 14, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 14, margin = margin(r = 10)),
-            axis.text = element_text(size = 12),
+      theme(plot.title = element_text(size = 20, face = "bold", color = "#6ca200"),
+            plot.subtitle = element_text(size = 14, face = "italic"),
+            axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+            axis.title.y = element_text(size = 12, margin = margin(r = 10)),
+            axis.text = element_text(size = 10),
             axis.ticks = element_line(color = "#303030"),
             plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
             panel.border = element_rect(linewidth = 2, color = "#303030"),
