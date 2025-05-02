@@ -281,6 +281,10 @@ body <- dashboardBody(
                     column(width = 8,
                            
                            tags$style("table.dataTable tbody tr:hover {background-color: #8ACE00 !important;}"),
+                           tags$style("table.dataTable tbody tr.selected td, table.dataTable tbody td.selected {box-shadow: inset 0 0 0 9999px black !important;}"),
+                           tags$style("table.dataTable tbody tr:active td {color: black !important;}"),
+                           tags$style(":root {--dt-row-selected: transparent !important;}"),
+      
                            
                            DTOutput(outputId = "table_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
