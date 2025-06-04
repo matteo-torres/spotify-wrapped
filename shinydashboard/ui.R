@@ -2,7 +2,7 @@
 header <- dashboardHeader(
   
   # title ----
-  title = span(img(src = "spotify-logo.png", height = 115,)),
+  title = span(img(src = "spotify-logo.png", height = 115)),
   titleWidth = 300,
   
   # navbar adjustments ----
@@ -171,8 +171,8 @@ body <- dashboardBody(
                              inputId = "month_input",
                              label = NULL,
                              min = 1,
-                             max = 4,
-                             value = 4,
+                             max = 5,
+                             value = 5,
                              step = 1,
                              ticks = TRUE)
                            
