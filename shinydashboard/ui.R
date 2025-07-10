@@ -61,14 +61,14 @@ body <- dashboardBody(
               # left buffer column
               column(width = 1), 
               
-              # welcome title
-              column(width = 11,
+              # title column
+              column(width = 10,
                      
                      # title
                      div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
                          "Welcome")
                      
-              ), # END welcome title
+              ), # END title column
               
             ), # END first fluidRow
             
@@ -180,7 +180,7 @@ body <- dashboardBody(
                   style = "height: 500px;",
                   
                   # container
-                  div(style = "font-size: 18px; font-family:  Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
+                  div(style = "font-size: 18px; font-family: Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
                       
                       # title
                       div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
@@ -208,72 +208,91 @@ body <- dashboardBody(
     # monthly tabItem ----
     tabItem(tabName = "monthly",
             
-            # first fluidRow ----
+            # first fluidRow
+            fluidRow(style = "padding-bottom: 20px;",
+              
+              # left buffer column
+              column(width = 1), 
+              
+              # title column
+              column(width = 1,
+                     
+                     div(img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"))
+                     
+              ), # END title column
+              
+              # title column
+              column(width = 8,
+                     
+                     # title
+                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px; padding-left: 10px;",
+                         "Monthly Streaming"),
+                     
+                     div(style = "font-family: Manrope; font-size: 20px; padding-left: 10px;",
+                         "Choose A Month")
+                     
+                     
+              ), # END title column
+              
+              column(width = 1,
+                     
+                     tags$i(class = "fas fa-circle-check fa-4x", style = "color: #74AC08; padding-top: 20px;")
+                     
+                     )
+        
+            
+            ), # END first fluidRow
+            
+            # second fluidRow
             fluidRow(
               
               # left buffer column
               column(width = 1),
               
-              # pickerInput box ----
-              box(width = 10,
-                  
-                  # first fluidRow
-                  fluidRow(
-                    
-                    column(width = 1),
-                    
-                    column(width = 10,
-                           
-                           img(src = "month.png",
-                               width = "15%"),
-                           
-                           tags$style(".js-irs-0 .irs-bar {background: #8ACE00;}"),
-                           tags$style(".js-irs-0 .irs-line {background: black;}"),
-                           tags$style(".js-irs-0 .irs-single {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
-                           tags$style(".js-irs-0 .irs-grid-text {color: black; font-size: 12px; font-weight: bold;"),
-                           tags$style(".js-irs-0 .irs-grid-pol {background-color: black;"),
-                           tags$style(".js-irs-0 .irs-min {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
-                           tags$style(".js-irs-0 .irs-max {background: #8ACE00; color: black; font-weight: bold; font-size: 12px;"),
-                           tags$style(".js-irs-0 .irs-handle {background-image: url('spotify_black_logo_icon_147079.webp');
-                  background-size: cover; background-position: center; width: 40px; height: 40px; border-radius: 100%;"),
-                           
-                           sliderInput(
-                             inputId = "month_input",
-                             label = NULL,
-                             min = 1,
-                             max = 6,
-                             value = 6,
-                             step = 1,
-                             ticks = TRUE)
-                           
-                           ),
-                    
-                    column(width = 1)
-                    
-                  ), # END first fluidRow
-                  
-                  # second fluidRow
-                  fluidRow(
-                    
-                    column(width = 5),
-                    
-                    column(width = 2,
-                           
-                           img(src = "play.png",
-                               width = "100%")
-                           
-                           ),
-                    
-                    column(width = 5)
-                    
-                  ), # END second fluidRow
-                  
-              ), # END pickerInput box
+              # center column
+              column(width = 10,
+                     
+                     # sliderInput customizations
+                     tags$style(".js-irs-0 .irs-bar {background: #8ACE00; border: 1px #8ACE00; box-shadow: none !important;}"),
+                     tags$style(".js-irs-0 .irs-line {background: black; border: 1px solid black;}"),
+                     tags$style(".js-irs-0 .irs-grid-pol {background-color: black;}"),
+                     tags$style(".js-irs-0 .irs-grid-text {color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
+                     tags$style(".js-irs-0 .irs-min {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
+                     tags$style(".js-irs-0 .irs-max {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
+                     tags$style(".js-irs-0 .irs-single {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
+                     tags$style(".js-irs-0 .irs-handle {background: white; background-image: url('spotify_black_logo_icon_147079.webp');
+                                background-size: cover; background-position: center; width: 40px; height: 40px; border-radius: 100%; border: 1px solid black;}"),
+                     tags$style(".js-irs-0 .irs-handle:hover {background-color: white; background-image: url('spotify_black_logo_icon_147079.webp'); 
+                                background-size: cover; background-position: center;}"),
+                     
+                     # monthy sliderInput
+                     sliderInput(inputId = "month_input",
+                                 label = NULL,
+                                 min = 1,
+                                 max = 6,
+                                 value = 6,
+                                 step = 1,
+                                 ticks = TRUE,
+                                 width = "100%"),
+                     
+                     # button icons
+                     div(style = "display: flex; justify-content: space-between; align-items: center; color: black; padding-bottom: 20px;",
+                         
+                       icon("shuffle", class = "fa-2x"),
+                       
+                       div(style = "display: flex; gap: 20px; justify-content: center; align-items: center; flex: 1;",
+                           icon("backward-step", class = "fa-2x"),
+                           icon("circle-play", class = "fa-4x"),
+                           icon("forward-step", class = "fa-2x")),
+                       
+                       icon("repeat", class = "fa-2x"))
+                     
+                     ), # END center column
               
               # right buffer column
               column(width = 1)
               
-            ), # END first fluidRow
+            ), # END second fluidRow
             
             # second fluidRow ----
             fluidRow(
