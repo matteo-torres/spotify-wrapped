@@ -1,137 +1,207 @@
 # dashboardHeader ----
 header <- dashboardHeader(
   
-  # title ----
-  title = span(img(src = "spotify-logo.png", height = 115)),
-  titleWidth = 300,
+  # title
+  title = div(style = "display: flex; justify-content: center; align-items: center; height: 100%;",
+              img(src = "spotify-logo.png", height = 130, width = 230)),
   
-  # navbar adjustments ----
+  # navbar adjustments
   tags$li(class = "dropdown",
-          tags$style(".main-header .logo {height: 115px;}"),
-          tags$style(".sidebar-toggle {font-size: 25px; padding-top: 10px !important;}"))
+          tags$style(".main-header .logo {height: 130px;}"),
+          tags$style(".sidebar-toggle {color: #FFFFFF; font-size: 30px; padding-top: 10px !important;}"))
   
 ) # END dashboardHeader
 
 # dashboardSidebar ----
 sidebar <- dashboardSidebar(
   
-  # sidebar adjustments ----
-  tags$style(".left-side, .main-sidebar {padding-top: 115px; font-size: 15px;}"),
-  width = 300,
+  # google fonts
+  tags$head(tags$link(rel = "stylesheet", 
+                      href="https://fonts.googleapis.com/css2?family=Bowlby+One+SC&display=swap"),
+            tags$link(rel = "stylesheet", 
+                      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap")),
   
-  # sidebarMenu ----
+  # sidebar adjustments
+  tags$style(".left-side, .main-sidebar {padding-top: 130px; font-size: 18px; font-family: Manrope;}"),
+  tags$head(tags$style(HTML(".skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {border-left: 3px solid #EAE8F5;}"))),
+  
+  # sidebarMenu
   sidebarMenu(
     
-    menuItem(text = "Home", tabName = "home", icon = icon("house")),
-    menuItem(text = "Monthly Streaming", tabName = "monthly", icon = icon("arrow-trend-up")),
-    menuItem(text = "Data", tabName = "data", icon = icon("headphones"))
+    menuItem(text = "Home", tabName = "home"),
+    menuItem(text = "Monthly Streaming", tabName = "monthly")
     
-  ) # END sidebarMenu
+  ), # END sidebarMenu
+  
+  # linked icons
+  div(style = "position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: space-between; padding: 0 50px; font-size: 50px;",
+      HTML('<a href="https://github.com/matteo-torres/spotify-wrapped" target="_blank" title="GitHub"><i class="fa-brands fa-github-alt"></i></a>'),
+      HTML('<a href="https://open.spotify.com/user/matteotorres27?si=536ec6db511d4b19" target="_blank" title="Spotify"><i class="fa-brands fa-spotify"></i></a>'))
   
 ) # END dashboardSidebar
 
 # dashboardBody ----
 body <- dashboardBody(
   
-  tags$style(".content-wrapper, .right-side {padding-top: 25px;}"),
-  
+  # fresh theme
   use_theme("dashboard-fresh-theme.css"),
   
-  tags$head(tags$style(HTML(".main-sidebar {font-size: 18px;}"))),
+  # body adjustments
+  tags$style(".content-wrapper, .right-side {padding-top: 50px; padding-bottom: 40px;"),
   
-  # tabItems ----
+  # tabItems
   tabItems(
     
     # home tabItem ----
     tabItem(tabName = "home",
             
-            # first fluidRow ----
+            # first fluidRow
             fluidRow(
               
-              # left buffer column ----
-              column(width = 1),
+              # left buffer column
+              column(width = 1), 
               
-              # box ----
-              box(width = 10,
-                  
-                  # fluidRow ----
-                  fluidRow(
-                    
-                    # left-hand column ----
-                    column(width = 9,
-                           
-                           img(src = "welcome.png",
-                               width = "25%"),
-                           
-                           includeMarkdown("text/welcome.md")
-                           
-                    ), # END left-han column
-                    
-                    # right-hand column ----
-                    column(width = 3,
-                           
-                           div(style = "text-align: center;",
-                               tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
-                                        class = "mx-auto d-block",
-                                        width = "100%"))
-                           
-                    ), # END right-hand column
-                    
-                  ), # END fluidRow
-                  
-              ), # END box
-              
-              # center buffer column ----
-              column(width = 1),
+              # welcome title
+              column(width = 11,
+                     
+                     # title
+                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                         "Welcome")
+                     
+              ), # END welcome title
               
             ), # END first fluidRow
             
-            # second fluidRow ----
+            # second fluidRow
             fluidRow(
               
-              # left buffer column ----
+              # left buffer column
               column(width = 1),
               
-              # column  ----
-              column(width = 10,
+              # welcome text
+              column(width = 6,
                      
-                     # box ----
-                     box(width = NULL,
-                         
-                         # fluidRow ----
-                         fluidRow(
-                           
-                           # left-hand column ----
-                           column(width = 6,
-                                  
-                                  tags$iframe(style="border-radius:12px", 
-                                              src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
-                                              width="100%", 
-                                              height="400", 
-                                              frameBorder="0", 
-                                              allowfullscreen="", 
-                                              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
-                                              loading="lazy")
-                                  
-                           ), # END left-hand column
-                           
-                           # right-hand column ----
-                           column(width = 6,
-                                  
-                                  slickROutput(outputId = "carousel_images_output", width = "100%")
-                                  
-                           ), # END right-hand column
-                           
-                         ), # END fluidRow
-                         
-                     ), # END box
+                     # welcome markdown
+                     div(style = "font-family: Manrope; font-size: 18px; padding-bottom: 10px;",
+                         includeMarkdown("text/home/welcome.md"))
                      
-              ), # END column
+              ), # END welcome text
               
-              # right buffer column ----
-              column(width = 1),
+              # gif column
+              column(width = 4,
+                     
+                     # spotify gif
+                     div(style = "text-align: center; padding-bottom: 10px;",
+                         tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
+                                  class = "mx-auto d-block",
+                                  width = "50%"))
+                     
+              ), # END gif column
+              
+              # right buffer column
+              column(width = 1)
               
             ), # END second fluidRow
+            
+            # third fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # line column
+              column(width = 10,
+                     
+                     # line
+                     tags$hr(style = "border-top: 3px solid; color: #EAE8F5; padding-top: 10px; padding-bottom: 10px;")
+                     
+              ), # END line column
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END third fluidRow
+            
+            # fourth fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # iframe text box
+              box(width = 5,
+                  style = "height: 500px;",
+                  
+                  # title
+                  div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                      HTML('Playlist <i class="fa-solid fa-music"></i>')),
+                  
+                  div(style = "font-family: Manrope; font-size: 18px;",
+                      includeMarkdown("text/home/playlist.md"))
+                  
+              ), # END iframe text box
+              
+              # iframe column
+              column(width = 5,
+                     
+                     # spotify preview
+                     tags$iframe(style="border-radius:12px", 
+                                 src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
+                                 width="100%", 
+                                 height="500px", 
+                                 frameBorder="0", 
+                                 allowfullscreen="", 
+                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
+                                 loading="lazy")
+                     
+              ), # END iframe column
+              
+              # right buffer column
+              column(width = 1),
+              
+            ), # END fourth fluidRow
+            
+            # fifth fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # slickR column
+              column(width = 5,
+                     
+                     # slickR carousel images
+                     slickROutput(outputId = "carousel_images_output", width = NULL)
+                     
+                     ), # END slickR column
+              
+              # slickR text box
+              box(width = 5,
+                  style = "height: 500px;",
+                  
+                  # container
+                  div(style = "font-size: 18px; font-family:  Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
+                      
+                      # title
+                      div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                          HTML('Hall of Fame <i class="fa-solid fa-compact-disc"></i>')),
+                      
+                      # intro
+                      div(style = "padding-bottom: 10px;",
+                          p("The Hall of Fame is made up of my favorite albums of all time.")),
+                      
+                      # markdown container
+                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 1px solid #ddd; border-radius: 8px;",
+                          includeMarkdown("text/home/albums.md"))
+                      
+                      ) # END container
+                  
+                  ), # END slickR text box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ) # END fifth fluidRow
             
     ), # END home tabItem
     
@@ -171,8 +241,8 @@ body <- dashboardBody(
                              inputId = "month_input",
                              label = NULL,
                              min = 1,
-                             max = 5,
-                             value = 5,
+                             max = 6,
+                             value = 6,
                              step = 1,
                              ticks = TRUE)
                            
@@ -343,14 +413,11 @@ body <- dashboardBody(
               
             ), # END third fluidRow
             
-    ), # END monthly tabItem
-    
-    # data tabItem ----
-    tabItem(tabName = "data") # END data tabItem
+    ) # END monthly tabItem
     
   ) # END tabItems
   
 ) # END dashboardBody
 
 # combine all into dashboardPage ----
-dashboardPage(header, sidebar, body)
+dashboardPage(header, sidebar, body, title = "Spotify Wrapped")

@@ -1,0 +1,3 @@
+Welcome to my Spotify Wrapped dashboard!
+
+This project aims to analyze my monthly Spotify streaming activity. On the following tab, you can find details about my top artists and songs for the month, the number of artists and songs streamed, the top song from my favorite artist, my daily listening activity throughout the month, my peak listening day, streaming activity during that peak day, and the time of day when my streaming was highest.

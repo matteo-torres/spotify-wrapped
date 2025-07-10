@@ -37,7 +37,7 @@ spotify_data <- clean_data(raw_data)
 ## Monthly stats
 ```{r}
 # Month
-i <- 5
+i <- 6
 ```
 
 ```{r}
@@ -150,7 +150,7 @@ spotify_data[[i]] %>%
             options = list(dom = "t"))
 ```
 
-```{r}
+```{r, message = FALSE}
 #| code-fold: true
 
 # Create DT for top 10 songs

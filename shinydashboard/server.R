@@ -180,7 +180,7 @@ server <- function(input, output) {
   # image path ----
   image_list <- reactive({
     
-    list.files("www/images", full.names = TRUE, pattern = "jpeg")
+    list.files("www/albums", full.names = TRUE, pattern = "jpeg")
     
   })
   
@@ -188,9 +188,8 @@ server <- function(input, output) {
   output$carousel_images_output <- renderSlickR({
     
     # slickR carousel ----
-    slickR(image_list(),  
-           height = 400,  
-           width = "100%",  
+    slickR(image_list(),
+           height = "500px",
            slideId = "Carousel") + 
       settings(slidesToShow = 1,
                slidesToScroll = 1,
