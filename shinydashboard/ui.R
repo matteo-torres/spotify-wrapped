@@ -210,37 +210,42 @@ body <- dashboardBody(
             
             # first fluidRow
             fluidRow(style = "padding-bottom: 20px;",
-              
-              # left buffer column
-              column(width = 1), 
-              
-              # title column
-              column(width = 1,
                      
-                     div(img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"))
+                     # left buffer column
+                     column(width = 1), 
                      
-              ), # END title column
-              
-              # title column
-              column(width = 8,
+                     # image column
+                     column(width = 1,
+                            
+                            # cover art
+                            div(img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"))
+                            
+                     ), # END image column
                      
-                     # title
-                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px; padding-left: 10px;",
-                         "Monthly Streaming"),
+                     # title column
+                     column(width = 8,
+                            
+                            # title
+                            div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px; padding-left: 10px;",
+                                "Monthly Streaming"),
+                            
+                            # subtitle
+                            div(style = "font-family: Manrope; font-size: 20px; padding-left: 10px;",
+                                "Choose A Month")
+                            
+                     ), # END title column
                      
-                     div(style = "font-family: Manrope; font-size: 20px; padding-left: 10px;",
-                         "Choose A Month")
+                     # icon column
+                     column(width = 1,
+                            
+                            # saved icon
+                            tags$i(class = "fas fa-circle-check fa-3x", style = "color: #74AC08; padding-top: 30px;")
+                            
+                     ), # END icon column
                      
+                     # right buffer column
+                     column(width = 1)
                      
-              ), # END title column
-              
-              column(width = 1,
-                     
-                     tags$i(class = "fas fa-circle-check fa-4x", style = "color: #74AC08; padding-top: 20px;")
-                     
-                     )
-        
-            
             ), # END first fluidRow
             
             # second fluidRow
@@ -278,29 +283,29 @@ body <- dashboardBody(
                      # button icons
                      div(style = "display: flex; justify-content: space-between; align-items: center; color: black; padding-bottom: 20px;",
                          
-                       icon("shuffle", class = "fa-2x"),
-                       
-                       div(style = "display: flex; gap: 20px; justify-content: center; align-items: center; flex: 1;",
-                           icon("backward-step", class = "fa-2x"),
-                           icon("circle-play", class = "fa-4x"),
-                           icon("forward-step", class = "fa-2x")),
-                       
-                       icon("repeat", class = "fa-2x"))
+                         icon("shuffle", class = "fa-2x"),
+                         
+                         div(style = "display: flex; gap: 20px; justify-content: center; align-items: center; flex: 1;",
+                             icon("backward-step", class = "fa-3x"),
+                             icon("circle-play", class = "fas fa-circle-play fa-5x"),
+                             icon("forward-step", class = "fa-3x")),
+                         
+                         icon("repeat", class = "fa-2x"))
                      
-                     ), # END center column
+              ), # END center column
               
               # right buffer column
               column(width = 1)
               
             ), # END second fluidRow
             
-            # second fluidRow ----
+            # third fluidRow
             fluidRow(
               
               # left buffer column
               column(width = 1),
               
-              # DT box ----
+              # DT box
               box(width = 10,
                   
                   # fluidRow
@@ -317,10 +322,11 @@ body <- dashboardBody(
                              
                              column(width = 10,
                                     
-                                    radioGroupButtons(inputId = "table_input", 
-                                                      choices = c("Top 10 Artists", "Top 10 Tracks"), 
-                                                      selected = "Top 10 Artists",
-                                                      size = "normal")
+                                    div(style = "font-family: Manrope;", 
+                                        radioGroupButtons(inputId = "table_input",
+                                                          choices = c("Top 10 Artists", "Top 10 Tracks"),
+                                                          selected = "Top 10 Artists",
+                                                          size = "normal"))
                                     
                                     ),
                              
@@ -336,8 +342,8 @@ body <- dashboardBody(
                              column(width = 1),
                              
                              column(width = 10,
-                               
-                               valueBoxOutput("artist_output",
+                                    
+                                    valueBoxOutput("artist_output",
                                               width = NULL)
                                
                              ),
