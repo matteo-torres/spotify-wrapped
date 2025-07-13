@@ -46,10 +46,8 @@ server <- function(input, output) {
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
       mutate(message = paste("Peak day for streams was", month, day, 
-                             "with a total of", total_streams, "streams!")) %>%
+                             "with a total of", total_streams, "streams.")) %>%
       pull(message)
-    
-    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold;'>", message, "</div>"))
     
   })
   
@@ -94,7 +92,14 @@ server <- function(input, output) {
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("ARTIST", "STREAMS"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
+        datatable(colnames = c("ARTIST", "STREAMS"), 
+                  class = "row-border",
+                  selection = "none",
+                  options = list(dom = "t", 
+                                 scrollY = 250, 
+                                 paging = FALSE,
+                                 ordering = FALSE,
+                                 columnDefs = list(list(className = "dt-left", targets = "_all"))))
     } else if (input$table_input == "Top 10 Tracks") {
       spotify_data_df() %>%
         group_by(track, artist) %>%
@@ -102,8 +107,15 @@ server <- function(input, output) {
         arrange(desc(total_streams)) %>%
         ungroup() %>%
         slice_head(n = 10) %>%
-        datatable(colnames = c("TRACK", "ARTIST", "STREAMS"), class = "hover", options = list(dom = "t", scrollY = 250, paging = FALSE))
-    } 
+        datatable(colnames = c("TRACK", "ARTIST", "STREAMS"),
+                  class = "row-border", 
+                  selection = "none",
+                  options = list(dom = "t", 
+                                 scrollY = 250, 
+                                 paging = FALSE,
+                                 ordering = FALSE,
+                                 columnDefs = list(list(className = "dt-left", targets = "_all"))))
+    }
     
   })
   
@@ -120,10 +132,8 @@ server <- function(input, output) {
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
-      mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
+      mutate(message = paste("The top song from", artist, "this month is", paste0('"', track, '"'), "with a total of", total_streams, "streams.")) %>%
       pull(message)
-    
-    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold'>", message, "</div>"))
     
   })
   
@@ -147,10 +157,6 @@ server <- function(input, output) {
       mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
       pull(message)
     
-    HTML(paste0("<div style='text-align:center; font-size:14px; font-family:Trebuchet MS; font-weight:bold'>", message, "</div>"))
-    
-      
-    
   })
   
   # build artist valueBox ----
@@ -160,7 +166,7 @@ server <- function(input, output) {
                distinct(artist) %>%
                summarize(total_artists = n()),
              subtitle = "Artists",
-             icon = icon("circle-user", style = "color: #6ca200;"),
+             icon = tags$i(class = "fas fa-circle-user", style = "color: #8ACE00;"),
              color = "black")
     
   })
@@ -172,7 +178,7 @@ server <- function(input, output) {
                distinct(track) %>%
                summarize(total_songs= n()),
              subtitle = "Tracks",
-             icon = icon("circle-play", style = "color: #6ca200;"),
+             icon = tags$i(class = "fas fa-circle-play", style = "color: #8ACE00;"),
              color = "black")
     
   })

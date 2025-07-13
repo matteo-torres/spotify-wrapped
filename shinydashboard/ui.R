@@ -113,7 +113,7 @@ body <- dashboardBody(
               column(width = 10,
                      
                      # line
-                     tags$hr(style = "border-top: 3px solid; color: #EAE8F5; padding-top: 10px; padding-bottom: 10px;")
+                     tags$hr(style = "border-top: 4px solid; color: #EAE8F5; padding-top: 10px; padding-bottom: 10px;")
                      
               ), # END line column
               
@@ -130,7 +130,7 @@ body <- dashboardBody(
               
               # iframe text box
               box(width = 5,
-                  style = "height: 500px;",
+                  style = "height: 500px; border: 4px solid #EAE8F5;",
                   
                   # title
                   div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
@@ -173,11 +173,11 @@ body <- dashboardBody(
                      # slickR carousel images
                      slickROutput(outputId = "carousel_images_output", width = NULL)
                      
-                     ), # END slickR column
+              ), # END slickR column
               
               # slickR text box
               box(width = 5,
-                  style = "height: 500px;",
+                  style = "height: 500px; border: 4px solid #EAE8F5;",
                   
                   # container
                   div(style = "font-size: 18px; font-family: Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
@@ -191,12 +191,12 @@ body <- dashboardBody(
                           p("The Hall of Fame is made up of my favorite albums of all time.")),
                       
                       # markdown container
-                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 1px solid #ddd; border-radius: 8px;",
+                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 3px solid #EAE8F5; border-radius: 8px;",
                           includeMarkdown("text/home/albums.md"))
                       
-                      ) # END container
+                  ) # END container
                   
-                  ), # END slickR text box
+              ), # END slickR text box
               
               # right buffer column
               column(width = 1)
@@ -281,7 +281,7 @@ body <- dashboardBody(
                                  width = "100%"),
                      
                      # button icons
-                     div(style = "display: flex; justify-content: space-between; align-items: center; color: black; padding-bottom: 20px;",
+                     div(style = "display: flex; justify-content: space-between; align-items: center; color: black; padding-bottom: 30px;",
                          
                          icon("shuffle", class = "fa-2x"),
                          
@@ -307,6 +307,7 @@ body <- dashboardBody(
               
               # DT box
               box(width = 10,
+                  style = "border: 4px solid #EAE8F5;",
                   
                   # fluidRow
                   fluidRow(
@@ -320,15 +321,17 @@ body <- dashboardBody(
                              # left buffer column
                              column(width = 1),
                              
+                             # radioGroupButtons column
                              column(width = 10,
+                                    style = "display: flex; justify-content: center; padding-top: 10px; font-family: Manrope;",
                                     
-                                    div(style = "font-family: Manrope;", 
-                                        radioGroupButtons(inputId = "table_input",
-                                                          choices = c("Top 10 Artists", "Top 10 Tracks"),
-                                                          selected = "Top 10 Artists",
-                                                          size = "normal"))
+                                    # radioGroupButtons
+                                    radioGroupButtons(inputId = "table_input",
+                                                      choices = c("Top 10 Artists", "Top 10 Tracks"),
+                                                      selected = "Top 10 Artists",
+                                                      size = "normal")
                                     
-                                    ),
+                             ), # END radioGroupButtons column
                              
                              # right buffer column
                              column(width = 1)
@@ -342,10 +345,11 @@ body <- dashboardBody(
                              column(width = 1),
                              
                              column(width = 10,
+                                    style = "padding-top: 10px; font-family: Manrope;",
                                     
                                     valueBoxOutput("artist_output",
-                                              width = NULL)
-                               
+                                                   width = 12)
+                                    
                              ),
                              
                              column(width = 1)
@@ -360,9 +364,10 @@ body <- dashboardBody(
                              column(width = 1),
                              
                              column(width = 10,
+                                    style = "padding-top: 10px; font-family: Manrope;",
                                     
                                     valueBoxOutput("track_output",
-                                                   width = NULL)
+                                                   width = 12)
                                     
                              ),
                              
@@ -370,27 +375,53 @@ body <- dashboardBody(
                              
                            ) # END third fluidRow
                            
-                           ), # END left-hand column
+                    ), # END left-hand column
                     
                     # right-hand column
                     column(width = 8,
                            
-                           tags$style("table.dataTable tbody tr:hover {background-color: #8ACE00 !important;}"),
-                           tags$style("table.dataTable tbody tr.selected td, table.dataTable tbody td.selected {box-shadow: inset 0 0 0 9999px black !important;}"),
-                           tags$style("table.dataTable tbody tr:active td {color: black !important;}"),
-                           tags$style(":root {--dt-row-selected: transparent !important;}"),
-      
+                           # first fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                                    
+                                    div(style = "font-family: Manrope; padding-top: 10px;", 
+                                        DTOutput(outputId = "table_output") %>%
+                                          withSpinner(color = "black", type = 1, size = 1))
+                                    
+                             ),
+                             
+                             # right buffer column
+                             column(width = 1)
+                             
+                           ), # END first fluidRow
                            
-                           DTOutput(outputId = "table_output") %>%
-                             withSpinner(color = "black", type = 1, size = 1),
+                           # second fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                                    
+                                    div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
+                                        uiOutput("song_output"))
+                                    
+                             ),
+                             
+                             # right buffer column
+                             column(width = 1)
+                             
+                           ), # END second fluidRow
                            
-                           uiOutput("song_output")
-                           
-                           ) # END right-hand column
+                    ) # END right-hand column
                     
                   ) # END fluidRow
                   
-                  ), # END DT box
+              ), # END DT box
               
               # right buffer column
               column(width = 1)
@@ -405,6 +436,7 @@ body <- dashboardBody(
               
               # plots box ----
               box(width = 10,
+                  style = "border: 4px solid #EAE8F5;",
                   
                   # fluidRow
                   fluidRow(
@@ -415,7 +447,8 @@ body <- dashboardBody(
                            plotOutput(outputId = "month_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
                            
-                           uiOutput("peak_output")
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
+                               uiOutput("peak_output"))
                            
                     ), # END left-hand column
                     
@@ -425,7 +458,8 @@ body <- dashboardBody(
                            plotOutput(outputId = "day_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
                            
-                           uiOutput(outputId = "time_output")
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
+                               uiOutput(outputId = "time_output"))
                            
                     ) # END right-hand column
                     
