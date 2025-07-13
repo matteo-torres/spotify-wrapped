@@ -447,7 +447,7 @@ body <- dashboardBody(
                            plotOutput(outputId = "month_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
                            
-                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 10px; padding-bottom: 10px;",
                                uiOutput("peak_output"))
                            
                     ), # END left-hand column
@@ -458,7 +458,7 @@ body <- dashboardBody(
                            plotOutput(outputId = "day_output") %>%
                              withSpinner(color = "black", type = 1, size = 1),
                            
-                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 10px; padding-bottom: 10px;",
                                uiOutput(outputId = "time_output"))
                            
                     ) # END right-hand column

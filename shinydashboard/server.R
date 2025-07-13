@@ -31,7 +31,7 @@ server <- function(input, output) {
             axis.title.y = element_text(size = 12, margin = margin(r = 10)),
             axis.text = element_text(size = 10),
             axis.ticks = element_line(color = "#303030"),
-            plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+            plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l = 0.5, "cm"),
             panel.border = element_rect(linewidth = 2, color = "#303030"),
             panel.grid = element_line(color = "#303030"))
     
@@ -75,7 +75,7 @@ server <- function(input, output) {
             axis.title.y = element_text(size = 12, margin = margin(r = 10)),
             axis.text = element_text(size = 10),
             axis.ticks = element_line(color = "#303030"),
-            plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+            plot.margin = margin(t = 0.5, r = 0.5, b = 0.5, l = 0.5, "cm"),
             panel.border = element_rect(linewidth = 2, color = "#303030"),
             panel.grid = element_line(color = "#303030"))
     
