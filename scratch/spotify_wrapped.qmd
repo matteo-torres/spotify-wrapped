@@ -37,7 +37,7 @@ spotify_data <- clean_data(raw_data)
 ## Monthly stats
 ```{r}
 # Month
-i <- 6
+i <- 7
 ```
 
 ```{r}

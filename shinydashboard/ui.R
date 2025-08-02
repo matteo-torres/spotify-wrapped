@@ -47,30 +47,13 @@ body <- dashboardBody(
   use_theme("dashboard-fresh-theme.css"),
   
   # body adjustments
-  tags$style(".content-wrapper, .right-side {padding-top: 50px; padding-bottom: 40px;"),
+  tags$style(".content-wrapper, .right-side {padding-top: 70px; padding-bottom: 40px;"),
   
   # tabItems
   tabItems(
     
     # home tabItem ----
     tabItem(tabName = "home",
-            
-            # first fluidRow
-            fluidRow(
-              
-              # left buffer column
-              column(width = 1), 
-              
-              # title column
-              column(width = 10,
-                     
-                     # title
-                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
-                         "Welcome")
-                     
-              ), # END title column
-              
-            ), # END first fluidRow
             
             # second fluidRow
             fluidRow(
@@ -80,6 +63,10 @@ body <- dashboardBody(
               
               # welcome text
               column(width = 6,
+                     
+                     # title
+                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                         "Welcome"),
                      
                      # welcome markdown
                      div(style = "font-family: Manrope; font-size: 18px; padding-bottom: 10px;",
@@ -91,10 +78,10 @@ body <- dashboardBody(
               column(width = 4,
                      
                      # spotify gif
-                     div(style = "text-align: center; padding-bottom: 10px;",
+                     div(style = "text-align: center; padding-top: 30px;",
                          tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
                                   class = "mx-auto d-block",
-                                  width = "50%"))
+                                  width = "60%"))
                      
               ), # END gif column
               
@@ -133,7 +120,7 @@ body <- dashboardBody(
                   style = "height: 500px; border: 4px solid #EAE8F5;",
                   
                   # title
-                  div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                  div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
                       HTML('Playlist <i class="fa-solid fa-music"></i>')),
                   
                   div(style = "font-family: Manrope; font-size: 18px;",
@@ -183,15 +170,18 @@ body <- dashboardBody(
                   div(style = "font-size: 18px; font-family: Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
                       
                       # title
-                      div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
+                      div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
                           HTML('Hall of Fame <i class="fa-solid fa-compact-disc"></i>')),
                       
-                      # intro
-                      div(style = "padding-bottom: 10px;",
-                          p("The Hall of Fame is made up of my favorite albums of all time.")),
+                      div(style = "text-align: center; padding-bottom: 10px; color: #74AC08; -webkit-text-stroke: 1px black;",
+                          icon("star", class = "fa-solid fa-star fa-1x"),
+                          icon("star", class = "fa-solid fa-star fa-1x"),
+                          icon("star", class = "fa-solid fa-star fa-1x"),
+                          icon("star", class = "fa-solid fa-star fa-1x"),
+                          icon("star", class = "fa-solid fa-star fa-1x")),
                       
                       # markdown container
-                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 3px solid #EAE8F5; border-radius: 8px;",
+                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 3px solid #EAE8F5; border-radius: 8px; font-family: Manrope;",
                           includeMarkdown("text/home/albums.md"))
                       
                   ) # END container
@@ -274,8 +264,8 @@ body <- dashboardBody(
                      sliderInput(inputId = "month_input",
                                  label = NULL,
                                  min = 1,
-                                 max = 6,
-                                 value = 6,
+                                 max = 7,
+                                 value = 7,
                                  step = 1,
                                  ticks = TRUE,
                                  width = "100%"),
