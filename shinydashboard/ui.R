@@ -337,7 +337,7 @@ body <- dashboardBody(
                              column(width = 10,
                                     style = "padding-top: 10px; font-family: Manrope;",
                                     
-                                    valueBoxOutput("artist_output",
+                                    valueBoxOutput("streams_output",
                                                    width = 12)
                                     
                              ),
@@ -356,6 +356,25 @@ body <- dashboardBody(
                              column(width = 10,
                                     style = "padding-top: 10px; font-family: Manrope;",
                                     
+                                    valueBoxOutput("artist_output",
+                                                   width = 12)
+                                    
+                             ),
+                             
+                             column(width = 1)
+                             
+                             
+                           ), # END third fluidRow
+                           
+                           # fourth fluidRow
+                           fluidRow(
+                             
+                             # left buffer column
+                             column(width = 1),
+                             
+                             column(width = 10,
+                                    style = "padding-top: 10px; font-family: Manrope;",
+                                    
                                     valueBoxOutput("track_output",
                                                    width = 12)
                                     
@@ -363,7 +382,7 @@ body <- dashboardBody(
                              
                              column(width = 1)
                              
-                           ) # END third fluidRow
+                           ) # END fourth fluidRow
                            
                     ), # END left-hand column
                     
@@ -378,7 +397,7 @@ body <- dashboardBody(
                              
                              column(width = 10,
                                     
-                                    div(style = "font-family: Manrope; padding-top: 10px;", 
+                                    div(style = "font-family: Manrope; padding-top: 10px; padding-bottom: 25px;", 
                                         DTOutput(outputId = "table_output") %>%
                                           withSpinner(color = "black", type = 1, size = 1))
                                     
@@ -394,13 +413,16 @@ body <- dashboardBody(
                              
                              # left buffer column
                              column(width = 1),
-                             
-                             column(width = 10,
-                                    
-                                    div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 10px;",
-                                        uiOutput("song_output"))
-                                    
-                             ),
+                              
+                             #      
+                             box(width = 10,
+                                 style = "border: 1px solid #EAE8F5;; text-align: center;",
+                                 
+                                 div("Top Track by Top Artist", style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 20px; color: #6ca200; margin-bottom: 10px;"),
+                                 
+                                 div(uiOutput("song_output"), style = "font-family: Manrope, sans-serif; font-size: 14px;")
+                                 
+                             ), # END box
                              
                              # right buffer column
                              column(width = 1)
@@ -418,13 +440,13 @@ body <- dashboardBody(
               
             ), # END second fluidRow
             
-            # third fluidRow ----
+            # third fluidRow
             fluidRow(
               
               # left buffer column
               column(width = 1),
               
-              # plots box ----
+              # box
               box(width = 10,
                   style = "border: 4px solid #EAE8F5;",
                   
@@ -435,10 +457,52 @@ body <- dashboardBody(
                     column(width = 6,
                            
                            plotOutput(outputId = "month_output") %>%
-                             withSpinner(color = "black", type = 1, size = 1),
+                             withSpinner(color = "black", type = 1, size = 1)
+                           
+                    ), # END left-hand column
+                    
+                    # right-hand column
+                    column(width = 6,
+                           
+                           # peak
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;",
+                               icon("arrow-trend-up", style = "color: #6ca200;", class = "fa-2x"),
+                               uiOutput("peak_output")),
+                           
+                           # low
+                           div(style = "font-family: Manrope; text-align:center; padding-top: 20px; padding-bottom: 20px; display: flex; justify-content: center; align-items: center; gap: 10px;",
+                               icon("arrow-trend-down", style = "color: #6ca200;", class = "fa-2x"),
+                               uiOutput("low_output"))
+                           
+                    ) # END right-hand column
+                    
+                  ) # END fluidRow
+                  
+              ), # END box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END third fluidRow
+            
+            # fourth fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # box
+              box(width = 10,
+                  style = "border: 4px solid #EAE8F5;",
+                  
+                  # fluidRow
+                  fluidRow(
+                    
+                    # left-hand column
+                    column(width = 6,
                            
                            div(style = "font-family: Manrope; text-align:center; padding-top: 10px; padding-bottom: 10px;",
-                               uiOutput("peak_output"))
+                               uiOutput(outputId = "time_output"))
                            
                     ), # END left-hand column
                     
@@ -446,21 +510,18 @@ body <- dashboardBody(
                     column(width = 6,
                            
                            plotOutput(outputId = "day_output") %>%
-                             withSpinner(color = "black", type = 1, size = 1),
-                           
-                           div(style = "font-family: Manrope; text-align:center; padding-top: 10px; padding-bottom: 10px;",
-                               uiOutput(outputId = "time_output"))
+                             withSpinner(color = "black", type = 1, size = 1)
                            
                     ) # END right-hand column
                     
                   ) # END fluidRow
                   
-              ), # END plots box
+              ), # END box
               
               # right buffer column
               column(width = 1)
               
-            ), # END third fluidRow
+            ) # END fourth fluidRow
             
     ) # END monthly tabItem
     
