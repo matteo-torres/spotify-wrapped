@@ -37,7 +37,7 @@ spotify_data <- clean_data(raw_data)
 ## Monthly stats
 ```{r}
 # Month
-i <- 8
+i <- 10
 ```
 
 ```{r}
@@ -78,8 +78,22 @@ spotify_data[[i]] %>%
   summarize(total_streams = n(), .groups = "drop") %>%
   arrange(desc(total_streams)) %>%
   slice_head(n = 1) %>%
-  mutate(message = paste("Highest streaming day was", month, day, 
-                         "with a total of", total_streams, "streams!")) %>%
+  mutate(message = paste0("The highest streaming day was ", month, " ", day, 
+                         ", with ", total_streams, " streams.")) %>%
+  pull(message) %>%
+  print()
+```
+
+```{r}
+#| code-fold: true
+
+# percent of streams for highest streaming day
+spotify_data[[i]] %>%
+  group_by(month, day) %>%
+  summarize(total_streams = n(), .groups = "drop") %>%
+  arrange(desc(total_streams)) %>%
+  summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
+  mutate(message = paste(month, day, "accounted for", signif(pct, digits = 3), "percent of the month's total streams.")) %>%
   pull(message) %>%
   print()
 ```
@@ -93,8 +107,21 @@ spotify_data[[i]] %>%
   summarize(total_streams = n(), .groups = "drop") %>%
   arrange((total_streams)) %>%
   slice_head(n = 1) %>%
-  mutate(message = paste("Lowest streaming day was", month, day, 
-                         "with a total of", total_streams, "stream(s)!")) %>%
+  mutate(message = paste0("The lowest streaming day was ", month, " ", day, 
+                         ", with just ", total_streams, " stream(s).")) %>%
+  pull(message) %>%
+  print()
+```
+
+```{r}
+#| code-fold: true
+
+# Average streams per day
+spotify_data[[i]] %>%
+  group_by(day) %>%
+  summarize(total_streams = n(), .groups = "drop") %>%
+  summarize(avg_daily_streams = mean(total_streams)) %>%
+  mutate(message = paste("On average, there were about", signif(avg_daily_streams, digits = 2), "streams per day.")) %>%
   pull(message) %>%
   print()
 ```

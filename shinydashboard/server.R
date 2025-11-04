@@ -21,13 +21,9 @@ server <- function(input, output) {
       scale_x_continuous(expand = c(0, 0)) +
       scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
       labs(x = "Day",
-           y = "Total Streams",
-           title = "Monthly Streaming Habits",
-           subtitle = "Tracking daily listening activity") +
+           y = "Total Streams") +
       theme_bw() +
-      theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold", color = "#6ca200"),
-            plot.subtitle = element_text(size = 14, hjust = 0.5, face = "italic"),
-            axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+      theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
             axis.title.y = element_text(size = 14, margin = margin(r = 10)),
             axis.text = element_text(size = 12),
             axis.text.x = element_text(vjust = -0.5),
@@ -46,14 +42,28 @@ server <- function(input, output) {
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
-      mutate(message = paste("Highest streaming day was", month, day, 
-                             "with a total of", total_streams, "streams!")) %>%
+      mutate(message = paste0("The highest streaming day was ", month, " ", day, 
+                              ", with ", total_streams, " streams.")) %>%
       pull(message) %>%
       print()
     
   })
   
-  # peak day message ----
+  # percent streams day message ----
+  output$pct_output <- renderUI({
+    
+    message <- spotify_data_df() %>%
+      group_by(month, day) %>%
+      summarize(total_streams = n(), .groups = "drop") %>%
+      arrange(desc(total_streams)) %>%
+      summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
+      mutate(message = paste0(month, " ", day, " accounted for ", signif(pct, digits = 3), "% of the month's total streams.")) %>%
+      pull(message) %>%
+      print()
+    
+  })
+  
+  # low day message ----
   output$low_output <- renderUI({
     
     message <- spotify_data_df() %>%
@@ -61,9 +71,23 @@ server <- function(input, output) {
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange((total_streams)) %>%
       slice_head(n = 1) %>%
-      mutate(message = paste("Lowest streaming day was", month, day, 
-                             "with a total of", total_streams, "stream(s)!")) %>%
-      pull(message)
+      mutate(message = paste0("The lowest streaming day was ", month, " ", day, 
+                              ", with ", total_streams, " stream(s).")) %>%
+      pull(message) %>%
+      print()
+    
+  })
+  
+  # average daily streams message ----
+  output$avg_output <- renderUI({
+    
+    message <- spotify_data_df() %>%
+      group_by(day) %>%
+      summarize(total_streams = n(), .groups = "drop") %>%
+      summarize(avg_daily_streams = mean(total_streams)) %>%
+      mutate(message = paste("On average, there were about", signif(avg_daily_streams, digits = 2), "streams per day.")) %>%
+      pull(message) %>%
+      print()
     
   })
   
@@ -82,13 +106,9 @@ server <- function(input, output) {
                    limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
       scale_y_continuous(expand = c(0, 0)) +
       labs(x = "Time",
-           y = "Total Streams",
-           title = "Streaming Activity During Peak Day",
-           subtitle = "Analyzing the distribution of activity throughout the day") +
+           y = "Total Streams") +
       theme_bw() +
-      theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold", color = "#6ca200"),
-            plot.subtitle = element_text(size = 14, hjust = 0.5, face = "italic"),
-            axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+      theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
             axis.title.y = element_text(size = 14, margin = margin(r = 10)),
             axis.text = element_text(size = 12),
             axis.text.x = element_text(vjust = -0.5),
@@ -155,25 +175,41 @@ server <- function(input, output) {
     
   })
   
-  # identify activity time of day during peak day
+  # part of day for peak day
   output$time_output <- renderUI({
     
-    message <- spotify_data_df() %>%
+    # determine peak part of day
+    peak_time <- spotify_data_df() %>%
       group_by(day) %>%
       mutate(total_streams = n()) %>%
       ungroup() %>%
       filter(total_streams == max(total_streams)) %>%
       mutate(hour = hour(time),
-             time_of_day = case_when(hour >= 6 & hour < 12 ~ "morning",
-                                     hour >= 12 & hour < 18 ~ "afternoon",
-                                     hour >= 18 & hour < 22 ~ "evening",
-                                     hour >= 22 | hour < 6 ~ "night")) %>% 
+             time_of_day = case_when(
+               hour >= 6 & hour < 12 ~ "morning",
+               hour >= 12 & hour < 18 ~ "afternoon",
+               hour >= 18 & hour < 22 ~ "evening",
+               hour >= 22 | hour < 6 ~ "night"
+             )) %>% 
       group_by(time_of_day) %>%
       summarize(total_streams = n()) %>%
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
-      mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
-      pull(message)
+      pull(time_of_day)
+    
+    # message
+    message_text <- paste0("On peak day, you mostly listened to music during the ", peak_time, ".")
+    
+    # select image
+    img_src <- switch(peak_time,
+                      "morning"   = "pod/morning.jpg",
+                      "afternoon" = "pod/afternoon.jpg",
+                      "evening"   = "pod/evening.jpg",
+                      "night"     = "pod/night.jpg")
+    
+    # image and text
+    tagList(tags$img(src = img_src, height = "350px"),
+            div(style = "padding-top: 20px;", message_text))
     
   })
   

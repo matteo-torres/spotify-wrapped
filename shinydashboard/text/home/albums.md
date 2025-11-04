@@ -4,6 +4,12 @@
 
 <br>
 
+**Blackout** (2007)
+
+*Blackout* is the fifth studio album by Britney Spears.
+
+<br>
+
 **Brat** (2024)
 
 *Brat* is the sixth studio album by Charli xcx.
@@ -14,6 +20,12 @@
 
 *Desire, I Want To Turn Into You* is the second studio album by Caroline Polacheck.
  
+<br>
+
+**EQ** (2025)
+
+*EQ* is the debut EP by EQ, Estratosfera, Qiri.
+
 <br>
 
 **Hot** (2025)
