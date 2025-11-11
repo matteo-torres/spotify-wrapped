@@ -1,3 +1,5 @@
+
+
 **Addison** (2025)
 
 *Addison* is the self-titled debut album by Addison Rae. It is proclaimed to be the first and last release from the artist under the full alias "Addison Rae," as the young starlet plans to rebrand and continue her career as "Addison."  This transition is highly reflective and suitable for the album's purpose of leaving behind the name that is tied to the fabricated image assigned during her rise to fame. In this album, Addison opens up and shows a more authentic side to her experiences and struggles while navigating the rises and falls of fame. It explores relatable themes such as seeking escapism, experiencing young love, and simply being a young woman in her twenties. However, it also delves into more direct and personal themes, such as fame and fortune, materialism, her parents' divorce, and losing her sense of self. It evokes feelings of freedom and liberation, overthinking, insecurity, uncertainty, and acceptance. Addison is open to experimenting with different sounds and genres but stays true to creating an experience and vibe. While the longevity of Addison's career is unpredictable, she seems prepared for the challenge as she lives by the mantra, "Life is no fun through clear waters."
@@ -43,6 +45,12 @@
 **Melodrama** (2017)
 
 *Melodrama* is the second studio album by Lorde.
+
+<br>
+
+**Oil of Every Pearl's Un-Insides** (2018)
+
+*Oil of Every Pearl's Un-Insides* is the debut studio album by SOPHIE.
 
 <br>
 
