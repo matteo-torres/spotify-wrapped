@@ -7,7 +7,7 @@ header <- dashboardHeader(
   
   # navbar adjustments
   tags$li(class = "dropdown",
-          tags$style(".main-header .logo {height: 130px;}"),
+          tags$style(".main-header .logo {height: 140px;}"),
           tags$style(".sidebar-toggle {color: #FFFFFF; font-size: 30px; padding-top: 10px !important;}"))
   
 ) # END dashboardHeader
@@ -22,8 +22,10 @@ sidebar <- dashboardSidebar(
                       href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap")),
   
   # sidebar adjustments
-  tags$style(".left-side, .main-sidebar {padding-top: 130px; font-size: 18px; font-family: Manrope;}"),
+  tags$style(HTML(".left-side, .main-sidebar {padding-top: 140px; font-size: 18px; font-family: 'Manrope';}
+                  @media (max-width: 768px) {.left-side, .main-sidebar {padding-top: 207px; font-size: 16px;}}")),
   tags$head(tags$style(HTML(".skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {border-left: 3px solid #EAE8F5;}"))),
+  
   
   # sidebarMenu
   sidebarMenu(
@@ -34,7 +36,7 @@ sidebar <- dashboardSidebar(
   ), # END sidebarMenu
   
   # linked icons
-  div(style = "position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: space-between; padding: 0 50px; font-size: 50px;",
+  div(style = "position: absolute; bottom: 30px; width: 100%; display: flex; justify-content: space-between; padding: 0 50px; font-size: 40px;",
       HTML('<a href="https://github.com/matteo-torres/spotify-wrapped" target="_blank" title="GitHub"><i class="fa-brands fa-github-alt"></i></a>'),
       HTML('<a href="https://open.spotify.com/user/matteotorres27?si=536ec6db511d4b19" target="_blank" title="Spotify"><i class="fa-brands fa-spotify"></i></a>'))
   
@@ -47,7 +49,11 @@ body <- dashboardBody(
   use_theme("dashboard-fresh-theme.css"),
   
   # body adjustments
-  tags$style(".content-wrapper, .right-side {padding-top: 70px; padding-bottom: 40px;"),
+  tags$head(tags$style(HTML(".content-wrapper, .right-side {padding-top: 100px; padding-bottom: 30px;}
+  @media (min-width: 768px) {.content-wrapper, .right-side {padding-top: 70px;}}"))),
+  
+  # read more
+  tags$script(HTML("$(document).on('click', '#read_more_welcome', function() {$('#more_text_welcome').toggle();});")),
   
   # tabItems
   tabItems(
@@ -55,143 +61,104 @@ body <- dashboardBody(
     # home tabItem ----
     tabItem(tabName = "home",
             
+            # first fluidRow
+            fluidRow(style = "padding-bottom: 25px; padding-top: 20px;",
+              
+              # left buffer column
+              column(width = 1),
+              
+              # column
+              column(width = 10,
+                     
+                     # welcome text box
+                     box(width = 6,
+                         style = "height: 500px; border: 4px solid #EAE8F5; overflow: hidden;",
+                         
+                         # container
+                         div(style = "height: 100%; display: flex; flex-direction: column; padding: 10px;",
+                             
+                             # title
+                             div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; text-align: center;",
+                                 "Welcome"),
+                             
+                             # intro
+                             div(style = "font-family: Manrope; font-size: 18px;",
+                                 "Welcome to my Spotify Wrapped 2025 Shiny dashboard! This project aims to analyze my monthly streaming activity."),
+                             
+                             # read more
+                             actionLink("read_more_welcome", "Read More", style = "color: #74AC08; font-weight: bold; font-size: 18px; font-family: Manrope; padding-top: 10px; padding-bottom: 10px;"),
+                             
+                             # markdown container
+                             div(id = "more_text_welcome",
+                                 style = "display: none; overflow-y: auto; flex-grow: 1; font-size: 18px; font-family: Manrope; ",
+                                 includeMarkdown("text/home/welcome.md"))
+                             
+                         ) # END container
+                         
+                     ), # END welcome text box
+                     
+                     # spotify playlist
+                     column(width = 6,
+                            
+                            # spotify preview
+                            tags$iframe(style="border-radius:12px", 
+                                        src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
+                                        width="100%", 
+                                        height="500px", 
+                                        frameBorder="0", 
+                                        allowfullscreen="", 
+                                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
+                                        loading="lazy")
+                            
+                     ), # END spotify playlist
+                     
+              ), # END column
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END first fluidRow
+            
             # second fluidRow
             fluidRow(
               
               # left buffer column
               column(width = 1),
               
-              # welcome text
-              column(width = 6,
-                     
-                     # title
-                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
-                         "Welcome"),
-                     
-                     # welcome markdown
-                     div(style = "font-family: Manrope; font-size: 18px; padding-bottom: 10px;",
-                         includeMarkdown("text/home/welcome.md"))
-                     
-              ), # END welcome text
-              
-              # gif column
-              column(width = 4,
-                     
-                     # spotify gif
-                     div(style = "text-align: center; padding-top: 30px;",
-                         tags$img(src = "https://media4.giphy.com/media/j25atM0JZYLeEvyEc7/giphy.gif",
-                                  class = "mx-auto d-block",
-                                  width = "60%"))
-                     
-              ), # END gif column
-              
-              # right buffer column
-              column(width = 1)
-              
-            ), # END second fluidRow
-            
-            # third fluidRow
-            fluidRow(
-              
-              # left buffer column
-              column(width = 1),
-              
-              # line column
+              # column
               column(width = 10,
                      
-                     # line
-                     tags$hr(style = "border-top: 4px solid; color: #EAE8F5; padding-top: 10px; padding-bottom: 10px;")
+                     # albums box
+                     box(width = 12,
+                         style = "height: 500px; border: 4px solid #EAE8F5;",
+                         
+                         # title
+                         div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px;",
+                             "Hall of Fame"),
+                         
+                         # text
+                         div(style = "text-align: center; font-family: Manrope; font-size: 18px; padding-bottom: 10px;",
+                             "Click on an album to read my review!"),
+                         
+                         # stars
+                         div(style = "text-align: center; padding-bottom: 25px; color: #74AC08; -webkit-text-stroke: 1px black;",
+                             icon("star", class = "fa-solid fa-star fa-1x"),
+                             icon("star", class = "fa-solid fa-star fa-1x"),
+                             icon("star", class = "fa-solid fa-star fa-1x"),
+                             icon("star", class = "fa-solid fa-star fa-1x"),
+                             icon("star", class = "fa-solid fa-star fa-1x")),
+                         
+                         # slickR carousel images
+                         slickROutput(outputId = "carousel_images_output", width = NULL)
+                         
+                         ), # END iframe text box
                      
-              ), # END line column
-              
-              # right buffer column
-              column(width = 1)
-              
-            ), # END third fluidRow
-            
-            # fourth fluidRow
-            fluidRow(
-              
-              # left buffer column
-              column(width = 1),
-              
-              # iframe text box
-              box(width = 5,
-                  style = "height: 500px; border: 4px solid #EAE8F5;",
-                  
-                  # title
-                  div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
-                      HTML('Playlist <i class="fa-solid fa-music"></i>')),
-                  
-                  div(style = "font-family: Manrope; font-size: 18px;",
-                      includeMarkdown("text/home/playlist.md"))
-                  
-              ), # END iframe text box
-              
-              # iframe column
-              column(width = 5,
-                     
-                     # spotify preview
-                     tags$iframe(style="border-radius:12px", 
-                                 src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
-                                 width="100%", 
-                                 height="500px", 
-                                 frameBorder="0", 
-                                 allowfullscreen="", 
-                                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
-                                 loading="lazy")
-                     
-              ), # END iframe column
+                     ), # END column
               
               # right buffer column
               column(width = 1),
               
-            ), # END fourth fluidRow
-            
-            # fifth fluidRow
-            fluidRow(
-              
-              # left buffer column
-              column(width = 1),
-              
-              # slickR column
-              column(width = 5,
-                     
-                     # slickR carousel images
-                     slickROutput(outputId = "carousel_images_output", width = NULL)
-                     
-              ), # END slickR column
-              
-              # slickR text box
-              box(width = 5,
-                  style = "height: 500px; border: 4px solid #EAE8F5;",
-                  
-                  # container
-                  div(style = "font-size: 18px; font-family: Bowlby+One+SC; height: 100%; display: flex; flex-direction: column;",
-                      
-                      # title
-                      div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px;",
-                          HTML('Hall of Fame <i class="fa-solid fa-compact-disc"></i>')),
-                      
-                      div(style = "text-align: center; padding-bottom: 10px; color: #74AC08; -webkit-text-stroke: 1px black;",
-                          icon("star", class = "fa-solid fa-star fa-1x"),
-                          icon("star", class = "fa-solid fa-star fa-1x"),
-                          icon("star", class = "fa-solid fa-star fa-1x"),
-                          icon("star", class = "fa-solid fa-star fa-1x"),
-                          icon("star", class = "fa-solid fa-star fa-1x")),
-                      
-                      # markdown container
-                      div(style = "overflow-y: auto; flex-grow: 1; padding-right: 10px; padding-left: 5px; border: 3px solid #EAE8F5; border-radius: 8px; font-family: Manrope;",
-                          includeMarkdown("text/home/albums.md"))
-                      
-                  ) # END container
-                  
-              ), # END slickR text box
-              
-              # right buffer column
-              column(width = 1)
-              
-            ) # END fifth fluidRow
+            ), # END second fluidRow
             
     ), # END home tabItem
     
@@ -199,44 +166,36 @@ body <- dashboardBody(
     tabItem(tabName = "monthly",
             
             # first fluidRow
-            fluidRow(style = "padding-bottom: 20px;",
+            fluidRow(style = "padding-bottom: 20px; padding-top: 20px;",
+              
+              # left buffer column
+              column(width = 1),
+              
+              # center column
+              column(width = 10,
                      
-                     # left buffer column
-                     column(width = 1), 
+                     div(style = "display: flex; justify-content: space-between; align-items: center;",
                      
-                     # image column
-                     column(width = 1,
-                            
-                            # cover art
-                            div(img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"))
-                            
-                     ), # END image column
+                     div(style = "display: flex; align-items: center;",
                      
-                     # title column
-                     column(width = 8,
-                            
-                            # title
-                            div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px; padding-bottom: 10px; padding-left: 10px;",
-                                "Monthly Streaming"),
-                            
-                            # subtitle
-                            div(style = "font-family: Manrope; font-size: 20px; padding-left: 10px;",
-                                "Choose A Month")
-                            
-                     ), # END title column
+                     img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"),
                      
-                     # icon column
-                     column(width = 1,
-                            
-                            # saved icon
-                            tags$i(class = "fas fa-circle-check fa-3x", style = "color: #74AC08; padding-top: 30px;")
-                            
-                     ), # END icon column
+                     div(style = "display: flex; flex-direction: column; padding: 15px;",
                      
-                     # right buffer column
-                     column(width = 1)
+                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 35px;",
+                         "Monthly Streaming"),
                      
-            ), # END first fluidRow
+                     div(style = "font-family: Manrope; font-size: 18px;",
+                         "Choose A Month"))),
+                     
+                     tags$i(class = "fas fa-circle-check fa-3x", style = "color: #74AC08; text-align: right;")
+                     
+                     )),
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END fluidRow
             
             # second fluidRow
             fluidRow(
@@ -264,8 +223,8 @@ body <- dashboardBody(
                      sliderInput(inputId = "month_input",
                                  label = NULL,
                                  min = 1,
-                                 max = 10,
-                                 value = 10,
+                                 max = 11,
+                                 value = 11,
                                  step = 1,
                                  ticks = TRUE,
                                  width = "100%"),
