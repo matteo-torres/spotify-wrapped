@@ -173,22 +173,45 @@ body <- dashboardBody(
               
               # center column
               column(width = 10,
+                    
+                     tags$style(HTML("
+  @media (max-width: 768px) {
+    .monthly-title {
+    font-size: 24px !important;
+    }
+    .monthly-subtitle {
+    font-size: 16px !important;
+    }
+    
+    .yunjin-img {
+    width: 80px !important;
+    height: 80px !important;
+    }
+    
+    .fa-circle-check {
+    font-size: 2em !important;
+    }
+  }
+")),
                      
                      div(style = "display: flex; justify-content: space-between; align-items: center;",
                      
                      div(style = "display: flex; align-items: center;",
                      
-                     img(src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"),
+                     img(class = "yunjin-img",
+                         src = "yunjin.jpeg", width = "100px", height = "100px", style = "border-radius: 10px;"),
                      
                      div(style = "display: flex; flex-direction: column; padding: 15px;",
                      
-                     div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 35px;",
+                     div(class = "monthly-title",
+                         style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 35px;",
                          "Monthly Streaming"),
                      
-                     div(style = "font-family: Manrope; font-size: 18px;",
+                     div(class = "monthly-subtitle",
+                         style = "font-family: Manrope; font-size: 18px;",
                          "Choose A Month"))),
                      
-                     tags$i(class = "fas fa-circle-check fa-3x", style = "color: #74AC08; text-align: right;")
+                     tags$i(class = "fas fa-circle-check", style = "color: #74AC08; text-align: right; font-size: 3em")
                      
                      )),
               
@@ -214,10 +237,8 @@ body <- dashboardBody(
                      tags$style(".js-irs-0 .irs-min {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
                      tags$style(".js-irs-0 .irs-max {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
                      tags$style(".js-irs-0 .irs-single {background: #8ACE00; color: black; font-family: Bowlby+One+SC; font-weight: bold; font-size: 12px;}"),
-                     tags$style(".js-irs-0 .irs-handle {background: white; background-image: url('spotify_black_logo_icon_147079.webp');
-                                background-size: cover; background-position: center; width: 40px; height: 40px; border-radius: 100%; border: 1px solid black;}"),
-                     tags$style(".js-irs-0 .irs-handle:hover {background-color: white; background-image: url('spotify_black_logo_icon_147079.webp'); 
-                                background-size: cover; background-position: center;}"),
+                     tags$style(".js-irs-0 .irs-handle {background: #8ACE00; border: #8ACE00;}"),
+                     tags$style(".js-irs-0 .irs-handle:hover {background-color: #8ACE00;}"),
                      
                      # monthy sliderInput
                      sliderInput(inputId = "month_input",
