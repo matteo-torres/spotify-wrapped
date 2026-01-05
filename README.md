@@ -36,9 +36,10 @@ spotify-wrapped
 
 ## Data
 
-The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log each song streamed.
+The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log each song streamed. The raw data was cleaned in the spotify_wrapped.qmd using the cleaning function clean_data.R and saved in the data folder in shinydashboard. The clean data is available to download in the data folder in the shinydashboard.
 
 ```{r}
+# load packages
 library(here)
 library(googlesheets4)
 ```
