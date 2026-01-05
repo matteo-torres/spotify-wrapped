@@ -14,8 +14,9 @@ library(DT)
 library(hms)
 library(here)
 library(shiny)
-library(lubridate)
+library(ggstar)
 library(tidyverse)
+library(lubridate)
 library(googlesheets4)
 library(shinydashboard)
 ```
@@ -37,19 +38,30 @@ spotify_data <- clean_data(raw_data)
 ## Monthly stats
 ```{r}
 # Month
-i <- 11
+i <- 12
 ```
 
 ```{r}
 #| code-fold: true
 
+max <- spotify_data[[i]] %>%
+  group_by(day) %>%
+  summarize(total_streams = n()) %>%
+  slice_max(order_by = total_streams)
+
+min <- spotify_data[[i]] %>%
+  group_by(day) %>%
+  summarize(total_streams = n()) %>%
+  slice_min(order_by = total_streams) 
+
 # Plot monthly streaming habits
 spotify_data[[i]] %>%
   group_by(day) %>%
   summarize(total_streams = n()) %>%
-  arrange(desc(total_streams)) %>%
   ggplot(aes(x = day, y = total_streams)) +
   geom_line(color = "#6ca200", linewidth = 2) +
+  geom_star(data = max, starshape = 2) +
+  geom_point(data = min, shape = 1) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
   labs(x = "Day",
@@ -76,12 +88,11 @@ spotify_data[[i]] %>%
 spotify_data[[i]] %>%
   group_by(month, day) %>%
   summarize(total_streams = n(), .groups = "drop") %>%
-  arrange(desc(total_streams)) %>%
-  slice_head(n = 1) %>%
-  mutate(message = paste0("The highest streaming day was ", month, " ", day, 
-                         ", with ", total_streams, " streams.")) %>%
+  filter(total_streams == max(total_streams)) %>%
+  mutate(message = paste0("Highest Streaming Day(s): ", month, " ", day, "\n",
+                          "Total Streams: ", total_streams)) %>%
   pull(message) %>%
-  print()
+  cat()
 ```
 
 ```{r}
@@ -93,7 +104,7 @@ spotify_data[[i]] %>%
   summarize(total_streams = n(), .groups = "drop") %>%
   arrange(desc(total_streams)) %>%
   summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
-  mutate(message = paste(month, day, "accounted for", signif(pct, digits = 3), "percent of the month's total streams.")) %>%
+  mutate(message = paste0("Highest Streaming Day(s) accounted for ", signif(pct, digits = 3), "% of streams.")) %>%
   pull(message) %>%
   print()
 ```
@@ -105,12 +116,13 @@ spotify_data[[i]] %>%
 spotify_data[[i]] %>%
   group_by(month, day) %>%
   summarize(total_streams = n(), .groups = "drop") %>%
-  arrange((total_streams)) %>%
+  filter(total_streams == min(total_streams)) %>%
+  mutate(days_list = paste0(month, " ", day, collapse = ", ")) %>%
   slice_head(n = 1) %>%
-  mutate(message = paste0("The lowest streaming day was ", month, " ", day, 
-                         ", with just ", total_streams, " stream(s).")) %>%
+  mutate(message = paste0("Lowest Streaming Day(s): ", days_list, "\n",
+                          "Total Streams: ", total_streams)) %>%
   pull(message) %>%
-  print()
+  cat()
 ```
 
 ```{r}
@@ -121,9 +133,10 @@ spotify_data[[i]] %>%
   group_by(day) %>%
   summarize(total_streams = n(), .groups = "drop") %>%
   summarize(avg_daily_streams = mean(total_streams)) %>%
-  mutate(message = paste("On average, there were about", signif(avg_daily_streams, digits = 2), "streams per day.")) %>%
+  mutate(message = paste("Average Daily Streams:", signif(avg_daily_streams, digits = 2))) %>%
   pull(message) %>%
   print()
+
 ```
 
 ```{r, message = FALSE, warning = FALSE}
@@ -140,21 +153,28 @@ spotify_data[[i]] %>%
   scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
                limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
   scale_y_continuous(expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  geom_vline(xintercept = as_hms("05:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("18:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("22:00:00"), linetype = "dotted", linewidth = 1) +
+  annotate("text", x =  as_hms("04:30:00"), y = 0, hjust = 0, label = "Morning", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("11:30:00"), y = 0, hjust = 0, label = "Afternoon", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("17:30:00"), y = 0, hjust = 0, label = "Evening", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("21:30:00"), y = 0, hjust = 0, label = "Night", size = 5, fontface = "bold", angle = 90) +
   labs(x = "Time",
-       y = "Total Streams",
-       title = "Streaming Activity During Peak Day",
-       subtitle = "Analyzing the distribution of activity throughout the day") +
+       y = "Total Streams") +
   theme_bw() +
-  theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold", color = "#6ca200"),
-        plot.subtitle = element_text(size = 14, hjust = 0.5, face = "italic"),
-        axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+  theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
         axis.title.y = element_text(size = 14, margin = margin(r = 10)),
         axis.text = element_text(size = 12),
         axis.text.x = element_text(vjust = -0.5),
         axis.ticks = element_line(color = "#303030"),
         plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
-        panel.border = element_rect(linewidth = 2, color = "#303030"),
+        panel.border = element_blank(),
+        panel.background = element_rect(color = "lightgrey", fill = NA),
         panel.grid = element_line(color = "lightgrey"))
+
 ```
 
 ```{r}
@@ -167,10 +187,10 @@ spotify_data[[i]] %>%
   ungroup() %>%
   filter(total_streams == max(total_streams)) %>%
   mutate(hour = hour(time),
-         time_of_day = case_when(hour >= 6 & hour < 12 ~ "morning",
+         time_of_day = case_when(hour >= 5 & hour < 12 ~ "morning",
                                  hour >= 12 & hour < 18 ~ "afternoon",
                                  hour >= 18 & hour < 22 ~ "evening",
-                                 hour >= 22 | hour < 6 ~ "night")) %>% 
+                                 hour >= 22 | hour < 5 ~ "night")) %>% 
   group_by(time_of_day) %>%
   summarize(total_streams = n()) %>%
   arrange(desc(total_streams)) %>%
@@ -259,4 +279,20 @@ valueBox(spotify_data[[i]] %>%
            summarize(total_songs = n()),
          subtitle = "Tracks",
          icon = icon("play", style = "color: #6ca200;"))
+```
+
+```{r}
+#| code-fold: true
+
+rank_df <- data.frame(month = seq_along(spotify_data),
+                      total_streams = sapply(spotify_data, nrow)) %>%
+  arrange(desc(total_streams)) %>%
+  mutate(rank = ifelse(row_number() == 1, "1st",
+                       ifelse(row_number() == 2, "2nd",
+                              ifelse(row_number() == 3, "3rd",
+                                     paste0(row_number(), "th")))))
+
+valueBox(rank_df$rank[rank_df$month == i],
+         subtitle = "Rank",
+         icon = icon("ranking-star", style = "color: #6ca200;"))
 ```
