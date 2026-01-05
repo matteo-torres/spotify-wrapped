@@ -58,5 +58,5 @@ spotify_data <- clean_data(raw_data)
 The processed data is available for download in the `data` subfolder of the shinydashboard.
 
 ## Shiny Dashboard Preview
-<img src="shinydashboard/www/images/sliderInput.jpg" alt="sliderInput" width="350" />
+<img src="shinydashboard/www/images/sliderInput.jpg" alt="sliderInput" width="100%" />
 
