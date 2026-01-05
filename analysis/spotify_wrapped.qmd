@@ -2,6 +2,7 @@
 title: "Spotify Wrapped"
 author: "Matteo Torres"
 format: html
+toc: true
 editor_options: 
   chunk_output_type: console
 ---
@@ -29,7 +30,7 @@ raw_data <- read_sheet("https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4
 ## Clean data
 ```{r}
 # Source cleaning function
-source(here("scratch", "clean_data.R"))
+source(here("analysis", "functions", "clean_data.R"))
 
 # Clean Spotify data
 spotify_data <- clean_data(raw_data)
@@ -41,14 +42,115 @@ spotify_data <- clean_data(raw_data)
 i <- 12
 ```
 
+### ValueBoxes
 ```{r}
 #| code-fold: true
 
+# Create rank valueBox
+rank_df <- data.frame(month = seq_along(spotify_data),
+                      total_streams = sapply(spotify_data, nrow)) %>%
+  arrange(desc(total_streams)) %>%
+  mutate(rank = ifelse(row_number() == 1, "1st",
+                       ifelse(row_number() == 2, "2nd",
+                              ifelse(row_number() == 3, "3rd",
+                                     paste0(row_number(), "th")))))
+
+valueBox(rank_df$rank[rank_df$month == i],
+         subtitle = "Rank")
+```
+
+```{r}
+#| code-fold: true
+
+# Create valueBox for total streams
+valueBox(spotify_data[[i]] %>%
+         summarize(total_streams = n()),
+         subtitle = "Total Streams")
+```
+
+```{r}
+#| code-fold: true
+
+# Create valueBox for total number of songs
+valueBox(spotify_data[[i]] %>%
+           distinct(track) %>%
+           summarize(total_songs = n()),
+         subtitle = "Songs")
+```
+
+```{r}
+#| code-fold: true
+
+# Create valueBox for total number of artists
+valueBox(spotify_data[[i]] %>%
+           distinct(artist) %>%
+           summarize(total_artists = n()),
+         subtitle = "Artists")
+```
+
+### Top 10 Songs
+```{r, message = FALSE}
+#| code-fold: true
+
+# Create DT for top 10 songs
+spotify_data[[i]] %>%
+  group_by(track, artist) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  ungroup() %>%
+  slice_head(n = 10) %>%
+  datatable(colnames = c("Track", "Artist", "Total Streams"),
+            class = "hover",
+            options = list(dom = "t"))
+```
+
+### Top 10 Artists
+```{r}
+#| code-fold: true
+
+# Create DT for top 10 artists
+spotify_data[[i]] %>%
+  group_by(artist) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  ungroup() %>%
+  slice_head(n = 10) %>%
+  datatable(colnames = c("Artist", "Total Streams"),
+            class = "hover",
+            options = list(dom = "t"))
+```
+
+### Top Song by Top Artist
+```{r}
+#| code-fold: true
+
+# Identify top song from top artist
+spotify_data[[i]] %>%
+  group_by(artist) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 1) %>%
+  inner_join(spotify_data[[i]], by = "artist") %>%
+  group_by(artist, track) %>%
+  summarize(total_streams = n(), .groups = "drop") %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 1) %>%
+  mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
+  pull(message) %>%
+  print()
+```
+
+### Daily Streams Lineplot
+```{r}
+#| code-fold: true
+
+# highest streaming day
 max <- spotify_data[[i]] %>%
   group_by(day) %>%
   summarize(total_streams = n()) %>%
   slice_max(order_by = total_streams)
 
+# lowest streaming day
 min <- spotify_data[[i]] %>%
   group_by(day) %>%
   summarize(total_streams = n()) %>%
@@ -59,28 +161,27 @@ spotify_data[[i]] %>%
   group_by(day) %>%
   summarize(total_streams = n()) %>%
   ggplot(aes(x = day, y = total_streams)) +
-  geom_line(color = "#6ca200", linewidth = 2) +
-  geom_star(data = max, starshape = 2) +
-  geom_point(data = min, shape = 1) +
+  geom_line(color = "#6ca200", linewidth = 2, lineend = "round") +
+  geom_star(data = max, size = 5, fill = "black") +
+  geom_point(data = min, shape = 1, size = 5, stroke = 1.5) +
   scale_x_continuous(expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+  coord_cartesian(clip = "off") +
   labs(x = "Day",
-       y = "Total Streams",
-       title = "Monthly Streaming",
-       subtitle = "Tracking daily listening activity") +
+       y = "Total Streams") +
   theme_bw() +
-  theme(plot.title = element_text(size = 20, hjust = 0.5, face = "bold", color = "#6ca200"),
-        plot.subtitle = element_text(size = 14, hjust = 0.5, face = "italic"),
-        axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+  theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
         axis.title.y = element_text(size = 14, margin = margin(r = 10)),
         axis.text = element_text(size = 12),
         axis.text.x = element_text(vjust = -0.5),
         axis.ticks = element_line(color = "#303030"),
         plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
-        panel.border = element_rect(linewidth = 2, color = "#303030"),
+        panel.border = element_blank(),
+        panel.background = element_rect(color = "lightgrey", fill = NA),
         panel.grid = element_line(color = "lightgrey"))
 ```
 
+### Key Findings
 ```{r}
 #| code-fold: true
 
@@ -98,13 +199,13 @@ spotify_data[[i]] %>%
 ```{r}
 #| code-fold: true
 
-# percent of streams for highest streaming day
+# Percent of streams for highest streaming day
 spotify_data[[i]] %>%
   group_by(month, day) %>%
   summarize(total_streams = n(), .groups = "drop") %>%
   arrange(desc(total_streams)) %>%
   summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
-  mutate(message = paste0("Highest Streaming Day(s) accounted for ", signif(pct, digits = 3), "% of streams.")) %>%
+  mutate(message = paste0("The highest streaming day accounted for ", signif(pct, digits = 3), "% of streams.")) %>%
   pull(message) %>%
   print()
 ```
@@ -139,6 +240,7 @@ spotify_data[[i]] %>%
 
 ```
 
+### Highest Streaming Day Histogram
 ```{r, message = FALSE, warning = FALSE}
 #| code-fold: true
 
@@ -195,104 +297,7 @@ spotify_data[[i]] %>%
   summarize(total_streams = n()) %>%
   arrange(desc(total_streams)) %>%
   slice_head(n = 1) %>%
-  mutate(message = paste0("On peak day, you mostly listened to music during the ", time_of_day,".")) %>%
+  mutate(message = paste0("You mostly listened to music during the ", time_of_day,".")) %>%
   pull(message) %>%
   print()
-```
-
-```{r}
-#| code-fold: true
-
-# Create DT for top 10 artists
-spotify_data[[i]] %>%
-  group_by(artist) %>%
-  summarize(total_streams = n()) %>%
-  arrange(desc(total_streams)) %>%
-  ungroup() %>%
-  slice_head(n = 10) %>%
-  datatable(colnames = c("Artist", "Total Streams"),
-            class = "hover",
-            options = list(dom = "t"))
-```
-
-```{r, message = FALSE}
-#| code-fold: true
-
-# Create DT for top 10 songs
-spotify_data[[i]] %>%
-  group_by(track, artist) %>%
-  summarize(total_streams = n()) %>%
-  arrange(desc(total_streams)) %>%
-  ungroup() %>%
-  slice_head(n = 10) %>%
-  datatable(colnames = c("Track", "Artist", "Total Streams"),
-            class = "hover",
-            options = list(dom = "t"))
-```
-
-```{r}
-#| code-fold: true
-
-# Identify top song from top artist
-spotify_data[[i]] %>%
-  group_by(artist) %>%
-  summarize(total_streams = n()) %>%
-  arrange(desc(total_streams)) %>%
-  slice_head(n = 1) %>%
-  inner_join(spotify_data[[i]], by = "artist") %>%
-  group_by(artist, track) %>%
-  summarize(total_streams = n(), .groups = "drop") %>%
-  arrange(desc(total_streams)) %>%
-  slice_head(n = 1) %>%
-  mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
-  pull(message) %>%
-  print()
-```
-
-```{r}
-#| code-fold: true
-
-# Create valueBox for total streams
-valueBox(spotify_data[[i]] %>%
-         summarize(total_streams = n()),
-         subtitle = "Total Streams",
-         icon = icon("headphones", style = "color: #6ca200;"))
-```
-
-```{r}
-#| code-fold: true
-
-# Create valueBox for total number of artists
-valueBox(spotify_data[[i]] %>%
-           distinct(artist) %>%
-           summarize(total_artists = n()),
-         subtitle = "Artists",
-         icon = icon("user", style = "color: #6ca200;"))
-```
-
-```{r}
-#| code-fold: true
-
-# Create valueBox for total number of songs
-valueBox(spotify_data[[i]] %>%
-           distinct(track) %>%
-           summarize(total_songs = n()),
-         subtitle = "Tracks",
-         icon = icon("play", style = "color: #6ca200;"))
-```
-
-```{r}
-#| code-fold: true
-
-rank_df <- data.frame(month = seq_along(spotify_data),
-                      total_streams = sapply(spotify_data, nrow)) %>%
-  arrange(desc(total_streams)) %>%
-  mutate(rank = ifelse(row_number() == 1, "1st",
-                       ifelse(row_number() == 2, "2nd",
-                              ifelse(row_number() == 3, "3rd",
-                                     paste0(row_number(), "th")))))
-
-valueBox(rank_df$rank[rank_df$month == i],
-         subtitle = "Rank",
-         icon = icon("ranking-star", style = "color: #6ca200;"))
 ```
