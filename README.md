@@ -13,3 +13,18 @@ This project is inspired by the iconic Spotify Wrapped. Instead of waiting for m
 - API integration for real-time streaming data
 - Data visualization and communication
 - Interactive Shiny dashboard
+
+## Repository Structure
+```bash
+spotify-wrapped
+├── README.md
+├── .gitignore
+├── analysis
+│   ├── 
+│   └──
+└── shinydashboard
+    ├── 
+    └──
+```
+
+## Data
