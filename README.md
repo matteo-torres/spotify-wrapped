@@ -8,11 +8,11 @@
 
 ## About
 
-This project is inspired by the iconic Spotify Wrapped. Instead of waiting for my year-end summary, I decided to analyze my monthly streaming habits by using an external API applet to automatically collect and track my streaming data. The goal of this project is to explore and visualize patterns in my listening behavior, highlighting my top artists, favorite songs, and peak streaming days each month. You can check out my latest statistics on my [Spotify Wrapped dashboard](https://matteo-torres.shinyapps.io/shinydashboard/).
- 
-- API integration for real-time streaming data
+This project is inspired by the iconic Spotify Wrapped. For 2025, I decided to take a closer look at my streaming data month-by-month to highlight my top artists, top songs, and listending habits.
+
+- Shiny dashboard
+- Mobile-responsive user interface
 - Data visualization and communication
-- Interactive Shiny dashboard
 
 ## Repository Structure
 
@@ -36,7 +36,7 @@ spotify-wrapped
 
 ## Data
 
-The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log each song streamed.
+The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log information about each song streamed.
 
 How to access the data:
 ```{r}
