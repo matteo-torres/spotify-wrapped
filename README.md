@@ -20,11 +20,17 @@ spotify-wrapped
 ├── README.md
 ├── .gitignore
 ├── analysis
-│   ├── 
-│   └──
+│   ├── functions
+│   ├── fresh theme dashboard
+│   ├── spotify_wrapped.qmd
+│   └── spotify_wrapped.html
 └── shinydashboard
-    ├── 
-    └──
+    ├── data
+    ├── text
+    ├── www
+    ├── global.R
+    ├── server.R
+    └── ui.R
 ```
 
 ## Data
