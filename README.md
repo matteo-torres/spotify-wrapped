@@ -8,7 +8,7 @@
 
 ## About
 
-This project is inspired by the iconic Spotify Wrapped. For 2025, I decided to take a closer look at my streaming data month-by-month to highlight my top artists, top songs, and listending habits.
+This project is inspired by the iconic Spotify Wrapped. For 2025, I decided to take a closer look at my streaming data month-by-month to highlight my top artists, favorite songs, and listening habits.
 
 - Shiny dashboard
 - Mobile-responsive user interface
