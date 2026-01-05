@@ -15,6 +15,7 @@ This project is inspired by the iconic Spotify Wrapped. Instead of waiting for m
 - Interactive Shiny dashboard
 
 ## Repository Structure
+
 ```bash
 spotify-wrapped
 ├── README.md
@@ -34,3 +35,5 @@ spotify-wrapped
 ```
 
 ## Data
+
+The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log each song streamed.
