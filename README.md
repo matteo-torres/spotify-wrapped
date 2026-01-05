@@ -55,4 +55,4 @@ source(here("analysis", "functions", "clean_data.R"))
 # clean data
 spotify_data <- clean_data(raw_data)
 ```
-The processed data is available for download in the `data` subfolder located in the shinydashboard folder.
+The processed data is available for download in the `data` subfolder of the shinydashboard.
