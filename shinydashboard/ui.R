@@ -296,17 +296,17 @@ body <- dashboardBody(
                                valueBoxOutput("rank_output",
                                               width = 12)),
                            
-                           # streams valueBox
+                           # total streams valueBox
                            div(style = "padding: 20px;",
                                valueBoxOutput("streams_output",
                                               width = 12)),
                            
-                           # songs valueBox
+                           # song valueBox
                            div(style = "padding: 20px;",
                                valueBoxOutput("track_output",
                                               width = 12)),
                            
-                           # artists valueBox
+                           # artist valueBox
                            div(style = "padding: 20px;",
                                valueBoxOutput("artist_output",
                                               width = 12))
