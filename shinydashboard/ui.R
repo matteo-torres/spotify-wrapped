@@ -395,7 +395,7 @@ body <- dashboardBody(
                   fluidRow(
                     
                     # left-hand column
-                    column(width = 6,
+                    column(width = 5,
                            
                            # mobile adjustments
                            tags$style(HTML("
@@ -443,7 +443,7 @@ body <- dashboardBody(
                     ), # END left-hand column
                     
                     # right-hand column
-                    column(width = 6,
+                    column(width = 7,
                            
                            # title
                            div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 30px; color: #6ca200; text-align: center; margin-top: 10px;",
@@ -478,7 +478,7 @@ body <- dashboardBody(
                   fluidRow(
                     
                     # left-hand column
-                    column(width = 6,
+                    column(width = 7,
                            
                            # title
                            div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 30px; color: #6ca200; text-align: center; margin-top: 10px;",
@@ -491,7 +491,7 @@ body <- dashboardBody(
                     ), # END left-hand column
                     
                     # right-hand column
-                    column(width = 6,
+                    column(width = 5,
                            
                            # mobile adjustments
                            tags$style(HTML("
