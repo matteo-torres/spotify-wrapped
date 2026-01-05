@@ -37,3 +37,8 @@ spotify-wrapped
 ## Data
 
 The data was collected using a third-party API, IFTTT. This service allows Spotify users to connect Spotify with Google Sheets to automatically log each song streamed.
+
+```{r}
+library(here)
+library(googlesheets4)
+```
