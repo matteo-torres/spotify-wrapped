@@ -68,7 +68,7 @@ The first box of the monthly summary presents the selected month’s rank relati
 
 <img src="shinydashboard/www/images/second_box.jpg" alt="second box" width="100%" />
 
-*insert text*
+The second box of the monthly summary visualizes the selected month’s daily stream counts in a line plot, with shape icons highlighting the highest and lowest streaming days. It is accompanied by summary statistics, including the proportion of peak daily streams relative to total monthly streams and the average number of daily streams.
 
 <img src="shinydashboard/www/images/third_box.jpg" alt="third box" width="100%" />
 
