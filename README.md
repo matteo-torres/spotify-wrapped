@@ -72,7 +72,7 @@ The second box of the monthly summary visualizes the selected month’s daily st
 
 <img src="shinydashboard/www/images/third_box.jpg" alt="third box" width="100%" />
 
-*insert text*
+The third box of the monthly summary visualizes the selected month’s peak streaming day using a histogram, with dotted vertical lines indicating each part of the day (morning, afternoon, evening, and night). It is paired with one of four Lorde images and a message that corresponds to the time of day with the highest streaming activity.
 
 ## References
 
