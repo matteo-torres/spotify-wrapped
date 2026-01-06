@@ -76,4 +76,4 @@ The processed data is available for download in the `data` subfolder of the shin
 
 ## References
 
-IFTTT. (n.d.). My Spotify Wrapped [IFTTT applet]. IFTTT. https://ifttt.com/applets/ptQiGLyZ-my-spotify-wrapped
+IFTTT. (n.d.). *My Spotify Wrapped* [IFTTT applet]. IFTTT. https://ifttt.com/applets/ptQiGLyZ-my-spotify-wrapped
