@@ -79,3 +79,5 @@ The processed data is available for download in the `data` subfolder of the shin
 Torres, M. (2025). *spotify_wrapped* [Google Sheets spreadsheet]. https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A
 
 ## Acknowledgements
+
+This project could not have been done without the platforms Spotify and IFTTT.
