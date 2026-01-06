@@ -73,3 +73,5 @@ The processed data is available for download in the `data` subfolder of the shin
 <img src="shinydashboard/www/images/third_box.jpg" alt="third box" width="100%" />
 
 *insert text*
+
+## References
