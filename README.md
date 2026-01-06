@@ -60,7 +60,7 @@ The processed data is available for download in the `data` subfolder of the shin
 ## Shiny Dashboard Preview
 <img src="shinydashboard/www/images/sliderInput.jpg" alt="sliderInput" width="100%" />
 
-*insert text*
+The customized sliderInput, styled to resemble the Spotify streaming platform, allows users to select a numeric month. Adjusting the slider dynamically displays the corresponding monthly summary.
 
 <img src="shinydashboard/www/images/first_box.jpg" alt="first box" width="100%" />
 
