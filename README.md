@@ -76,8 +76,6 @@ The processed data is available for download in the `data` subfolder of the shin
 
 ## References
 
-IFTTT. (n.d.). *My Spotify Wrapped* [IFTTT applet]. IFTTT. https://ifttt.com/applets/ptQiGLyZ-my-spotify-wrapped
-
-Spotify AB. (n.d.). *Spotify*. https://www.spotify.com
-
 Torres, M. (2025). *spotify_wrapped* [Google Sheets spreadsheet]. https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A
+
+## Acknowledgements
