@@ -64,7 +64,7 @@ The customized sliderInput, styled to resemble the Spotify streaming platform, a
 
 <img src="shinydashboard/www/images/first_box.jpg" alt="first box" width="100%" />
 
-*insert text*
+The first box of the monthly summary presents the selected month’s rank relative to other months, total streams, number of songs listened to, and number of artists listened to using valueBoxes. It also includes a data table showing the top 10 artists or songs for the month, which can be toggled using the radioGroupButtons at the top.
 
 <img src="shinydashboard/www/images/second_box.jpg" alt="second box" width="100%" />
 
