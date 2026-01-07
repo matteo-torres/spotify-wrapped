@@ -42,6 +42,8 @@ How to access the data:
 ```{r}
 # load packages
 library(here)
+library(lubridate)
+library(tidyverse)
 library(googlesheets4)
 ```
 ```{r}
@@ -49,11 +51,13 @@ library(googlesheets4)
 raw_data <- read_sheet("https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4GnnqcOejY00HU1kcCVIfWHB_Q7A/edit?usp=sharing")
 ```
 ```{r}
-# source cleaning function
+# source cleaning functions
 source(here("analysis", "functions", "clean_data.R"))
+source(here("analysis", "functions", "monthly_clean_data.R"))
 
 # clean data
 spotify_data <- clean_data(raw_data)
+monthly_spotify_data <- monthly_clean_data(raw_data)
 ```
 The processed data is available for download in the `data` subfolder of the shinydashboard.
 

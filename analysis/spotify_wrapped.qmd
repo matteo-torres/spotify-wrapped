@@ -29,10 +29,12 @@ raw_data <- read_sheet("https://docs.google.com/spreadsheets/d/1U2XrypJcbxnK-hb4
 
 ## Clean data
 ```{r}
-# Source cleaning function
+# Source cleaning functions
+source(here("analysis", "functions", "clean_data.R"))
 source(here("analysis", "functions", "monthly_clean_data.R"))
 
 # Clean Spotify data
+spotify_data <- clean_data(raw_data)
 monthly_spotify_data <- monthly_clean_data(raw_data)
 ```
 
