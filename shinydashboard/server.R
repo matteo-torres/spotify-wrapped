@@ -59,18 +59,18 @@ server <- function(input, output) {
   })
   
   # filter spotify data ----
-  spotify_data_df <- reactive({
+  monthly_spotify_data_df <- reactive({
     
     req(input$month_input)
-    spotify_data[[input$month_input]]
+    monthly_spotify_data[[input$month_input]]
     
   })
   
   # build rank valueBox ----
   output$rank_output <- renderValueBox({
     
-    rank_df <- data.frame(month = seq_along(spotify_data),
-                          total_streams = sapply(spotify_data, nrow)) %>%
+    rank_df <- data.frame(month = seq_along(monthly_spotify_data),
+                          total_streams = sapply(monthly_spotify_data, nrow)) %>%
       arrange(desc(total_streams)) %>%
       mutate(rank = ifelse(row_number() == 1, "1st",
                            ifelse(row_number() == 2, "2nd",
@@ -86,7 +86,7 @@ server <- function(input, output) {
   # build total streams valueBox ----
   output$streams_output <- renderValueBox({
     
-    valueBox(spotify_data_df() %>%
+    valueBox(monthly_spotify_data_df() %>%
                summarize(total_streams = n()),
              subtitle = "Total Streams",
              color = "black")
@@ -96,7 +96,7 @@ server <- function(input, output) {
   # build song valueBox ----
   output$track_output <- renderValueBox({
     
-    valueBox(spotify_data_df() %>%
+    valueBox(monthly_spotify_data_df() %>%
                distinct(track) %>%
                summarize(total_songs= n()),
              subtitle = "Songs",
@@ -107,7 +107,7 @@ server <- function(input, output) {
   # build artist valueBox ----
   output$artist_output <- renderValueBox({
     
-    valueBox(spotify_data_df() %>%
+    valueBox(monthly_spotify_data_df() %>%
                distinct(artist) %>%
                summarize(total_artists = n()),
              subtitle = "Artists",
@@ -120,7 +120,7 @@ server <- function(input, output) {
     
     # DT
     if (input$table_input == "Top 10 Artists") {
-      spotify_data_df() %>%
+      monthly_spotify_data_df() %>%
         group_by(artist) %>%
         summarize(total_streams = n()) %>%
         arrange(desc(total_streams)) %>%
@@ -135,7 +135,7 @@ server <- function(input, output) {
                                  ordering = FALSE,
                                  columnDefs = list(list(className = "dt-left", targets = "_all"))))
     } else if (input$table_input == "Top 10 Songs") {
-      spotify_data_df() %>%
+      monthly_spotify_data_df() %>%
         group_by(track, artist) %>%
         summarize(total_streams = n()) %>%
         arrange(desc(total_streams)) %>%
@@ -156,12 +156,12 @@ server <- function(input, output) {
   # top track from top artist message ----
   output$song_output <- renderUI({
     
-    message <- spotify_data_df() %>%
+    message <- monthly_spotify_data_df() %>%
       group_by(artist) %>%
       summarize(total_streams = n()) %>%
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
-      inner_join(spotify_data_df(), by = "artist") %>%
+      inner_join(monthly_spotify_data_df(), by = "artist") %>%
       group_by(artist, track) %>%
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange(desc(total_streams)) %>%
@@ -176,7 +176,7 @@ server <- function(input, output) {
   # peak day message ----
   output$peak_output <- renderUI({
     
-    spotify_data_df() %>%
+    monthly_spotify_data_df() %>%
       group_by(month, day) %>%
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange(desc(total_streams)) %>%
@@ -191,7 +191,7 @@ server <- function(input, output) {
   # percent streams day message ----
   output$pct_output <- renderUI({
     
-    spotify_data_df() %>%
+    monthly_spotify_data_df() %>%
       group_by(month, day) %>%
       summarize(total_streams = n(), .groups = "drop") %>%
       arrange(desc(total_streams)) %>%
@@ -205,7 +205,7 @@ server <- function(input, output) {
   # low day message ----
   output$low_output <- renderUI({
     
-    spotify_data_df() %>%
+    monthly_spotify_data_df() %>%
       group_by(month, day) %>%
       summarize(total_streams = n(), .groups = "drop") %>%
       filter(total_streams == min(total_streams)) %>%
@@ -221,7 +221,7 @@ server <- function(input, output) {
   # average daily streams message ----
   output$avg_output <- renderUI({
     
-    message <- spotify_data_df() %>%
+    message <- monthly_spotify_data_df() %>%
       group_by(day) %>%
       summarize(total_streams = n(), .groups = "drop") %>%
       summarize(avg_daily_streams = mean(total_streams)) %>%
@@ -235,19 +235,19 @@ server <- function(input, output) {
   output$month_output <- renderPlot({
     
     # max day
-    max <- spotify_data_df() %>%
+    max <- monthly_spotify_data_df() %>%
       group_by(day) %>%
       summarize(total_streams = n()) %>%
       slice_max(order_by = total_streams)
     
     # min day
-    min <- spotify_data_df() %>%
+    min <- monthly_spotify_data_df() %>%
       group_by(day) %>%
       summarize(total_streams = n()) %>%
       slice_min(order_by = total_streams)
     
     # plot monthly streaming habits
-    spotify_data_df() %>%
+    monthly_spotify_data_df() %>%
       group_by(day) %>%
       summarize(total_streams = n()) %>%
       ggplot(aes(x = day, y = total_streams)) +
@@ -276,7 +276,7 @@ server <- function(input, output) {
   output$day_output <- renderPlot({
     
     # plot highest streaming activity
-    spotify_data_df() %>%
+    monthly_spotify_data_df() %>%
       group_by(day) %>%
       mutate(total_streams = n()) %>%
       ungroup() %>%
@@ -314,7 +314,7 @@ server <- function(input, output) {
   output$time_output <- renderUI({
     
     # determine part of day
-    peak_time <- spotify_data_df() %>%
+    peak_time <- monthly_spotify_data_df() %>%
       group_by(day) %>%
       mutate(total_streams = n()) %>%
       ungroup() %>%

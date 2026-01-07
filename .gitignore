@@ -56,3 +56,6 @@ rsconnect/
 
 # Ignore libs directory
 *libs/
+
+# Ignore spotify_wrapped_files
+spotify_wrapped_files/

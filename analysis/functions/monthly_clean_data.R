@@ -1,4 +1,4 @@
-#' Clean and process Spotify streaming data
+#' Clean Spotify streaming data and split by month
 #'
 #' @description
 #' This function takes raw Spotify streaming data and performs the following:
@@ -14,8 +14,8 @@
 #' @export
 #'
 #' @examples
-#' clean_data(raw_data)
-clean_data <- function(raw_data){
+#' monthly_clean_data(raw_data)
+monthly_clean_data <- function(raw_data){
   
   # Extract the current column names from the raw data
   column_names <- colnames(raw_data)
@@ -27,7 +27,7 @@ clean_data <- function(raw_data){
   colnames(raw_data) <- c("date", "track", "artist", "track_id", "link")
   
   # Clean and transform the raw data
-  spotify_data <- raw_data %>%
+  monthly_spotify_data <- raw_data %>%
     
     mutate(
       
@@ -55,11 +55,11 @@ clean_data <- function(raw_data){
     group_split()
   
   # Rename the list elements with sequential numbers
-  names(spotify_data) <- seq_along(spotify_data)
+  names(monthly_spotify_data) <- seq_along(monthly_spotify_data)
   
   # Save the cleaned and processed data as an RDS file to the "data" folder in the "shinydashboard" directory
-  saveRDS(spotify_data, here("shinydashboard", "data", "spotify_data.rds"))
+  saveRDS(monthly_spotify_data, here("shinydashboard", "data", "monthly_spotify_data.rds"))
   
   # Return the cleaned data
-  return(spotify_data)
+  return(monthly_spotify_data)
 }

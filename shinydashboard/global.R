@@ -12,4 +12,4 @@ library(shinydashboard)
 library(shinycssloaders)
 
 # read data ----
-spotify_data <- read_rds("data/spotify_data.rds")
+monthly_spotify_data <- read_rds("data/monthly_spotify_data.rds")
