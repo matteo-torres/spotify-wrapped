@@ -16,6 +16,7 @@ library(hms)
 library(here)
 library(shiny)
 library(ggstar)
+library(forcats)
 library(tidyverse)
 library(lubridate)
 library(googlesheets4)
@@ -139,7 +140,7 @@ monthly_spotify_data[[i]] %>%
   slice_head(n = 1) %>%
   mutate(message = paste("Top song from", artist, "is", track, "with", total_streams, "streams!")) %>%
   pull(message) %>%
-  print()
+  cat()
 ```
 
 ### Daily Streams Lineplot
@@ -209,7 +210,7 @@ monthly_spotify_data[[i]] %>%
   summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
   mutate(message = paste0("The highest streaming day accounted for ", signif(pct, digits = 3), "% of streams.")) %>%
   pull(message) %>%
-  print()
+  cat()
 ```
 
 ```{r}
@@ -238,7 +239,7 @@ monthly_spotify_data[[i]] %>%
   summarize(avg_daily_streams = mean(total_streams)) %>%
   mutate(message = paste("Average Daily Streams:", signif(avg_daily_streams, digits = 2))) %>%
   pull(message) %>%
-  print()
+  cat()
 
 ```
 
@@ -301,7 +302,51 @@ monthly_spotify_data[[i]] %>%
   slice_head(n = 1) %>%
   mutate(message = paste0("You mostly listened to music during the ", time_of_day,".")) %>%
   pull(message) %>%
-  print()
+  cat()
 ```
 
 ## End-of-Year Wrapped 2025
+
+### Monthly Streams Lollipop Chart
+```{r}
+#| code-fold: true
+
+first_place <- spotify_data %>%
+  group_by(month) %>%
+  summarize(total_streams = n()) %>%
+  slice_max(order_by = total_streams)
+
+second_place <- spotify_data %>%
+  group_by(month) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice(2:2)
+
+third_place <- spotify_data %>%
+  group_by(month) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice(3:3)
+
+spotify_data %>%
+  group_by(month) %>%
+  summarize(total_streams = n()) %>%
+  ggplot(aes(x = total_streams, y = fct_rev(factor(month, levels = month.name)))) +
+  geom_segment(aes(x = 0, xend = total_streams), linewidth = 1.5, lineend = "round") +
+  geom_star(data = first_place, size = 7, starstroke = 1, fill = "#D6AF36", angle = 90) +
+  geom_star(data = second_place, size = 7, starstroke = 1, fill = "#A7A7AD", angle = 90) +
+  geom_star(data = third_place, size = 7, starstroke = 1, fill = "#A77044", angle = 90) +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 1800), n.breaks = 7) +
+  labs(x = "Total Streams") +
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        axis.title.x = element_text(size = 12, margin = margin(t = 10)),
+        axis.text = element_text(size = 12),
+        axis.ticks.y = element_blank(),
+        axis.text.x = element_text(vjust = -0.5),
+        axis.ticks = element_line(color = "#303030"),
+        plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+        panel.border = element_blank(),
+        panel.background = element_rect(color = "lightgrey", fill = NA),
+        panel.grid = element_line(color = "lightgrey"))
+```
