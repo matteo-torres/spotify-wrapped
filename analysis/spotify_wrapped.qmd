@@ -16,6 +16,7 @@ library(hms)
 library(here)
 library(shiny)
 library(ggstar)
+library(treemap)
 library(forcats)
 library(tidyverse)
 library(lubridate)
@@ -349,4 +350,24 @@ spotify_data %>%
         panel.border = element_blank(),
         panel.background = element_rect(color = "lightgrey", fill = NA),
         panel.grid = element_line(color = "lightgrey"))
+```
+
+### Top 10 Artists Treemap
+```{r}
+#| code-fold: true
+
+artist_colors <- c("#f6b23a", "#fcbacd", "#b64d3c", "#8ACE00", "#a7a4cb", "#b85dc6", "#2191c7", "#71a5b4", "#d51f2c", "#fa1bd5")
+
+spotify_data %>%
+  group_by(artist) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 10) %>%
+  treemap(index = "artist", 
+          vSize = "total_streams",
+          type = "index",
+          palette = artist_colors,
+          fontcolor.labels = "black",
+          border.lwds = 3,
+          title = "")
 ```

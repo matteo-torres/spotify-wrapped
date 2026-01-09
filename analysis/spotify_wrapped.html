@@ -106,6 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#end-of-year-wrapped-2025" id="toc-end-of-year-wrapped-2025" class="nav-link" data-scroll-target="#end-of-year-wrapped-2025">End-of-Year Wrapped 2025</a>
   <ul class="collapse">
   <li><a href="#monthly-streams-lollipop-chart" id="toc-monthly-streams-lollipop-chart" class="nav-link" data-scroll-target="#monthly-streams-lollipop-chart">Monthly Streams Lollipop Chart</a></li>
+  <li><a href="#top-10-artists-treemap" id="toc-top-10-artists-treemap" class="nav-link" data-scroll-target="#top-10-artists-treemap">Top 10 Artists Treemap</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -147,11 +148,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shiny)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstar)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(treemap)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -284,8 +286,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">dom =</span> <span class="st">"t"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-3f9657bd23dd55fb38fc" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3f9657bd23dd55fb38fc">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Hammer","Gallop (feat. Evita Manji)","Boys (feat. Pharrell Williams) - Co-Ed Remix","Times Like These","What Was That","(I Got That) Boom Boom (feat. Ying Yang Twins)","Shapeshifter","Sushi","Snowman (Hannah Diamond Remix)","Azimuth"],["Lorde","SOPHIE","Britney Spears","Addison Rae","Lorde","Britney Spears","Lorde","FKA twigs","f5ve","Danny L Harle"],[12,11,10,10,10,9,9,9,8,7]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Track<\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track","targets":1},{"name":"artist","targets":2},{"name":"total_streams","targets":3}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1697adea065db95441cd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1697adea065db95441cd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Hammer","Gallop (feat. Evita Manji)","Boys (feat. Pharrell Williams) - Co-Ed Remix","Times Like These","What Was That","(I Got That) Boom Boom (feat. Ying Yang Twins)","Shapeshifter","Sushi","Snowman (Hannah Diamond Remix)","Azimuth"],["Lorde","SOPHIE","Britney Spears","Addison Rae","Lorde","Britney Spears","Lorde","FKA twigs","f5ve","Danny L Harle"],[12,11,10,10,10,9,9,9,8,7]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Track<\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track","targets":1},{"name":"artist","targets":2},{"name":"total_streams","targets":3}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -306,8 +308,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">dom =</span> <span class="st">"t"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-07003b53c414d1e483e6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-07003b53c414d1e483e6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Lorde","Charli xcx","Addison Rae","Caroline Polachek","FKA twigs","Britney Spears","SOPHIE","ROSALÍA","Ethel Cain","LE SSERAFIM"],[68,56,50,47,47,45,35,23,20,19]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"artist","targets":1},{"name":"total_streams","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-6e9fdc7e8042ae0a2783" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-6e9fdc7e8042ae0a2783">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Lorde","Charli xcx","Addison Rae","Caroline Polachek","FKA twigs","Britney Spears","SOPHIE","ROSALÍA","Ethel Cain","LE SSERAFIM"],[68,56,50,47,47,45,35,23,20,19]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"artist","targets":1},{"name":"total_streams","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -584,6 +586,35 @@ Total Streams: 4</code></pre>
 <div>
 <figure class="figure">
 <p><img src="spotify_wrapped_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="top-10-artists-treemap" class="level3">
+<h3 class="anchored" data-anchor-id="top-10-artists-treemap">Top 10 Artists Treemap</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>artist_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#f6b23a"</span>, <span class="st">"#fcbacd"</span>, <span class="st">"#b64d3c"</span>, <span class="st">"#8ACE00"</span>, <span class="st">"#a7a4cb"</span>, <span class="st">"#b85dc6"</span>, <span class="st">"#2191c7"</span>, <span class="st">"#71a5b4"</span>, <span class="st">"#d51f2c"</span>, <span class="st">"#fa1bd5"</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>spotify_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_streams =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_streams)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">treemap</span>(<span class="at">index =</span> <span class="st">"artist"</span>, </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">vSize =</span> <span class="st">"total_streams"</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"index"</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> artist_colors,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">fontcolor.labels =</span> <span class="st">"black"</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">border.lwds =</span> <span class="dv">3</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="spotify_wrapped_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
