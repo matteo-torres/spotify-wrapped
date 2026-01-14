@@ -99,14 +99,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#top-10-songs" id="toc-top-10-songs" class="nav-link" data-scroll-target="#top-10-songs">Top 10 Songs</a></li>
   <li><a href="#top-10-artists" id="toc-top-10-artists" class="nav-link" data-scroll-target="#top-10-artists">Top 10 Artists</a></li>
   <li><a href="#top-song-by-top-artist" id="toc-top-song-by-top-artist" class="nav-link" data-scroll-target="#top-song-by-top-artist">Top Song by Top Artist</a></li>
-  <li><a href="#daily-streams-lineplot" id="toc-daily-streams-lineplot" class="nav-link" data-scroll-target="#daily-streams-lineplot">Daily Streams Lineplot</a></li>
+  <li><a href="#daily-streams" id="toc-daily-streams" class="nav-link" data-scroll-target="#daily-streams">Daily Streams</a></li>
   <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key Findings</a></li>
-  <li><a href="#highest-streaming-day-histogram" id="toc-highest-streaming-day-histogram" class="nav-link" data-scroll-target="#highest-streaming-day-histogram">Highest Streaming Day Histogram</a></li>
+  <li><a href="#highest-streaming-day" id="toc-highest-streaming-day" class="nav-link" data-scroll-target="#highest-streaming-day">Highest Streaming Day</a></li>
   </ul></li>
   <li><a href="#end-of-year-wrapped-2025" id="toc-end-of-year-wrapped-2025" class="nav-link" data-scroll-target="#end-of-year-wrapped-2025">End-of-Year Wrapped 2025</a>
   <ul class="collapse">
-  <li><a href="#monthly-streams-lollipop-chart" id="toc-monthly-streams-lollipop-chart" class="nav-link" data-scroll-target="#monthly-streams-lollipop-chart">Monthly Streams Lollipop Chart</a></li>
-  <li><a href="#top-10-artists-treemap" id="toc-top-10-artists-treemap" class="nav-link" data-scroll-target="#top-10-artists-treemap">Top 10 Artists Treemap</a></li>
+  <li><a href="#monthly-streams" id="toc-monthly-streams" class="nav-link" data-scroll-target="#monthly-streams">Monthly Streams</a></li>
+  <li><a href="#top-10-artists-1" id="toc-top-10-artists-1" class="nav-link" data-scroll-target="#top-10-artists-1">Top 10 Artists</a></li>
+  <li><a href="#top-10-songs-1" id="toc-top-10-songs-1" class="nav-link" data-scroll-target="#top-10-songs-1">Top 10 Songs</a></li>
+  <li><a href="#song-of-the-summer" id="toc-song-of-the-summer" class="nav-link" data-scroll-target="#song-of-the-summer">Song of the Summer</a></li>
+  <li><a href="#consistent-artists" id="toc-consistent-artists" class="nav-link" data-scroll-target="#consistent-artists">Consistent Artists</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -150,10 +153,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggstar)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(treemap)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(showtext)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(shinydashboard)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># load google font</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="at">name =</span> <span class="st">"Manrope"</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">font_add_google</span>(<span class="at">name =</span> <span class="st">"Bowlby One SC"</span>, <span class="at">family =</span> <span class="st">"Bowlby"</span>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># turn on showtext</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">showtext_auto</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -286,8 +297,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">dom =</span> <span class="st">"t"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-1697adea065db95441cd" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-1697adea065db95441cd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Hammer","Gallop (feat. Evita Manji)","Boys (feat. Pharrell Williams) - Co-Ed Remix","Times Like These","What Was That","(I Got That) Boom Boom (feat. Ying Yang Twins)","Shapeshifter","Sushi","Snowman (Hannah Diamond Remix)","Azimuth"],["Lorde","SOPHIE","Britney Spears","Addison Rae","Lorde","Britney Spears","Lorde","FKA twigs","f5ve","Danny L Harle"],[12,11,10,10,10,9,9,9,8,7]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Track<\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track","targets":1},{"name":"artist","targets":2},{"name":"total_streams","targets":3}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ecaf15b519afb7157c4b" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ecaf15b519afb7157c4b">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Hammer","Gallop (feat. Evita Manji)","Boys (feat. Pharrell Williams) - Co-Ed Remix","Times Like These","What Was That","(I Got That) Boom Boom (feat. Ying Yang Twins)","Shapeshifter","Sushi","Snowman (Hannah Diamond Remix)","Azimuth"],["Lorde","SOPHIE","Britney Spears","Addison Rae","Lorde","Britney Spears","Lorde","FKA twigs","f5ve","Danny L Harle"],[12,11,10,10,10,9,9,9,8,7]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Track<\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track","targets":1},{"name":"artist","targets":2},{"name":"total_streams","targets":3}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -308,8 +319,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">options =</span> <span class="fu">list</span>(<span class="at">dom =</span> <span class="st">"t"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-6e9fdc7e8042ae0a2783" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-6e9fdc7e8042ae0a2783">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Lorde","Charli xcx","Addison Rae","Caroline Polachek","FKA twigs","Britney Spears","SOPHIE","ROSALÍA","Ethel Cain","LE SSERAFIM"],[68,56,50,47,47,45,35,23,20,19]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"artist","targets":1},{"name":"total_streams","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-c01be898f94521552fd1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c01be898f94521552fd1">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Lorde","Charli xcx","Addison Rae","Caroline Polachek","FKA twigs","Britney Spears","SOPHIE","ROSALÍA","Ethel Cain","LE SSERAFIM"],[68,56,50,47,47,45,35,23,20,19]],"container":"<table class=\"hover\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Artist<\/th>\n      <th>Total Streams<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"dom":"t","columnDefs":[{"className":"dt-right","targets":2},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"artist","targets":1},{"name":"total_streams","targets":2}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -338,8 +349,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="daily-streams-lineplot" class="level3">
-<h3 class="anchored" data-anchor-id="daily-streams-lineplot">Daily Streams Lineplot</h3>
+<section id="daily-streams" class="level3">
+<h3 class="anchored" data-anchor-id="daily-streams">Daily Streams</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -462,8 +473,8 @@ Total Streams: 4</code></pre>
 </div>
 </div>
 </section>
-<section id="highest-streaming-day-histogram" class="level3">
-<h3 class="anchored" data-anchor-id="highest-streaming-day-histogram">Highest Streaming Day Histogram</h3>
+<section id="highest-streaming-day" class="level3">
+<h3 class="anchored" data-anchor-id="highest-streaming-day">Highest Streaming Day</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -538,8 +549,8 @@ Total Streams: 4</code></pre>
 </section>
 <section id="end-of-year-wrapped-2025" class="level2">
 <h2 class="anchored" data-anchor-id="end-of-year-wrapped-2025">End-of-Year Wrapped 2025</h2>
-<section id="monthly-streams-lollipop-chart" class="level3">
-<h3 class="anchored" data-anchor-id="monthly-streams-lollipop-chart">Monthly Streams Lollipop Chart</h3>
+<section id="monthly-streams" class="level3">
+<h3 class="anchored" data-anchor-id="monthly-streams">Monthly Streams</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -591,25 +602,26 @@ Total Streams: 4</code></pre>
 </div>
 </div>
 </section>
-<section id="top-10-artists-treemap" class="level3">
-<h3 class="anchored" data-anchor-id="top-10-artists-treemap">Top 10 Artists Treemap</h3>
+<section id="top-10-artists-1" class="level3">
+<h3 class="anchored" data-anchor-id="top-10-artists-1">Top 10 Artists</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>artist_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#f6b23a"</span>, <span class="st">"#fcbacd"</span>, <span class="st">"#b64d3c"</span>, <span class="st">"#8ACE00"</span>, <span class="st">"#a7a4cb"</span>, <span class="st">"#b85dc6"</span>, <span class="st">"#2191c7"</span>, <span class="st">"#71a5b4"</span>, <span class="st">"#d51f2c"</span>, <span class="st">"#fa1bd5"</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>spotify_data <span class="sc">%&gt;%</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_streams =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_streams)) <span class="sc">%&gt;%</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">treemap</span>(<span class="at">index =</span> <span class="st">"artist"</span>, </span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>          <span class="at">vSize =</span> <span class="st">"total_streams"</span>,</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"index"</span>,</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> artist_colors,</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">fontcolor.labels =</span> <span class="st">"black"</span>,</span>
-<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">border.lwds =</span> <span class="dv">3</span>,</span>
-<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># artist color palette</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>artist_colors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#f6b23a"</span>, <span class="st">"#fcbacd"</span>, <span class="st">"#b64d3c"</span>, <span class="st">"#8ACE00"</span>, <span class="st">"#a7a4cb"</span>, <span class="st">"#b85dc6"</span>, <span class="st">"#2191c7"</span>, <span class="st">"#71a5b4"</span>, <span class="st">"#d51f2c"</span>, <span class="st">"#fa1bd5"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>spotify_data <span class="sc">%&gt;%</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_streams =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_streams)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">treemap</span>(<span class="at">index =</span> <span class="st">"artist"</span>, </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">vSize =</span> <span class="st">"total_streams"</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"index"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>          <span class="at">palette =</span> artist_colors,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>          <span class="at">fontcolor.labels =</span> <span class="st">"black"</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>          <span class="at">border.lwds =</span> <span class="dv">3</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="st">""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -619,6 +631,92 @@ Total Streams: 4</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="top-10-songs-1" class="level3">
+<h3 class="anchored" data-anchor-id="top-10-songs-1">Top 10 Songs</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>artist_palette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#f6b23a"</span>, <span class="st">"#b9b9b9"</span>, <span class="st">"#8ACE00"</span>,  <span class="st">"#b85dc6"</span>,  <span class="st">"#2191c7"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>spotify_data <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(track, artist) <span class="sc">%&gt;%</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_streams =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_streams)) <span class="sc">%&gt;%</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_streams, <span class="at">y =</span> <span class="fu">reorder</span>(track, total_streams), <span class="at">fill =</span> artist), <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">linewidth =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> total_streams, <span class="at">y =</span> <span class="fu">reorder</span>(track, total_streams), <span class="at">label =</span> total_streams), <span class="at">hjust =</span> <span class="fl">1.5</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>) <span class="sc">+</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">180</span>), <span class="at">n.breaks =</span> <span class="dv">7</span>) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">labels =</span> <span class="cf">function</span>(x) stringr<span class="sc">::</span><span class="fu">str_wrap</span>(x, <span class="at">width =</span> <span class="dv">30</span>)) <span class="sc">+</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> artist_palette) <span class="sc">+</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>) <span class="sc">+</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Total Streams"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Artist"</span>) <span class="sc">+</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>),</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>),</span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">5</span>, <span class="at">t =</span> <span class="dv">5</span>, <span class="at">unit =</span> <span class="st">"mm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="spotify_wrapped_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="song-of-the-summer" class="level3">
+<h3 class="anchored" data-anchor-id="song-of-the-summer">Song of the Summer</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>palette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#ff0000"</span>, <span class="st">"#ff6700"</span>, <span class="st">"#ffa700"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>spotify_data <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(date <span class="sc">&gt;=</span> <span class="st">"2025-06-20 00:00:00"</span> <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="st">"2025-11-22 23:59:59"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(track, artist) <span class="sc">%&gt;%</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">total_streams =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(total_streams)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">fraction =</span> total_streams<span class="sc">/</span><span class="fu">sum</span>(total_streams),</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">ymax =</span> <span class="fu">cumsum</span>(fraction),</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">ymin =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">head</span>(ymax, <span class="at">n =</span> <span class="sc">-</span><span class="dv">1</span>)),</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">position =</span> (ymax <span class="sc">+</span> ymin)<span class="sc">/</span><span class="dv">2</span>,</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">label =</span> total_streams) <span class="sc">%&gt;%</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">ymax =</span> ymax, <span class="at">ymin =</span> ymin, <span class="at">xmax =</span> <span class="dv">4</span>, <span class="at">xmin =</span> <span class="dv">3</span>, <span class="at">fill =</span> track), <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"y"</span>, <span class="at">start =</span> <span class="sc">-</span>pi<span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">y =</span> <span class="dv">2</span>, <span class="at">label =</span> <span class="st">"Lorde Summer"</span>, <span class="at">size =</span> <span class="dv">5</span>, <span class="at">family =</span> <span class="st">"Bowlby"</span>, <span class="at">fontface =</span> <span class="st">"bold"</span>) <span class="sc">+</span></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fl">3.5</span>, <span class="at">y =</span> position, <span class="at">label =</span> label), <span class="at">size =</span> <span class="dv">6</span>, <span class="at">color =</span> <span class="st">"black"</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>) <span class="sc">+</span></span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> palette) <span class="sc">+</span></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="fl">3.5</span>, <span class="st">"cm"</span>),</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"cm"</span>),</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"Manrope"</span>),</span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">5</span>, <span class="at">t =</span> <span class="dv">5</span>, <span class="at">unit =</span> <span class="st">"mm"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="spotify_wrapped_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="consistent-artists" class="level3">
+<h3 class="anchored" data-anchor-id="consistent-artists">Consistent Artists</h3>
 </section>
 </section>
 

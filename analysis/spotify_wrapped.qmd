@@ -18,10 +18,18 @@ library(shiny)
 library(ggstar)
 library(treemap)
 library(forcats)
+library(showtext)
 library(tidyverse)
 library(lubridate)
 library(googlesheets4)
 library(shinydashboard)
+
+# load google font
+font_add_google(name = "Manrope", family = "Manrope")
+font_add_google(name = "Bowlby One SC", family = "Bowlby")
+
+# turn on showtext
+showtext_auto()
 ```
 
 ## Read data
@@ -144,7 +152,7 @@ monthly_spotify_data[[i]] %>%
   cat()
 ```
 
-### Daily Streams Lineplot
+### Daily Streams
 ```{r}
 #| code-fold: true
 
@@ -244,7 +252,7 @@ monthly_spotify_data[[i]] %>%
 
 ```
 
-### Highest Streaming Day Histogram
+### Highest Streaming Day
 ```{r, message = FALSE, warning = FALSE}
 #| code-fold: true
 
@@ -308,7 +316,7 @@ monthly_spotify_data[[i]] %>%
 
 ## End-of-Year Wrapped 2025
 
-### Monthly Streams Lollipop Chart
+### Monthly Streams
 ```{r}
 #| code-fold: true
 
@@ -352,10 +360,11 @@ spotify_data %>%
         panel.grid = element_line(color = "lightgrey"))
 ```
 
-### Top 10 Artists Treemap
+### Top 10 Artists
 ```{r}
 #| code-fold: true
 
+# artist color palette
 artist_colors <- c("#f6b23a", "#fcbacd", "#b64d3c", "#8ACE00", "#a7a4cb", "#b85dc6", "#2191c7", "#71a5b4", "#d51f2c", "#fa1bd5")
 
 spotify_data %>%
@@ -371,3 +380,69 @@ spotify_data %>%
           border.lwds = 3,
           title = "")
 ```
+
+### Top 10 Songs
+```{r}
+#| code-fold: true
+
+artist_palette <- c("#f6b23a", "#b9b9b9", "#8ACE00",  "#b85dc6",  "#2191c7")
+
+spotify_data %>%
+  group_by(track, artist) %>%
+  summarize(total_streams = n(), .groups = "drop") %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 10) %>%
+  ggplot() +
+  geom_col(aes(x = total_streams, y = reorder(track, total_streams), fill = artist), color = "black", linewidth = 0.8) +
+  geom_text(aes(x = total_streams, y = reorder(track, total_streams), label = total_streams), hjust = 1.5, family = "Manrope") +
+  scale_x_continuous(expand = c(0, 0), limits = c(0, 180), n.breaks = 7) +
+  scale_y_discrete(expand = c(0, 0), labels = function(x) stringr::str_wrap(x, width = 30)) +
+  scale_fill_manual(values = artist_palette) +
+  coord_cartesian(clip = "off") +
+  labs(x = "Total Streams",
+       fill = "Artist") +
+  theme_bw() +
+  theme(axis.title.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.text = element_text(size = 10, family = "Manrope"),
+        axis.title = element_text(size = 12, family = "Manrope", face = "bold"),
+        legend.title = element_text(size = 12, hjust = 0.5, family = "Manrope", face = "bold"),
+        legend.text = element_text(size = 10, family = "Manrope"),
+        plot.margin = margin(b = 5, t = 5, unit = "mm"))
+```
+
+### Song of the Summer
+```{r}
+#| code-fold: true
+palette <- c("#ff0000", "#ff6700", "#ffa700")
+
+spotify_data %>%
+  filter(date >= "2025-06-20 00:00:00" & date <= "2025-11-22 23:59:59") %>%
+  group_by(track, artist) %>%
+  summarize(total_streams = n(), .groups = "drop") %>%
+  arrange(desc(total_streams)) %>%
+  slice_head(n = 3) %>%
+  mutate(fraction = total_streams/sum(total_streams),
+         ymax = cumsum(fraction),
+         ymin = c(0, head(ymax, n = -1)),
+         position = (ymax + ymin)/2,
+         label = total_streams) %>%
+  ggplot() +
+  geom_rect(aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 3, fill = track), color = "black") +
+  coord_polar(theta = "y", start = -pi/2) +
+  xlim(c(2, 4)) +
+  geom_text(x = 2, y = 2, label = "Lorde Summer", size = 5, family = "Bowlby", fontface = "bold") +
+  geom_text(aes(x = 3.5, y = position, label = label), size = 6, color = "black", family = "Manrope") +
+  scale_fill_manual(values = palette) +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.title.position = "top",
+        legend.text.position = "bottom",
+        legend.key.width = unit(3.5, "cm"),
+        legend.key.height = unit(1, "cm"),
+        legend.title = element_blank(),
+        legend.text = element_text(size = 12, family = "Manrope"),
+        plot.margin = margin(b = 5, t = 5, unit = "mm"))
+```
+
+### Consistent Artists
