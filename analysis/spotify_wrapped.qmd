@@ -16,6 +16,7 @@ library(hms)
 library(here)
 library(shiny)
 library(ggstar)
+library(ggimage)
 library(treemap)
 library(forcats)
 library(showtext)
@@ -412,8 +413,9 @@ spotify_data %>%
 ```
 
 ### Song of the Summer
-```{r}
+```{r, warning = FALSE}
 #| code-fold: true
+
 palette <- c("#ff0000", "#ff6700", "#ffa700")
 
 spotify_data %>%
@@ -428,11 +430,28 @@ spotify_data %>%
          position = (ymax + ymin)/2,
          label = total_streams) %>%
   ggplot() +
-  geom_rect(aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 3, fill = track), color = "black") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0, yend = 0), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.0625, yend = .0625), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.125, yend = .125), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.1875, yend = .1875), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.25, yend = 0.25), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.3125, yend = .3125), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.375, yend = .375), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.4375, yend = .4375), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.5, yend = .5), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.5625, yend = .5625), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.625, yend = .625), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.6875, yend = .6875), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.75, yend = .75), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.8125, yend = .8125), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.875, yend = .875), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.0625, yend = .0625), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.9375, yend = .9375), color = "#ffa700", linewidth = 1, lineend = "round") +
+  geom_rect(aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 3, fill = track), color = "black", linewidth = 1) +
   coord_polar(theta = "y", start = -pi/2) +
-  xlim(c(2, 4)) +
-  geom_text(x = 2, y = 2, label = "Lorde Summer", size = 5, family = "Bowlby", fontface = "bold") +
-  geom_text(aes(x = 3.5, y = position, label = label), size = 6, color = "black", family = "Manrope") +
+  xlim(c(2, 5.5)) +
+  geom_text(x = 2, y = 2, label = "Lorde Summer", size = 4, family = "Manrope") +
+  geom_text(aes(x = 3.5, y = position, label = label), size = 4, color = "black", family = "Manrope") +
   scale_fill_manual(values = palette) +
   theme_void() +
   theme(legend.position = "bottom",
