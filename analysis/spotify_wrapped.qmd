@@ -266,7 +266,7 @@ monthly_spotify_data[[i]] %>%
   ungroup() %>%
   filter(total_streams == max(total_streams)) %>%
   ggplot(aes(x = time)) +
-  geom_histogram(fill = "#6ca200", bins = 24) +
+  geom_histogram(fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
   scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
                limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
   scale_y_continuous(expand = c(0, 0)) +
@@ -498,3 +498,36 @@ spotify_data %>%
         plot.margin = margin(t = 0, r = 10, b = 5, l = 10, unit = "mm"),
         plot.background = element_rect(fill = "skyblue", color = "skyblue"))
 ```
+
+### Streaming Activity
+```{r}
+#| code-fold: true
+
+ggplot(data = spotify_data, aes(x = time)) +
+  geom_histogram(fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
+  scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
+               limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
+  scale_y_continuous(expand = c(0, 0)) +
+  coord_cartesian(clip = "off") +
+  geom_vline(xintercept = as_hms("05:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("18:00:00"), linetype = "dotted", linewidth = 1) +
+  geom_vline(xintercept = as_hms("22:00:00"), linetype = "dotted", linewidth = 1) +
+  annotate("text", x =  as_hms("04:30:00"), y = 1300, hjust = 1, label = "Morning", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("11:30:00"), y = 1300, hjust = 1, label = "Afternoon", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("17:30:00"), y = 1300, hjust = 1, label = "Evening", size = 5, fontface = "bold", angle = 90) +
+  annotate("text", x =  as_hms("21:30:00"), y = 1300, hjust = 1, label = "Night", size = 5, fontface = "bold", angle = 90) +
+  labs(x = "Time",
+       y = "Total Streams") +
+  theme_bw() +
+  theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+        axis.title.y = element_text(size = 14, margin = margin(r = 10)),
+        axis.text = element_text(size = 12),
+        axis.text.x = element_text(vjust = -0.5),
+        axis.ticks = element_line(color = "#303030"),
+        plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+        panel.border = element_blank(),
+        panel.background = element_rect(color = "lightgrey", fill = NA),
+        panel.grid = element_line(color = "lightgrey"))
+```
+

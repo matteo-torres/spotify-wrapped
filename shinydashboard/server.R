@@ -282,7 +282,7 @@ server <- function(input, output) {
       ungroup() %>%
       filter(total_streams == max(total_streams)) %>%
       ggplot(aes(x = time)) +
-      geom_histogram(fill = "#6ca200", bins = 24) +
+      geom_histogram(fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
       scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
                    limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
       scale_y_continuous(expand = c(0, 0)) +
