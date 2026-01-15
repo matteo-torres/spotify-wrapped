@@ -1,10 +1,12 @@
 ---
 title: "Spotify Wrapped"
 author: "Matteo Torres"
-format: html
-toc: true
+format: 
+    html:
+        embed-resources: true
 editor_options: 
   chunk_output_type: console
+toc: true
 ---
 
 ## Load packages
@@ -430,27 +432,59 @@ spotify_data %>%
          position = (ymax + ymin)/2,
          label = total_streams) %>%
   ggplot() +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0, yend = 0), color = "black", linewidth = 3, lineend = "round") +
   geom_segment(aes(x = 3, xend = 5.5, y = 0, yend = 0), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.0625, yend = .0625), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.125, yend = .125), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.1875, yend = .1875), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.0625, yend = 0.0625), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.0625, yend = 0.0625), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.125, yend = 0.125), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.125, yend = 0.125), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.1875, yend = 0.1875), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.1875, yend = 0.1875), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.25, yend = 0.25), color = "black", linewidth = 3, lineend = "round") +
   geom_segment(aes(x = 3, xend = 5.5, y = 0.25, yend = 0.25), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.3125, yend = .3125), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.375, yend = .375), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.4375, yend = .4375), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.5, yend = .5), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.5625, yend = .5625), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.625, yend = .625), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.6875, yend = .6875), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.75, yend = .75), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.8125, yend = .8125), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 5.5, y = 0.875, yend = .875), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.0625, yend = .0625), color = "#ffa700", linewidth = 1, lineend = "round") +
-  geom_segment(aes(x = 3, xend = 4.5, y = 0.9375, yend = .9375), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.3125, yend = 0.3125), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.3125, yend = 0.3125), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.375, yend = 0.375), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.375, yend = 0.375), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.4375, yend = 0.4375), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.4375, yend = 0.4375), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.5, yend = 0.5), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.5, yend = 0.5), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.5625, yend = 0.5625), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.5625, yend = 0.5625), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.625, yend = 0.625), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.625, yend = 0.625), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.6875, yend = 0.6875), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.6875, yend = 0.6875), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.75, yend = 0.75), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.75, yend = 0.75), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.8125, yend = 0.8125), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.8125, yend = 0.8125), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
+  geom_segment(aes(x = 4, xend = 5.5, y = 0.875, yend = 0.875), color = "black", linewidth = 3, lineend = "round") +
+  geom_segment(aes(x = 3, xend = 5.5, y = 0.875, yend = 0.875), color = "#ffa700", linewidth = 1, lineend = "round") +
+  
+  geom_segment(aes(x = 4, xend = 4.5, y = 0.9375, yend = 0.9375), color = "black", linewidth = 3, lineend = "square") +
+  geom_segment(aes(x = 3, xend = 4.5, y = 0.9375, yend = 0.9375), color = "#ffa700", linewidth = 1, lineend = "square") +
+  
   geom_rect(aes(ymax = ymax, ymin = ymin, xmax = 4, xmin = 3, fill = track), color = "black", linewidth = 1) +
   coord_polar(theta = "y", start = -pi/2) +
   xlim(c(2, 5.5)) +
-  geom_text(x = 2, y = 2, label = "Lorde Summer", size = 4, family = "Manrope") +
+  geom_text(x = 2, y = 2, label = "Lorde Summer", size = 3, family = "Manrope") +
   geom_text(aes(x = 3.5, y = position, label = label), size = 4, color = "black", family = "Manrope") +
   scale_fill_manual(values = palette) +
   theme_void() +
@@ -460,8 +494,7 @@ spotify_data %>%
         legend.key.width = unit(3.5, "cm"),
         legend.key.height = unit(1, "cm"),
         legend.title = element_blank(),
-        legend.text = element_text(size = 12, family = "Manrope"),
-        plot.margin = margin(b = 5, t = 5, unit = "mm"))
+        legend.text = element_text(size = 10, family = "Manrope"),
+        plot.margin = margin(t = 0, r = 10, b = 5, l = 10, unit = "mm"),
+        plot.background = element_rect(fill = "skyblue", color = "skyblue"))
 ```
-
-### Consistent Artists
