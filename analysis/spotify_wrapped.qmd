@@ -18,12 +18,12 @@ library(hms)
 library(here)
 library(shiny)
 library(ggstar)
-library(ggimage)
 library(treemap)
 library(forcats)
 library(showtext)
 library(tidyverse)
 library(lubridate)
+library(ggwordcloud)
 library(googlesheets4)
 library(shinydashboard)
 
@@ -352,8 +352,8 @@ spotify_data %>%
   labs(x = "Total Streams") +
   theme_bw() +
   theme(axis.title.y = element_blank(),
-        axis.title.x = element_text(size = 12, margin = margin(t = 10)),
-        axis.text = element_text(size = 12),
+        axis.title.x = element_text(size = 12, margin = margin(t = 10), family = "Manrope", face = "bold"),
+        axis.text = element_text(size = 12, family = "Manrope"),
         axis.ticks.y = element_blank(),
         axis.text.x = element_text(vjust = -0.5),
         axis.ticks = element_line(color = "#303030"),
@@ -384,11 +384,25 @@ spotify_data %>%
           title = "")
 ```
 
+### Artists Streamed
+```{r, warning = FALSE}
+#| code-fold: true
+
+spotify_data %>%
+  group_by(artist) %>%
+  summarize(total_streams = n()) %>%
+  arrange(desc(total_streams)) %>%
+  slice(-(1:10)) %>%
+  ggplot() +
+  geom_text_wordcloud(aes(label = artist, size = total_streams), shape = "circle") +
+  theme_void()
+```
+
 ### Top 10 Songs
 ```{r}
 #| code-fold: true
 
-artist_palette <- c("#f6b23a", "#b9b9b9", "#8ACE00",  "#b85dc6",  "#2191c7")
+artist_palette <- c("#f6b23a", "#b9b9b9", "#8ACE00", "#b85dc6", "#2191c7")
 
 spotify_data %>%
   group_by(track, artist) %>%
@@ -530,4 +544,3 @@ ggplot(data = spotify_data, aes(x = time)) +
         panel.background = element_rect(color = "lightgrey", fill = NA),
         panel.grid = element_line(color = "lightgrey"))
 ```
-

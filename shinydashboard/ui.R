@@ -80,7 +80,7 @@ body <- dashboardBody(
                                     
                                     # intro
                                     div(style = "font-family: Manrope; font-size: 18px;",
-                                        "Welcome to my Spotify Wrapped 2025 Shiny dashboard! This project aims to analyze my monthly streaming activity."),
+                                        "Welcome to my Spotify Wrapped 2025 Shiny dashboard! This project was created to analyze my monthly streaming activity."),
                                     
                                     # read more
                                     actionLink(style = "color: #74AC08; font-weight: bold; font-size: 18px; font-family: Manrope; padding-top: 10px; padding-bottom: 10px;",
@@ -135,17 +135,13 @@ body <- dashboardBody(
                          div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px;",
                              "Hall of Fame"),
                          
-                         # text
-                         div(style = "text-align: center; font-family: Manrope; font-size: 18px; padding-bottom: 10px;",
-                             "Click on an album to read my review!"),
-                         
                          # stars
                          div(style = "text-align: center; padding-bottom: 25px; color: #74AC08; -webkit-text-stroke: 1px black;",
-                             icon("star", class = "fa-solid fa-star fa-1x"),
-                             icon("star", class = "fa-solid fa-star fa-1x"),
-                             icon("star", class = "fa-solid fa-star fa-1x"),
-                             icon("star", class = "fa-solid fa-star fa-1x"),
-                             icon("star", class = "fa-solid fa-star fa-1x")),
+                             icon("star", class = "fa-solid fa-star fa-2x"),
+                             icon("star", class = "fa-solid fa-star fa-2x"),
+                             icon("star", class = "fa-solid fa-star fa-2x"),
+                             icon("star", class = "fa-solid fa-star fa-2x"),
+                             icon("star", class = "fa-solid fa-star fa-2x")),
                          
                          # slickR carousel images
                          slickROutput(outputId = "carousel_images_output", width = NULL)

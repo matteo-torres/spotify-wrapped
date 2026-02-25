@@ -11,26 +11,26 @@ server <- function(input, output) {
   output$carousel_images_output <- renderSlickR({
     
     # links
-    links <- c("reviews/Addison.html",
-               "reviews/Blackout.html",
-               "reviews/BRAT.html",
-               "reviews/Choke.html",
-               "reviews/Desire.html",
-               "reviews/EQ.html",
-               "reviews/EUSEXUA.html",
-               "reviews/HOT.html",
-               "reviews/Immunity.html",
-               "reviews/LUX.html",
-               "reviews/Melodrama.html",
-               "reviews/OIL.html",
-               "reviews/Pop2.html",
-               "reviews/Virgin.html")
+    #links <- c("reviews/Addison.html",
+               #"reviews/Blackout.html",
+               #"reviews/BRAT.html",
+               #"reviews/Choke.html",
+               #"reviews/Desire.html",
+               #"reviews/EQ.html",
+               #"reviews/EUSEXUA.html",
+               #"reviews/HOT.html",
+               #"reviews/Immunity.html",
+               #"reviews/LUX.html",
+               #"reviews/Melodrama.html",
+               #"reviews/OIL.html",
+               #"reviews/Pop2.html",
+               #"reviews/Virgin.html")
     
     # slickR carousel ----
     slickR(image_list(),
            height = "300px",
-           slideId = "Carousel",
-           objLinks = links) +
+           slideId = "Carousel") +#,
+           #objLinks = links) +
       settings(slidesToShow = 3,
                slidesToScroll = 1,
                centerMode = TRUE,
