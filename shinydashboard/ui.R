@@ -129,7 +129,8 @@ body <- dashboardBody(
                      
                      # hall of fame box
                      box(width = 12,
-                         style = "height: 500px; border: 4px solid #EAE8F5;",
+                         solidHeader = TRUE,
+                         style = "height: 500px; border: 4px solid #000000;",
                          
                          # title
                          div(style = "text-align: center; font-family: Bowlby+One+SC; font-weight: bold; font-size: 40px;",
