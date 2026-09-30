@@ -1,10 +1,10 @@
-#' Cleaning Function
+#' Data Cleaning Function
 #' 
 #' @description a reproducible function that allows for varying number of raw audio files from Spotify Extended Streaming History to be merged and cleaned
 #'
 #' @param raw_data JSON audio files from requested Spotify Extended Streaming History 
 #' 
-#' @details ensure the raw audio files are listed in chronological order (i.e., ts) in the function input
+#' @details ensure the raw audio files are listed in chronological order (i.e., yr, yr_1,...yr_n) in the function input
 #' 
 #' package dependencies
 #' @import here
@@ -16,7 +16,7 @@
 #' 
 #' @returns a merged and clean CSV file
 #'
-#' @examples clean_raw_data(df1, df2, df3,...dfX)
+#' @examples clean_raw_data(df1, df2, df3,...dfn)
 #' 
 clean_raw_data <- function(...) {
   
