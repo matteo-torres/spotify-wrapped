@@ -69,7 +69,8 @@ body <- dashboardBody(
                             
                             # welcome text box
                             box(width = 6,
-                                style = "height: 500px; border: 4px solid #EAE8F5; overflow: hidden;",
+                                solidHeader = TRUE,
+                                style = "height: 350px; border: 4px solid #000000; overflow: hidden;",
                                 
                                 # container
                                 div(style = "height: 100%; display: flex; flex-direction: column; padding: 10px;",
@@ -79,8 +80,8 @@ body <- dashboardBody(
                                         "Welcome"),
                                     
                                     # intro
-                                    div(style = "font-family: Manrope; font-size: 18px;",
-                                        "Welcome to my Spotify Wrapped 2025 Shiny dashboard! This project was created to analyze my monthly streaming activity."),
+                                    div(style = "font-family: Manrope; font-size: 18px; text-align: center;",
+                                        "Welcome to my Spotify Wrapped Shiny dashboard!"),
                                     
                                     # read more
                                     actionLink(style = "color: #74AC08; font-weight: bold; font-size: 18px; font-family: Manrope; padding-top: 10px; padding-bottom: 10px;",
@@ -96,20 +97,15 @@ body <- dashboardBody(
                                 
                             ), # END welcome text box
                             
-                            # spotify playlist
+                            # spotify widget
                             column(width = 6,
                                    
-                                   # spotify preview
-                                   tags$iframe(style="border-radius:12px", 
-                                               src="https://open.spotify.com/embed/playlist/7CvSIl6mwMGNTaCCpmAQH7?utm_source=generator&theme=0", 
-                                               width="100%", 
-                                               height="500px", 
-                                               frameBorder="0", 
-                                               allowfullscreen="", 
-                                               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture", 
-                                               loading="lazy")
+                                   # ipod
+                                   tags$div(style = "height: 350px; display: flex; justify-content: center; align-items: center;",
+                                            tags$img(src = "https://spotify-widgetify-3vfdnn5tx-matteo-4e5d.vercel.app/github?theme=ipod&color=FF69B4&style=light",
+                                                     alt = "Spotify Now Playing"))
                                    
-                            ), # END spotify playlist
+                            ), # END spotify widget
                             
                      ), # END column
                      
@@ -137,14 +133,19 @@ body <- dashboardBody(
                              "Hall of Fame"),
                          
                          # stars
-                         div(style = "text-align: center; padding-bottom: 25px; color: #74AC08; -webkit-text-stroke: 2px black;",
+                         div(style = "text-align: center; padding-bottom: 10px; color: #74AC08; -webkit-text-stroke: 2px black;",
                              icon("star", class = "fa-solid fa-star fa-2x"),
                              icon("star", class = "fa-solid fa-star fa-2x"),
                              icon("star", class = "fa-solid fa-star fa-2x"),
                              icon("star", class = "fa-solid fa-star fa-2x"),
                              icon("star", class = "fa-solid fa-star fa-2x")),
                          
+                         # text
+                         div(style = "text-align: center; font-family: Manrope; font-size: 18px; padding-bottom: 25px;",
+                             "Click an album and press play!"),
+                         
                          # slickR carousel images
+                         
                          slickROutput(outputId = "carousel_images_output", width = NULL)
                          
                      ), # END hall of fame box

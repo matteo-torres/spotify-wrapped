@@ -28,49 +28,24 @@ server <- function(input, output) {
                "https://open.spotify.com/album/0TIiUHKaFu347OToFlHjW2?si=0TPuavgyS5WZpgvrWqporw",
                "https://open.spotify.com/album/3SUEJULSGgBDG1j4GQhfYY?si=I4iQPP3RRCeubWOWCwNHYw",
                "https://open.spotify.com/album/2B87zXm9bOWvAJdkJBTpzF?si=CezgOgSsScO91bvKKS2RmQ",
+               "https://open.spotify.com/album/6jbtHi5R0jMXoliU2OS0lo?si=7912b923a6034fe6",
                "https://open.spotify.com/album/4bR7pd6TVS53l24qFV4wI8?si=P7SkfOh_QJW3BLwTQBLVsA",
                "https://open.spotify.com/album/6Rv8V4QeLgfEC01czqJsiI?si=Ipt8Nab-SKCESCgBgqpo3g",
                "https://open.spotify.com/album/2HIwUmdxEl7SeWa1ndH5wC?si=vdcf_WIFSRuU9RAUFNzhMw",
                "https://open.spotify.com/album/6cuNyrSmRjBeekioLdLkvI?si=8OnokBPbS4aGBlHkgA6jXQ",
                "https://open.spotify.com/album/0LPWPtswtDiBc9lD7mydld?si=MecfaHOUQEO5CUi7VyBIjg",
+               "https://open.spotify.com/album/0IojfyxFQMggZW9aNCeaV7?si=sby7QdfFQn6KTIgtWLnI8g",
                "https://open.spotify.com/album/5lgqJ8vLfDGbL1AFHgj2o1?si=lLSXRuaIQWWV834oNctj3w",
                "https://open.spotify.com/album/1qSS0T6Ffrb3rFVpizzOuk?si=hN00N4IHTMqzS30VcGinGw",
                "https://open.spotify.com/album/28bHj2enHkHVFLwuWmkwlQ?si=70fr6ZKUToyWvLP4Kac78g",
                "https://open.spotify.com/album/0mQPq9INcTC48siErksOrl?si=MScHK96ASWa9Q7Whjl5WYg")
     
-    captions <- c("Addison",
-                  "Age of the Exhibitionist",
-                  "Blackout",
-                  "Brat",
-                  "Choke Enough",
-                  "Cocktail",
-                  "Desire",
-                  "Detour",
-                  "EQ",
-                  "Eusexua",
-                  "Eusexua A",
-                  "Galore",
-                  "Heart",
-                  "HOT",
-                  "Immunity",
-                  "Lux",
-                  "Melodrama",
-                  "MFF",
-                  "Oil",
-                  "Pop 2",
-                  "Ray of Light",
-                  "Riviera",
-                  "Soft Rock",
-                  "U",
-                  "Virgin",
-                  "Wallsocket")
-    
     # slickR carousel ----
-    (slickR(image_list(),
+    slickR(image_list(),
            objLinks = links,
            height = "300px",
            slideId = "Carousel") +
-      settings(arrows = FALSE,
+      settings(arrows = TRUE,
                slidesToShow = 3,
                slidesToScroll = 1,
                centerMode = TRUE,
@@ -94,34 +69,7 @@ server <- function(input, output) {
                slidesToShow: 1,
                centerMode: true,
                centerPadding: '0px'}}
-               ]"))) %synch%
-      (slickR(captions,
-              slideType = "p") +
-      settings(arrows = FALSE,
-               slidesToShow = 3,
-               slidesToScroll = 1,
-               centerMode = TRUE,
-               centerPadding = "0px",
-               focusOnSelect = TRUE,
-               autoplay = TRUE,
-               autoplaySpeed = 5000,
-               responsive = JS("[
-               {breakpoint: 1024,
-               settings: {
-               slidesToShow: 3,
-               centerMode: true,
-               centerPadding: '0px'}},
-               {breakpoint: 768,
-               settings: {
-               slidesToShow: 1,
-               centerMode: true,
-               centerPadding: '40px'}},
-               {breakpoint: 480,
-               settings: {
-               slidesToShow: 1,
-               centerMode: true,
-               centerPadding: '0px'}}
-               ]")))
+               ]"))
     
   })
   
