@@ -97,15 +97,29 @@ body <- dashboardBody(
                                 
                             ), # END welcome text box
                             
+                            # mobile adjustments
+                            tags$style(HTML("
+                            @media (max-width: 768px) {
+                            
+                            .spotify-img {
+                            transform: scale(0.75);
+                            transform-origin: center center;
+                            }
+                            
+                            }")),
+                            
                             # spotify widget
                             column(width = 6,
                                    
                                    # ipod
-                                   tags$div(style = "height: 350px; display: flex; justify-content: center; align-items: center;",
-                                            tags$img(src = "https://spotify-widgetify-3vfdnn5tx-matteo-4e5d.vercel.app/github?theme=ipod&color=FF69B4&style=light",
-                                                     alt = "Spotify Now Playing"))
+                                   tags$div(
+                                     style = "height: 300px; display: flex; justify-content: center; align-items: center; overflow: visible;",
+                                     
+                                     tags$img(class = "spotify-img",
+                                              src = "https://spotify-widgetify-3vfdnn5tx-matteo-4e5d.vercel.app/github?theme=ipod&color=FF69B4&style=light",
+                                              alt = "Spotify Now Playing"))
                                    
-                            ), # END spotify widget
+                            ) # END spotify widget
                             
                      ), # END column
                      
@@ -342,13 +356,40 @@ body <- dashboardBody(
               # left column
               column(width = 5,
                      
+                     # mobile adjustments
+                     tags$style(HTML("
+                     @media (max-width: 768px) {
+                     
+                     .spotify-table-box {
+                     height: auto !important;
+                     overflow: visible !important;
+                     }
+                     
+                     .spotify-table-box .dataTables_wrapper {
+                     width: 100% !important;
+                     }
+                     
+                     .spotify-table-box table {
+                     width: 100% !important;
+                     font-size: 16px !important;
+                     }
+                     
+                     .spotify-table-box table td,
+                     .spotify-table-box table th {
+                     padding: 8px 5px !important;
+                     }
+                     
+                     }")),
+                     
                      # box
                      box(width = NULL,
                          solidHeader = TRUE,
+                         class = "spotify-table-box",
                          style = "border: 4px solid #000000; height: 670px;",
                          
                          # radioGroupButtons
-                         div(style = "display: flex; justify-content: center; text-align:center; padding-top: 10px; font-family: Manrope;",
+                         div(style = "display: flex; justify-content: center; text-align: center; padding-top: 10px; font-family: Manrope;",
+                             
                              radioGroupButtons(inputId = "table_input",
                                                choices = c("Top 10 Artists", "Top 10 Tracks"),
                                                selected = "Top 10 Artists",
@@ -356,9 +397,12 @@ body <- dashboardBody(
                                                label = "Choose An Option:")),
                          
                          # DT
-                         div(style = "font-family: Manrope; padding-top: 25px; padding-left: 10px; padding-right: 10px;", 
+                         div(style = "font-family: Manrope; padding-top: 25px; padding-left: 10px; padding-right: 10px;",
+                             
                              DTOutput(outputId = "table_output") %>%
-                               withSpinner(color = "black", type = 1, size = 1)),
+                               withSpinner(color = "black",
+                                           type = 1,
+                                           size = 1))
                          
                      ) # END box
                      
