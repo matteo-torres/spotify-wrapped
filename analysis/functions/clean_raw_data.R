@@ -17,7 +17,6 @@
 #' @returns a merged and clean CSV file
 #'
 #' @examples clean_raw_data(df1, df2, df3,...dfn)
-#' 
 clean_raw_data <- function(...) {
   
   clean_data <- bind_rows(list(...)) %>% # merge streaming history data frames

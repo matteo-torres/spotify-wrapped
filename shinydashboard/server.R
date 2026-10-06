@@ -73,94 +73,108 @@ server <- function(input, output) {
     
   })
   
-  # filter spotify data ----
-  monthly_spotify_data_df <- reactive({
+  # build monthly summary ----
+  monthly_summary <- reactive({
     
-    req(input$month_input)
-    monthly_spotify_data[[input$month_input]]
+    spotify_data %>%
+      group_by(month_num) %>%
+      summarize(streams = n(),
+                tracks = length(unique(track_name)),
+                artists = length(unique(artist_name)),
+                .groups = "drop") %>%
+      arrange(desc(streams)) %>%
+      mutate(rank = case_when(
+        row_number() == 1 ~ "1st",
+        row_number() == 2 ~ "2nd",
+        row_number() == 3 ~ "3rd",
+        TRUE ~ paste0(row_number(), "th")))
     
   })
   
   # build rank valueBox ----
   output$rank_output <- renderValueBox({
     
-    rank_df <- data.frame(month = seq_along(monthly_spotify_data),
-                          total_streams = sapply(monthly_spotify_data, nrow)) %>%
-      arrange(desc(total_streams)) %>%
-      mutate(rank = ifelse(row_number() == 1, "1st",
-                           ifelse(row_number() == 2, "2nd",
-                                  ifelse(row_number() == 3, "3rd",
-                                         paste0(row_number(), "th")))))
+    valueBox_df <- monthly_summary() %>%
+      filter(month_num == input$month_input)
     
-    valueBox(rank_df$rank[rank_df$month == input$month_input],
+    valueBox(valueBox_df$rank,
              subtitle = "Rank",
              color = "black")
     
   })
   
-  # build total streams valueBox ----
+  # build streams valueBox ----
   output$streams_output <- renderValueBox({
     
-    valueBox(monthly_spotify_data_df() %>%
-               summarize(total_streams = n()),
-             subtitle = "Total Streams",
+    valueBox_df <- monthly_summary() %>%
+      filter(month_num == input$month_input)
+    
+    valueBox(valueBox_df$streams,
+             subtitle = "Streams",
              color = "black")
     
   })
   
-  # build song valueBox ----
+  # build tracks valueBox ----
   output$track_output <- renderValueBox({
     
-    valueBox(monthly_spotify_data_df() %>%
-               distinct(track) %>%
-               summarize(total_songs= n()),
-             subtitle = "Songs",
+    valueBox_df <- monthly_summary() %>%
+      filter(month_num == input$month_input)
+    
+    valueBox(valueBox_df$tracks,
+             subtitle = "Tracks",
              color = "black")
     
   })
   
-  # build artist valueBox ----
+  
+  # build artists valueBox ----
   output$artist_output <- renderValueBox({
     
-    valueBox(monthly_spotify_data_df() %>%
-               distinct(artist) %>%
-               summarize(total_artists = n()),
+    valueBox_df <- monthly_summary() %>%
+      filter(month_num == input$month_input)
+    
+    valueBox(valueBox_df$artists,
              subtitle = "Artists",
              color = "black")
     
   })
   
-  # build table ----
+  # filter spotify data by month ----
+  monthly_spotify_data <- reactive({
+    
+    req(input$month_input)
+    
+    spotify_data %>%
+      filter(month_num == input$month_input)
+    
+  })
+  
+  # build DTs ----
   output$table_output <- renderDT({
     
     # DT
     if (input$table_input == "Top 10 Artists") {
-      monthly_spotify_data_df() %>%
-        group_by(artist) %>%
-        summarize(total_streams = n()) %>%
-        arrange(desc(total_streams)) %>%
-        ungroup() %>%
-        slice_head(n = 10) %>%
+      monthly_spotify_data() %>%
+        group_by(artist_name) %>%
+        summarize(streams = n(), .groups = "drop") %>%
+        slice_max(streams, n = 10, with_ties = FALSE) %>%
         datatable(colnames = c("ARTIST", "STREAMS"), 
                   class = "row-border",
                   selection = "none",
-                  options = list(dom = "t", 
-                                 scrollY = 250, 
+                  options = list(dom = "t",
                                  paging = FALSE,
                                  ordering = FALSE,
                                  columnDefs = list(list(className = "dt-left", targets = "_all"))))
-    } else if (input$table_input == "Top 10 Songs") {
-      monthly_spotify_data_df() %>%
-        group_by(track, artist) %>%
-        summarize(total_streams = n()) %>%
-        arrange(desc(total_streams)) %>%
-        ungroup() %>%
-        slice_head(n = 10) %>%
-        datatable(colnames = c("SONG", "ARTIST", "STREAMS"),
+    } else if (input$table_input == "Top 10 Tracks") {
+      monthly_spotify_data() %>%
+        group_by(track_name, artist_name) %>%
+        summarize(streams = n(), .groups = "drop") %>%
+        slice_max(streams, n = 10, with_ties = FALSE) %>%
+        datatable(colnames = c("TRACK", "ARTIST", "STREAMS"),
                   class = "row-border", 
                   selection = "none",
                   options = list(dom = "t", 
-                                 scrollY = 250, 
                                  paging = FALSE,
                                  ordering = FALSE,
                                  columnDefs = list(list(className = "dt-left", targets = "_all"))))
@@ -168,116 +182,129 @@ server <- function(input, output) {
     
   })
   
-  # top track from top artist message ----
+  # top track by top artist ----
   output$song_output <- renderUI({
     
-    message <- monthly_spotify_data_df() %>%
-      group_by(artist) %>%
-      summarize(total_streams = n()) %>%
-      arrange(desc(total_streams)) %>%
-      slice_head(n = 1) %>%
-      inner_join(monthly_spotify_data_df(), by = "artist") %>%
-      group_by(artist, track) %>%
-      summarize(total_streams = n(), .groups = "drop") %>%
-      arrange(desc(total_streams)) %>%
-      slice_head(n = 1) %>%
-      mutate(message = paste(paste0("<b>", '"', track, '"', "</b>"), "<br>",
-                             "by", artist)) %>%
-      pull(message) %>%
+    # song names and links
+    songs <- data.frame(track_name = c("Delicious (feat. Tommy Cash)",
+                                       "Backseat (feat. Carly Rae Jepsen)",
+                                       "Club classics",
+                                       "I Got It (feat. Brooke Candy, CupcakKe and Pabllo Vittar)",
+                                       "New York",
+                                       "Shapeshifter",
+                                       "take me by the hand",
+                                       "viscus (feat. FKA twigs)",
+                                       "Sushi",
+                                       "Hammer"),
+                        link = c('<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/740PUPhgdtWhxGYbQzM3do?utm_source=generator&theme=0&si=1b1292240ab34f29" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4HjtHraeKy5wA4DA9o92HZ?utm_source=generator&theme=0&si=663857dce9844f9f" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/7BoOmRrtNCbIT9yQ4xidk5?utm_source=generator&si=00548503b7f74d51" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/7tjQl5EC72HBJRAKxP3Bvm?utm_source=generator&theme=0&si=8f24b9254e2c4978" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0Q9kIg9o8w1XKepXWmDUmT?utm_source=generator&si=add7e3fa3d464095" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0vtgMfyOVM2Y97DcVVJw3m?utm_source=generator&si=9be9f633fd3f42ad" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/2u0lpoSMeShFB7ZB6ndDHJ?utm_source=generator&si=88080ee5b75d4aab" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/3q0pwG3XZoxDWbm4jzZddS?utm_source=generator&si=efc31dd6d0a940cd" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/0hHDMvLvoJh8gYbJIi182A?utm_source=generator&theme=0&si=57d1650e940b4287" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>',
+                                 '<iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/01U0X0ToQhK0AgvNUdyXQe?utm_source=generator&si=cc3c71d9b7a448b0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>'))
+    
+    monthly_spotify_data() %>%
+      group_by(artist_name) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      slice_max(streams, n = 1, with_ties = FALSE) %>%
+      inner_join(monthly_spotify_data(),
+                 by = "artist_name") %>%
+      group_by(artist_name, track_name) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      slice_max(streams, n = 1, with_ties = FALSE) %>%
+      inner_join(songs, by = "track_name") %>%
+      pull(link) %>%
       HTML()
     
   })
   
-  # peak day message ----
-  output$peak_output <- renderUI({
+  # top album ----
+  output$album_output <- renderUI({
     
-    monthly_spotify_data_df() %>%
-      group_by(month, day) %>%
-      summarize(total_streams = n(), .groups = "drop") %>%
-      arrange(desc(total_streams)) %>%
-      slice_head(n = 1) %>%
-      mutate(message = paste0("Highest Streaming Day: ", "<b>", month, "</b>", " ", "<b>", day, "</b>", "<br>",
-                              "Total Streams: ", "<b>", total_streams, "</b>")) %>%
-      pull(message) %>%
-      HTML()
+    # album images
+    albums <- data.frame(album_name = c("DeBÍ TiRAR MáS FOToS",
+                                        "EUSEXUA",
+                                        "HOT",
+                                        "Women In Music Pt. III",
+                                        "choke enough",
+                                        "Addison",
+                                        "Virgin",
+                                        "EUSEXUA Afterglow"),
+                         link = c("https://i.scdn.co/image/ab67616d0000b273bbd45c8d36e0e045ef640411",
+                                  "https://i.scdn.co/image/ab67616d0000b2731ea443f7a8512680563ce75d",
+                                  "https://i.scdn.co/image/ab67616d0000b2731fc0f4faafaa183cc70297e5",
+                                  "https://i.scdn.co/image/ab67616d0000b273d2631fe4c90aae7dec8fb0df",
+                                  "https://i.scdn.co/image/ab67616d0000b2730b68095c4016bdeabd032e89",
+                                  "https://i.scdn.co/image/ab67616d0000b273089511953028cbfeb095c593",
+                                  "https://i.scdn.co/image/ab67616d0000b27323d41bf736920a032e222a78",
+                                  "https://i.scdn.co/image/ab67616d0000b2736089c0f46246e83c090eb0ad"))
     
-  })
-  
-  # percent streams day message ----
-  output$pct_output <- renderUI({
+    # top album
+    top_album <- monthly_spotify_data() %>%
+      group_by(artist_name, album_name) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      slice_max(streams, n = 1, with_ties = FALSE) %>%
+      inner_join(albums, by = "album_name")
     
-    monthly_spotify_data_df() %>%
-      group_by(month, day) %>%
-      summarize(total_streams = n(), .groups = "drop") %>%
-      arrange(desc(total_streams)) %>%
-      summarize(month = month[1], day = day[1], pct = max(total_streams)/sum(total_streams)*100) %>%
-      mutate(message = paste0("The highest streaming day accounted for ", "<b>", signif(pct, digits = 3), "</b>", "<b>%</b>", " of streams.")) %>%
-      pull(message) %>%
-      HTML()
-    
-  })
-  
-  # low day message ----
-  output$low_output <- renderUI({
-    
-    monthly_spotify_data_df() %>%
-      group_by(month, day) %>%
-      summarize(total_streams = n(), .groups = "drop") %>%
-      filter(total_streams == min(total_streams)) %>%
-      mutate(days_list = paste0(month, " ", day, collapse = ", ")) %>%
-      slice_head(n = 1) %>%
-      mutate(message = paste0("Lowest Streaming Day(s): ", "<b>", days_list, "</b>", "<br>",
-                              "Total Streams: ", "<b>", total_streams, "</b>")) %>%
-      pull(message) %>%
-      HTML()
-    
-  })
-  
-  # average daily streams message ----
-  output$avg_output <- renderUI({
-    
-    message <- monthly_spotify_data_df() %>%
-      group_by(day) %>%
-      summarize(total_streams = n(), .groups = "drop") %>%
-      summarize(avg_daily_streams = mean(total_streams)) %>%
-      mutate(message = paste("Average Daily Streams:", "<b>", signif(avg_daily_streams, digits = 2), "</b>")) %>%
-      pull(message) %>%
-      HTML()
+    tags$div(style = "text-align: center;",
+             
+             tags$img(src = top_album$link,
+                      height = "300px",
+                      style = "border-radius: 8px;"),
+             
+             tags$h4(top_album$album_name),
+             tags$p(top_album$artist_name))
     
   })
   
   # build lineplot ----
   output$month_output <- renderPlot({
     
-    # max day
-    max <- monthly_spotify_data_df() %>%
+    max <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(total_streams = n()) %>%
-      slice_max(order_by = total_streams)
+      summarize(streams = n()) %>%
+      slice_max(order_by = streams)
     
-    # min day
-    min <- monthly_spotify_data_df() %>%
+    min <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(total_streams = n()) %>%
-      slice_min(order_by = total_streams)
+      summarize(streams = n()) %>%
+      slice_min(order_by = streams)
     
-    # plot monthly streaming habits
-    monthly_spotify_data_df() %>%
+    x_scale_max <- monthly_spotify_data() %>%
+      slice_head(n = 1) %>%
+      pull(datetime) %>%
+      days_in_month()
+    
+    avg <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(total_streams = n()) %>%
-      ggplot(aes(x = day, y = total_streams)) +
-      geom_line(color = "#6ca200", linewidth = 2, lineend = "round") +
-      geom_star(data = max, size = 5, fill = "black") +
-      geom_point(data = min, shape = 1, size = 5, stroke = 1.5) +
-      scale_x_continuous(expand = c(0, 0)) +
-      scale_y_continuous(expand = c(0, 0), limits = c(0, NA)) +
+      summarize(streams = n(), .groups = "drop") %>%
+      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      summarize(avg_streams = mean(streams))
+    
+    # daily streams line plot
+    monthly_spotify_data() %>%
+      group_by(day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      ggplot() +
+      geom_line(aes(x = day, y = streams), color = "#6ca200", linewidth = 2, lineend = "round") +
+      geom_hline(data = avg, aes(yintercept = avg_streams), linewidth = 1.5, lineend = "round", linetype = "dashed", color = "#FF69B4") +
+      geom_star(data = max, aes(x = day, y = streams), size = 6, fill = "#FFD700", color = "#FFD700") + 
+      geom_point(data = min, aes(x = day, y = streams), shape = 1, size = 6, stroke = 1.5, color = "#47a4cf") +
+      scale_x_continuous(expand = c(0, 0), limits = c(1, x_scale_max)) +
+      scale_y_continuous(expand = c(0,0), limits = c(0, NA)) +
       coord_cartesian(clip = "off") +
       labs(x = "Day",
-           y = "Total Streams") +
+           y = "Streams") +
       theme_bw() +
-      theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 14, margin = margin(r = 10)),
-            axis.text = element_text(size = 12),
+      theme(text = element_text(family = "Manrope"),
+            axis.title.x = element_text(size = 16, margin = margin(t = 10)),
+            axis.title.y = element_text(size = 16, margin = margin(r = 10)),
+            axis.text = element_text(size = 14),
             axis.text.x = element_text(vjust = -0.5),
             axis.ticks = element_line(color = "#303030"),
             plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
@@ -287,23 +314,131 @@ server <- function(input, output) {
     
   })
   
+  # highest streaming day
+  output$peak_output <- renderUI({
+    
+    monthly_spotify_data() %>%
+      group_by(month, day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      slice_max(order_by = streams) %>%
+      mutate(message = paste0("Highest Streaming Day: <b>", month, " ", day, "</b><br>",
+                              "Streams: <b>", streams, "</b>")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
+  # percentage of streams for highest streaming day
+  output$pct_output <- renderUI({
+    
+    monthly_spotify_data() %>%
+      group_by(day) %>%
+      summarize(streams = n()) %>%
+      summarize(pct = max(streams)/sum(streams)*100) %>%
+      mutate(message = paste0("The highest streaming day accounted for ", "<b>",
+                              signif(pct, digits = 3), "</b>", "<b>%</b>", " of total streams.")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
+  # lowest streaming day(s)
+  output$low_output <- renderUI({
+    
+    monthly_spotify_data() %>%
+      group_by(month, day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      slice_min(order_by = streams) %>%
+      summarize(message = paste0("Lowest Streaming Day(s): <b>", paste0(month, " ", day, collapse = ", "), "</b><br>",
+                                 "Stream(s): <b>", streams[1], "</b>")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
+  # quiet day(s)
+  output$quiet_output <- renderUI({
+    
+    x_scale_max <- monthly_spotify_data() %>%
+      slice_head(n = 1) %>%
+      pull(datetime) %>%
+      days_in_month()
+    
+    monthly_spotify_data() %>%
+      group_by(month, day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      fill(month, .direction = "downup") %>%
+      filter(streams == 0) %>%
+      summarize(message = paste0("Quiet Day(s): <b>", paste0(month, " ", day, collapse = ", "), "</b>")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
+  # streaming streak
+  output$streak_output <- renderUI({
+    
+    x_scale_max <- monthly_spotify_data() %>%
+      slice_head(n = 1) %>%
+      pull(datetime) %>%
+      days_in_month()
+    
+    monthly_spotify_data() %>%
+      group_by(month, day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      complete(day = 1:x_scale_max,
+               fill = list(streams = 0)) %>%
+      fill(month, .direction = "downup") %>%
+      mutate(streak_group = cumsum(streams == 0)) %>%
+      filter(streams > 0) %>%
+      count(streak_group) %>%
+      summarize(streak = max(n)) %>%
+      mutate(message = paste0("Longest Streaming Streak: <b>",
+                              streak," days</b>")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
+  # average streams per day
+  output$avg_output <- renderUI({
+    
+    x_scale_max <- monthly_spotify_data() %>%
+      slice_head(n = 1) %>%
+      pull(datetime) %>%
+      days_in_month()
+    
+    monthly_spotify_data() %>%
+      group_by(day) %>%
+      summarize(streams = n(), .groups = "drop") %>%
+      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      summarize(avg_streams = mean(streams)) %>%
+      mutate(message = paste("Average Streams:", "<b>", signif(avg_streams, digits = 2), "</b>")) %>%
+      pull(message) %>%
+      HTML()
+    
+  })
+  
   # build histogram ----
   output$day_output <- renderPlot({
     
-    # plot highest streaming activity
-    monthly_spotify_data_df() %>%
+    max <- monthly_spotify_data() %>%
       group_by(day) %>%
-      mutate(total_streams = n()) %>%
-      ungroup() %>%
-      filter(total_streams == max(total_streams)) %>%
-      ggplot(aes(x = time)) +
-      geom_histogram(fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
+      summarize(streams = n()) %>%
+      slice_max(order_by = streams)
+    
+    # highest streaming day histogram
+    monthly_spotify_data() %>%
+      filter(day == max$day) %>%
+      ggplot() +
+      geom_histogram(aes(x = time), fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
       scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
                    limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
       scale_y_continuous(expand = c(0, 0)) +
       coord_cartesian(clip = "off") +
       geom_vline(xintercept = as_hms("05:00:00"), linetype = "dotted", linewidth = 1) +
-      geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) +
+      geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) + 
       geom_vline(xintercept = as_hms("18:00:00"), linetype = "dotted", linewidth = 1) +
       geom_vline(xintercept = as_hms("22:00:00"), linetype = "dotted", linewidth = 1) +
       annotate("text", x =  as_hms("04:30:00"), y = 0, hjust = 0, label = "Morning", size = 5, fontface = "bold", angle = 90) +
@@ -311,11 +446,12 @@ server <- function(input, output) {
       annotate("text", x =  as_hms("17:30:00"), y = 0, hjust = 0, label = "Evening", size = 5, fontface = "bold", angle = 90) +
       annotate("text", x =  as_hms("21:30:00"), y = 0, hjust = 0, label = "Night", size = 5, fontface = "bold", angle = 90) +
       labs(x = "Time",
-           y = "Total Streams") +
+           y = "Streams") +
       theme_bw() +
-      theme(axis.title.x = element_text(size = 14, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 14, margin = margin(r = 10)),
-            axis.text = element_text(size = 12),
+      theme(text = element_text(family = "Manrope"),
+            axis.title.x = element_text(size = 16, margin = margin(t = 10)),
+            axis.title.y = element_text(size = 16, margin = margin(r = 10)),
+            axis.text = element_text(size = 14),
             axis.text.x = element_text(vjust = -0.5),
             axis.ticks = element_line(color = "#303030"),
             plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
@@ -328,23 +464,24 @@ server <- function(input, output) {
   # part of day images
   output$time_output <- renderUI({
     
-    # determine part of day
-    peak_time <- monthly_spotify_data_df() %>%
+    max <- monthly_spotify_data() %>%
       group_by(day) %>%
-      mutate(total_streams = n()) %>%
-      ungroup() %>%
-      filter(total_streams == max(total_streams)) %>%
+      summarize(streams = n()) %>%
+      slice_max(order_by = streams)
+    
+    # determine part of day
+    peak_time <- monthly_spotify_data() %>%
+      filter(day == max$day) %>%
       mutate(hour = hour(time),
-             time_of_day = case_when(
-               hour >= 5 & hour < 12 ~ "morning",
-               hour >= 12 & hour < 18 ~ "afternoon",
-               hour >= 18 & hour < 22 ~ "evening",
-               hour >= 22 | hour < 5 ~ "night"
-             )) %>% 
+             time_of_day = case_when(hour >= 5 & hour < 12 ~ "morning",
+                                     hour >= 12 & hour < 18 ~ "afternoon",
+                                     hour >= 18 & hour < 22 ~ "evening",
+                                     hour >= 22 | hour < 5 ~ "night")) %>%
       group_by(time_of_day) %>%
       summarize(total_streams = n()) %>%
       arrange(desc(total_streams)) %>%
       slice_head(n = 1) %>%
+      mutate(message = paste0("You mostly listened to music during the ", time_of_day,".")) %>%
       pull(time_of_day)
     
     # message

@@ -19,18 +19,10 @@ library(here)
 library(shiny)
 library(ggstar)
 library(jsonlite)
-library(showtext)
 library(htmltools)
 library(lubridate)
 library(tidyverse)
 library(shinydashboard)
-
-# load google font
-font_add_google(name = "Manrope", family = "Manrope")
-font_add_google(name = "Bowlby One SC", family = "Bowlby")
-
-# turn on showtext
-showtext_auto()
 ```
 
 ## Read Data
@@ -55,8 +47,9 @@ i <- 12
 
 ### ValueBoxes
 ```{r}
-# valueBox df
+#| code-fold: true
 
+# valueBox df
 valueBox_df <- spotify_data_2025 %>%
   group_by(month_num) %>%
   summarize(streams = n(),
@@ -77,53 +70,37 @@ valueBox_df <- spotify_data_2025 %>%
 #| code-fold: true
 
 # streams valueBox
-tags$div(
-  
-  style = ("background-color: black !important; color: white !important;"),
-  valueBox(value = valueBox_df$streams[valueBox_df$month_num == i],
-           subtitle = "Streams")
-  
-)
+tags$div(style = ("background-color: black !important; color: white !important;"),
+         valueBox(value = valueBox_df$streams[valueBox_df$month_num == i],
+                  subtitle = "Streams"))
 ```
 
 ```{r}
 #| code-fold: true
 
 # tracks valueBox
-tags$div(
-  
-  style = ("background-color: black !important; color: white !important;"),
-  valueBox(value = valueBox_df$tracks[valueBox_df$month_num == i],
-           subtitle = "Tracks")
-  
-)
+tags$div(style = ("background-color: black !important; color: white !important;"),
+         valueBox(value = valueBox_df$tracks[valueBox_df$month_num == i],
+                  subtitle = "Tracks"))
 ```
 
 ```{r}
 #| code-fold: true
 
 # artists valueBox
-tags$div(
-  
-  style = ("background-color: black !important; color: white !important;"),
-  valueBox(value = valueBox_df$artists[valueBox_df$month_num == i],
-           subtitle = "Artists")
-  
-)
+tags$div(style = ("background-color: black !important; color: white !important;"),
+         valueBox(value = valueBox_df$artists[valueBox_df$month_num == i],
+                  subtitle = "Artists"))
 ```
 
 ```{r}
 #| code-fold: true
 
 # rank valueBox
-tags$div(
-  
-  style = paste0("background-color: ", valueBox_df$color[valueBox_df$month_num == i], " !important; color: white !important;"),
-  valueBox(value = valueBox_df$rank[valueBox_df$month_num == i],
-           subtitle = "Place",
-           icon = icon("trophy"))
-  
-)
+tags$div(style = paste0("background-color: ", valueBox_df$color[valueBox_df$month_num == i], " !important; color: white !important;"),
+         valueBox(value = valueBox_df$rank[valueBox_df$month_num == i],
+                  subtitle = "Place",
+                  icon = icon("trophy")))
 ```
 
 ### DTs
@@ -159,6 +136,7 @@ spotify_data_2025 %>%
 ```{r}
 #| code-fold: true
 
+# song names and links
 songs <- data.frame(track_name = c("Delicious (feat. Tommy Cash)",
                                    "Backseat (feat. Carly Rae Jepsen)",
                                    "Club classics",
@@ -226,18 +204,14 @@ top_album <- spotify_data_2025 %>%
   slice_max(streams, n = 1, with_ties = FALSE) %>%
   inner_join(albums, by = "album_name")
 
-tags$div(
-  
-  style = "text-align: center;",
-  
-  tags$img(src = top_album$link,
-           width = "350px",
-           style = "border-radius: 8px;"),
-  
-  tags$h3(top_album$album_name),
-  tags$p(top_album$artist_name)
-  
-)
+tags$div(style = "text-align: center;",
+         
+         tags$img(src = top_album$link,
+                  width = "350px",
+                  style = "border-radius: 8px;"),
+         
+         tags$h3(top_album$album_name),
+         tags$p(top_album$artist_name))
 ```
 
 ### Line Plot
@@ -277,7 +251,7 @@ spotify_data_2025 %>%
   complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
   ggplot() +
   geom_line(aes(x = day, y = streams), color = "#6ca200", linewidth = 2, lineend = "round") +
-  geom_hline(data = avg, aes(yintercept = avg_streams), linewidth = 2, lineend = "round", linetype = "dashed", color = "red") +
+  geom_hline(data = avg, aes(yintercept = avg_streams), linewidth = 1.5, lineend = "round", linetype = "dashed", color = "#FF69B4") +
   geom_star(data = max, aes(x = day, y = streams), size = 5, fill = "black") + 
   geom_point(data = min, aes(x = day, y = streams), shape = 1, size = 5, stroke = 1.5) +
   scale_x_continuous(expand = c(0, 0), limits = c(1, x_scale_max)) +
@@ -362,6 +336,27 @@ spotify_data_2025 %>%
 ```{r}
 #| code-fold: true
 
+# streaming streak
+spotify_data_2025 %>%
+  filter(month_num == i) %>%
+  group_by(month, day) %>%
+  summarize(streams = n(), .groups = "drop") %>%
+  complete(day = 1:x_scale_max,
+           fill = list(streams = 0)) %>%
+  fill(month, .direction = "downup") %>%
+  mutate(streak_group = cumsum(streams == 0)) %>%
+  filter(streams > 0) %>%
+  count(streak_group) %>%
+  summarize(streak = max(n)) %>%
+  mutate(message = paste0("Longest Streaming Streak: <b>",
+                          streak," days</b>")) %>%
+  pull(message) %>%
+  HTML()
+```
+
+```{r}
+#| code-fold: true
+
 # average streams per day
 spotify_data_2025 %>%
   filter(month_num == i) %>%
@@ -412,7 +407,7 @@ spotify_data_2025 %>%
 ```{r}
 #| code-fold: true
 
-# time of day
+# active tod
 spotify_data_2025 %>%
   filter(month_num == i, day == max$day) %>%
    mutate(hour = hour(time),

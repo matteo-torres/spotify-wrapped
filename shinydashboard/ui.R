@@ -278,184 +278,55 @@ body <- dashboardBody(
               # left buffer column
               column(width = 1),
               
-              # first box
+              # box
               box(width = 10,
-                  style = "border: 4px solid #EAE8F5;",
+                  solidHeader = TRUE,
+                  style = "border: 4px solid #000000;",
                   
                   # fluidRow
                   fluidRow(
                     
-                    # left-hand column
-                    column(width = 4,
-                           style = "padding-top: 15px;",
+                    # first column
+                    column(width = 3,
+                           style = "padding-top: 20px;",
                            
                            # rank valueBox
-                           div(style = "padding: 20px;",
-                               valueBoxOutput("rank_output",
-                                              width = 12)),
+                           valueBoxOutput("rank_output",
+                                          width = 12)
                            
-                           # total streams valueBox
-                           div(style = "padding: 20px;",
-                               valueBoxOutput("streams_output",
-                                              width = 12)),
-                           
-                           # song valueBox
-                           div(style = "padding: 20px;",
-                               valueBoxOutput("track_output",
-                                              width = 12)),
-                           
-                           # artist valueBox
-                           div(style = "padding: 20px;",
-                               valueBoxOutput("artist_output",
-                                              width = 12))
-                           
-                    ), # END left-hand column
+                    ), # END first column
                     
-                    # right-hand column
-                    column(width = 8,
+                    # second column
+                    column(width = 3,
+                           style = "padding-top: 20px;",
                            
-                           # first fluidRow
-                           fluidRow(
-                             
-                             # left buffer column
-                             column(width = 1),
-                             
-                             # column
-                             column(width = 10,
-                                    
-                                    # radioGroupButtons
-                                    div(style = "display: flex; justify-content: center; text-align:center; padding-top: 10px; font-family: Manrope;",
-                                        radioGroupButtons(inputId = "table_input",
-                                                          choices = c("Top 10 Artists", "Top 10 Songs"),
-                                                          selected = "Top 10 Artists",
-                                                          size = "normal",
-                                                          label = "Choose An Option:")),
-                                    
-                                    # DT
-                                    div(style = "font-family: Manrope; padding-top: 10px; padding-bottom: 25px;", 
-                                        DTOutput(outputId = "table_output") %>%
-                                          withSpinner(color = "black", type = 1, size = 1))
-                                    
-                             ), # END column
-                             
-                             # right buffer column
-                             column(width = 1)
-                             
-                           ), # END first fluidRow
+                           # streams valueBox
+                           valueBoxOutput("streams_output",
+                                          width = 12)
                            
-                           # second fluidRow
-                           fluidRow(
-                             
-                             # left buffer column
-                             column(width = 1),
-                             
-                             # top song box
-                             box(width = 10,
-                                 style = "border: 3px solid #EAE8F5;; text-align: center;",
-                                 
-                                 # title
-                                 div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 20px; color: #6ca200; margin-bottom: 10px;",
-                                     "Top Song by Top Artist"),
-                                 
-                                 # output
-                                 div(style = "font-family: Manrope; font-size: 15px;",
-                                     uiOutput("song_output"))
-                                 
-                             ), # END top song box
-                             
-                             # right buffer column
-                             column(width = 1)
-                             
-                           ), # END second fluidRow
+                    ), # END second column
+                    
+                    # third column
+                    column(width = 3,
+                           style = "padding-top: 20px;",
                            
-                    ) # END right-hand column
+                           valueBoxOutput("track_output",
+                                          width = 12)
+                           
+                    ), # END third column
+                    
+                    # fourth column
+                    column(width = 3,
+                           style = "padding-top: 20px;",
+                           
+                           valueBoxOutput("artist_output",
+                                          width = 12)
+                           
+                    ), # END fourth column
                     
                   ) # END fluidRow
                   
-              ), # END first box
-              
-              # right buffer column
-              column(width = 1)
-              
-            ), # END second fluidRow
-            
-            # third fluidRow
-            fluidRow(
-              
-              # left buffer column
-              column(width = 1),
-              
-              # second box
-              box(width = 10,
-                  style = "border: 4px solid #EAE8F5;",
-                  
-                  # fluidRow
-                  fluidRow(
-                    
-                    # left-hand column
-                    column(width = 5,
-                           
-                           # mobile adjustments
-                           tags$style(HTML("
-                           @media (max-width: 768px) {
-                           
-                           .key-findings-container {
-                           font-size: 13px !important;
-                           }
-                           
-                           
-                           .key-findings-container > div {
-                           gap: 0px !important;
-                           }
-                           
-                           }")),
-                           
-                           # title
-                           div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 30px; color: #6ca200; text-align: center; margin-top: 10px; margin-bottom: 30px;",
-                               "Key Findings"),
-                           
-                           # key findings
-                           div(class = "key-findings-container",
-                               style = "display: flex; flex-direction: column; gap: 50px; font-family: Manrope; font-size: 15px;",
-                               
-                               # highest streaming day
-                               div(style = "display: flex; align-items: center; gap: 15px;",
-                                   div(style = "width: 50px; text-align: center;", icon("star", class = "fa-solid fa-2x")),
-                                   uiOutput("peak_output") ),
-                               
-                               # percent
-                               div(style = "display: flex; align-items: center; gap: 15px;",
-                                   div(style = "width: 50px; text-align: center; color: #6ca200;", icon("percent", class = "fa-2x")),
-                                   uiOutput("pct_output")),
-                               
-                               # lowest streaming day(s)
-                               div(style = "display: flex; align-items: center; gap: 15px;",
-                                   div(style = "width: 50px; text-align: center;", icon("circle", class = "fa-2x")),
-                                   uiOutput("low_output")),
-                               
-                               # average daily streams
-                               div(style = "display: flex; align-items: center; gap: 15px;",
-                                   div(style = "width: 50px; text-align: center; color: #6ca200;", icon("headphones", class = "fa-2x")),
-                                   uiOutput("avg_output")))
-                           
-                    ), # END left-hand column
-                    
-                    # right-hand column
-                    column(width = 7,
-                           
-                           # title
-                           div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 30px; color: #6ca200; text-align: center; margin-top: 10px;",
-                               "Daily Streams"),
-                           
-                           # daily streams lineplot
-                           plotOutput(outputId = "month_output") %>%
-                             withSpinner(color = "black", type = 1, size = 1)
-                           
-                    ) # END right-hand column
-                    
-                  ) # END fluidRow
-                  
-              ), # END second box
+              ), #END box
               
               # right buffer column
               column(width = 1)
@@ -468,31 +339,188 @@ body <- dashboardBody(
               # left buffer column
               column(width = 1),
               
-              # third box
+              # left column
+              column(width = 5,
+                     
+                     # box
+                     box(width = NULL,
+                         solidHeader = TRUE,
+                         style = "border: 4px solid #000000; height: 670px;",
+                         
+                         # radioGroupButtons
+                         div(style = "display: flex; justify-content: center; text-align:center; padding-top: 10px; font-family: Manrope;",
+                             radioGroupButtons(inputId = "table_input",
+                                               choices = c("Top 10 Artists", "Top 10 Tracks"),
+                                               selected = "Top 10 Artists",
+                                               size = "normal",
+                                               label = "Choose An Option:")),
+                         
+                         # DT
+                         div(style = "font-family: Manrope; padding-top: 25px; padding-left: 10px; padding-right: 10px;", 
+                             DTOutput(outputId = "table_output") %>%
+                               withSpinner(color = "black", type = 1, size = 1)),
+                         
+                     ) # END box
+                     
+              ), # END left column
+              
+              # right column
+              column(width = 5,
+                     
+                     # box
+                     box(width = NULL,
+                         solidHeader = TRUE,
+                         style = "border: 4px solid #000000;",
+                         
+                         # title
+                         div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
+                             "Top Track by Top Artist"),
+                         
+                         uiOutput("song_output")
+                         
+                     ), # END box
+                     
+                     # box
+                     box(width = NULL,
+                         solidHeader = TRUE,
+                         style = "border: 4px solid #000000;",
+                         
+                         # title
+                         div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
+                             "Top Album"),
+                         
+                         uiOutput("album_output")
+                         
+                     ) # END box
+                     
+              ), # END right column
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END fourth fluidRow
+            
+            # fifth fluidRow
+            fluidRow(
+              
+              # left column
+              column(width = 1),
+              
+              # box
               box(width = 10,
-                  style = "border: 4px solid #EAE8F5;",
+                  solidHeader = TRUE,
+                  style = "border: 4px solid #000000;",
+                  
+                  # title
+                  div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
+                      "Daily Streams"),
+                  
+                  # daily streams lineplot
+                  plotOutput(outputId = "month_output") %>%
+                    withSpinner(color = "black", type = 1, size = 1)
+                  
+              ), # END box
+              
+              # right column
+              column(width = 1)
+              
+            ), # END fifth fluidRow
+            
+            # sixth fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # box
+              box(width = 10,
+                  solidHeader = TRUE,
+                  style = "border: 4px solid #000000;",
                   
                   # fluidRow
                   fluidRow(
                     
-                    # left-hand column
-                    column(width = 7,
-                           
-                           # title
-                           div(style = "font-family: Bowlby+One+SC; font-weight: bold; font-size: 30px; color: #6ca200; text-align: center; margin-top: 10px;",
-                               "Highest Streaming Day"),
-                           
-                           # highest streaming day histogram
-                           plotOutput(outputId = "day_output") %>%
-                             withSpinner(color = "black", type = 1, size = 1)
-                           
-                    ), # END left-hand column
+                    # title
+                    div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 25px;",
+                        "Key Findings"),
                     
-                    # right-hand column
-                    column(width = 5,
+                    # left column
+                    column(width = 6,
                            
-                           # mobile adjustments
-                           tags$style(HTML("
+                           # highest streaming day
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center; color: #FFD700;", icon("star", class = "fa-solid fa-2x")),
+                               uiOutput("peak_output")),
+                           
+                           # percentage of streams for highest streaming day
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center; color: #AAA9AD;", icon("percent", class = "fa-2x")),
+                               uiOutput("pct_output")),
+                           
+                           # streaming streak
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center; color: #CF1920;", icon("fire-flame-curved", class = "fa-2x")),
+                               uiOutput("streak_output"))
+                           
+                    ), # END left column
+                    
+                    # right column
+                    column(width = 6,
+                           
+                           # lowest streaming day(s)
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center; color: #47a4cf;", icon("circle", class = "fa-2x")),
+                               uiOutput("low_output")),
+                           
+                           # quiet day(s)
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center;", icon("play", class = "fa-2x")),
+                               uiOutput("quiet_output")),
+                           
+                           # average streams per day
+                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               div(style = "width: 50px; text-align: center; color: #FF69B4;", icon("headphones", class = "fa-2x")),
+                               uiOutput("avg_output"))
+                           
+                    ) # END right column
+                    
+                  ) # END fluidRow
+                  
+              ), # END box
+              
+              # right buffer column
+              column(width = 1)
+              
+            ), # END sixth fluiRow
+            
+            # seventh fluidRow
+            fluidRow(
+              
+              # left buffer column
+              column(width = 1),
+              
+              # box
+              box(width = 6,
+                  solidHeader = TRUE,
+                  style = "border: 4px solid #000000; height: 500px;",
+                  
+                  # title
+                  div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 25px;",
+                      "Highest Streaming Day"),
+                  
+                  # highest streaming day histogram
+                  plotOutput(outputId = "day_output") %>%
+                    withSpinner(color = "black", type = 1, size = 1)
+                  
+              ), # END box
+              
+              # box
+              box(width = 4,
+                  solidHeader = TRUE,
+                  style = "border: 4px solid #000000; height: 500px;",
+                  
+                  # mobile adjustments
+                  tags$style(HTML("
                            @media (max-width: 768px) {
                            
                            .lorde-img{
@@ -500,24 +528,20 @@ body <- dashboardBody(
                            }
                            
                            }")),
-                           
-                           # lorde output
-                           div(style = "font-family: Manrope; font-size: 15px; text-align:center; padding-top: 10px; padding-bottom: 10px; margin-top: 25px;",
-                               uiOutput(outputId = "time_output"))
-                           
-                    ) # END right-hand column
-                    
-                  ) # END fluidRow
                   
-              ), # END third box
+                  # lorde output
+                  div(style = "font-family: Manrope; font-size: 14px; text-align:center; padding-top: 10px; padding-bottom: 10px; margin-top: 25px;",
+                      uiOutput(outputId = "time_output"))
+                  
+              ), # END box
               
               # right buffer column
               column(width = 1)
               
-            ) # END fourth fluidRow
+            ) # END seventh fluidRow
             
     ) # END monthly tabItem
-  
+    
   ) # END tabItems
   
 ) # END dashboardBody
