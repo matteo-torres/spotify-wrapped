@@ -264,50 +264,78 @@ server <- function(input, output) {
   # build lineplot ----
   output$month_output <- renderPlot({
     
+    # highest streaming day
     max <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(streams = n()) %>%
-      slice_max(order_by = streams)
+      summarize(streams = n(),
+                .groups = "drop") %>%
+      slice_max(order_by = streams,
+                with_ties = TRUE)
     
+    # lowest streaming day
     min <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(streams = n()) %>%
-      slice_min(order_by = streams)
+      summarize(streams = n(),
+                .groups = "drop") %>%
+      slice_min(order_by = streams,
+                with_ties = TRUE)
     
+    # number of days in selected month
     x_scale_max <- monthly_spotify_data() %>%
       slice_head(n = 1) %>%
       pull(datetime) %>%
       days_in_month()
     
+    # average streams per day
     avg <- monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(streams = n(), .groups = "drop") %>%
-      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      summarize(streams = n(),
+                .groups = "drop") %>%
+      complete(day = 1:x_scale_max,
+               fill = list(streams = 0)) %>%
       summarize(avg_streams = mean(streams))
     
     # daily streams line plot
     monthly_spotify_data() %>%
       group_by(day) %>%
-      summarize(streams = n(), .groups = "drop") %>%
-      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      summarize(streams = n(),
+                .groups = "drop") %>%
+      complete(day = 1:x_scale_max,
+               fill = list(streams = 0)) %>%
       ggplot() +
-      geom_line(aes(x = day, y = streams), color = "#6ca200", linewidth = 2, lineend = "round") +
-      geom_hline(data = avg, aes(yintercept = avg_streams), linewidth = 1.5, lineend = "round", linetype = "dashed", color = "#FF69B4") +
-      geom_star(data = max, aes(x = day, y = streams), size = 6, fill = "#FFD700", color = "#FFD700") + 
-      geom_point(data = min, aes(x = day, y = streams), shape = 1, size = 6, stroke = 1.5, color = "#47a4cf") +
-      scale_x_continuous(expand = c(0, 0), limits = c(1, x_scale_max)) +
-      scale_y_continuous(expand = c(0,0), limits = c(0, NA)) +
+      geom_line(aes(x = day, y = streams),
+                color = "#6ca200",
+                linewidth = 1.5,
+                lineend = "round") +
+      geom_hline(data = avg, aes(yintercept = avg_streams),
+                 linewidth = 1.2,
+                 lineend = "round",
+                 linetype = "dashed",
+                 color = "#FF69B4") +
+      geom_star(data = max, aes(x = day, y = streams),
+                size = 5,
+                fill = "#FFD700",
+                color = "#FFD700") +
+      geom_point(data = min, aes(x = day, y = streams),
+                 shape = 1,
+                 size = 5,
+                 stroke = 1.5,
+                 color = "#47a4cf") +
+      scale_x_continuous(expand = c(0, 0),
+                         limits = c(1, x_scale_max)) +
+      scale_y_continuous(expand = c(0, 0),
+                         limits = c(0, NA)) +
       coord_cartesian(clip = "off") +
       labs(x = "Day",
            y = "Streams") +
       theme_bw() +
       theme(text = element_text(family = "Manrope"),
-            axis.title.x = element_text(size = 16, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 16, margin = margin(r = 10)),
-            axis.text = element_text(size = 14),
+            axis.title.x = element_text(size = 14, margin = margin(t = 8)),
+            axis.title.y = element_text(size = 14, margin = margin(r = 8)),
+            axis.text = element_text(size = 11),
             axis.text.x = element_text(vjust = -0.5),
             axis.ticks = element_line(color = "#303030"),
-            plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+            plot.margin = margin(t = 0.3, r = 0.5, b = 0.3, l = 0.3, "cm"),
             panel.border = element_blank(),
             panel.background = element_rect(color = "lightgrey", fill = NA),
             panel.grid = element_line(color = "lightgrey"))
@@ -364,15 +392,27 @@ server <- function(input, output) {
       pull(datetime) %>%
       days_in_month()
     
-    monthly_spotify_data() %>%
+    quiet_days <- monthly_spotify_data() %>%
       group_by(month, day) %>%
-      summarize(streams = n(), .groups = "drop") %>%
-      complete(day = 1:x_scale_max, fill = list(streams = 0)) %>%
+      summarize(streams = n(),
+                .groups = "drop") %>%
+      complete(day = 1:x_scale_max,
+               fill = list(streams = 0)) %>%
       fill(month, .direction = "downup") %>%
-      filter(streams == 0) %>%
-      summarize(message = paste0("Quiet Day(s): <b>", paste0(month, " ", day, collapse = ", "), "</b>")) %>%
-      pull(message) %>%
-      HTML()
+      filter(streams == 0)
+    
+    if (nrow(quiet_days) == 0) {
+      
+      HTML("Quiet Day(s): <b>None</b>")
+      
+    } else {
+      
+      quiet_days %>%
+        summarize( message = paste0("Quiet Day(s): <b>", paste0(month, " ", day, collapse = ", "), "</b>")) %>%
+        pull(message) %>%
+        HTML()
+      
+    }
     
   })
   
@@ -419,26 +459,28 @@ server <- function(input, output) {
       HTML()
     
   })
-  
+
   # build histogram ----
   output$day_output <- renderPlot({
-    
+
     max <- monthly_spotify_data() %>%
       group_by(day) %>%
       summarize(streams = n()) %>%
       slice_max(order_by = streams)
-    
+
     # highest streaming day histogram
     monthly_spotify_data() %>%
       filter(day == max$day) %>%
       ggplot() +
       geom_histogram(aes(x = time), fill = "#6ca200", bins = 24, boundary = 0, color = "black") +
-      scale_x_time(expand = c(0, 0), labels = scales::time_format("%H:%M"),
-                   limits = c(as_hms("00:00:00"), as_hms("24:00:00"))) +
+      scale_x_time(breaks = as_hms(c("05:00:00", "12:00:00", "18:00:00", "22:00:00")),
+                   labels = scales::time_format("%H:%M"),
+                   limits = c(as_hms("00:00:00"), as_hms("24:00:00")),
+                   expand = c(0, 0)) +
       scale_y_continuous(expand = c(0, 0)) +
       coord_cartesian(clip = "off") +
       geom_vline(xintercept = as_hms("05:00:00"), linetype = "dotted", linewidth = 1) +
-      geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) + 
+      geom_vline(xintercept = as_hms("12:00:00"), linetype = "dotted", linewidth = 1) +
       geom_vline(xintercept = as_hms("18:00:00"), linetype = "dotted", linewidth = 1) +
       geom_vline(xintercept = as_hms("22:00:00"), linetype = "dotted", linewidth = 1) +
       annotate("text", x =  as_hms("04:30:00"), y = 0, hjust = 0, label = "Morning", size = 5, fontface = "bold", angle = 90) +
@@ -447,18 +489,17 @@ server <- function(input, output) {
       annotate("text", x =  as_hms("21:30:00"), y = 0, hjust = 0, label = "Night", size = 5, fontface = "bold", angle = 90) +
       labs(x = "Time",
            y = "Streams") +
-      theme_bw() +
       theme(text = element_text(family = "Manrope"),
-            axis.title.x = element_text(size = 16, margin = margin(t = 10)),
-            axis.title.y = element_text(size = 16, margin = margin(r = 10)),
-            axis.text = element_text(size = 14),
+            axis.title.x = element_text(size = 14, margin = margin(t = 8)),
+            axis.title.y = element_text(size = 14, margin = margin(r = 8)),
+            axis.text = element_text(size = 11),
             axis.text.x = element_text(vjust = -0.5),
             axis.ticks = element_line(color = "#303030"),
-            plot.margin = margin(t = 0.5, r = 1.5, b = 0.5, l = 0.5, "cm"),
+            plot.margin = margin(t = 0.3, r = 0.5, b = 0.3, l = 0.3, "cm"),
             panel.border = element_blank(),
             panel.background = element_rect(color = "lightgrey", fill = NA),
             panel.grid = element_line(color = "lightgrey"))
-    
+
   })
   
   # part of day images

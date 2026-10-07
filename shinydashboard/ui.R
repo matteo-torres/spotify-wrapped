@@ -102,24 +102,24 @@ body <- dashboardBody(
                             @media (max-width: 768px) {
                             
                             .spotify-img {
+                            
                             transform: scale(0.75);
                             transform-origin: center center;
+                            
                             }
                             
                             }")),
                             
-                            # spotify widget
+                            # right column
                             column(width = 6,
                                    
-                                   # ipod
-                                   tags$div(
-                                     style = "height: 300px; display: flex; justify-content: center; align-items: center; overflow: visible;",
-                                     
-                                     tags$img(class = "spotify-img",
-                                              src = "https://spotify-widgetify-3vfdnn5tx-matteo-4e5d.vercel.app/github?theme=ipod&color=FF69B4&style=light",
-                                              alt = "Spotify Now Playing"))
+                                   # spotify ipod widget
+                                   tags$div(style = "height: 300px; display: flex; justify-content: center; align-items: center; overflow: visible;",
+                                            tags$img(class = "spotify-img",
+                                                     src = "https://spotify-widgetify-3vfdnn5tx-matteo-4e5d.vercel.app/github?theme=ipod&color=FF69B4&style=light",
+                                                     alt = "Spotify Now Playing"))
                                    
-                            ) # END spotify widget
+                            ) # END right column
                             
                      ), # END column
                      
@@ -158,9 +158,12 @@ body <- dashboardBody(
                          div(style = "text-align: center; font-family: Manrope; font-size: 18px; padding-bottom: 25px;",
                              "Click an album and press play!"),
                          
-                         # slickR carousel images
-                         
-                         slickROutput(outputId = "carousel_images_output", width = NULL)
+                         # slickR carousel
+                         slickROutput(outputId = "carousel_images_output",
+                                      width = NULL) %>%
+                           withSpinner(color = "black",
+                                       type = 1,
+                                       size = 1)
                          
                      ), # END hall of fame box
                      
@@ -190,20 +193,28 @@ body <- dashboardBody(
                             @media (max-width: 768px) {
                             
                             .monthly-title {
+                            
                             font-size: 24px !important;
+                            
                             }
                             
                             .monthly-subtitle {
+                            
                             font-size: 16px !important;
+                            
                             }
                             
                             .yunjin-img {
+                            
                             width: 80px !important;
                             height: 80px !important;
+                            
                             }
                             
                             .fa-circle-check {
+                            
                             font-size: 2em !important;
+                            
                             }
                             
                             }")),
@@ -262,7 +273,7 @@ body <- dashboardBody(
                                  label = NULL,
                                  min = 1,
                                  max = 12,
-                                 value = 12,
+                                 value = 1,
                                  step = 1,
                                  ticks = FALSE,
                                  width = "100%"),
@@ -306,7 +317,10 @@ body <- dashboardBody(
                            
                            # rank valueBox
                            valueBoxOutput("rank_output",
-                                          width = 12)
+                                          width = 12) %>%
+                             withSpinner(color = "black",
+                                         type = 1,
+                                         size = 1)
                            
                     ), # END first column
                     
@@ -316,7 +330,10 @@ body <- dashboardBody(
                            
                            # streams valueBox
                            valueBoxOutput("streams_output",
-                                          width = 12)
+                                          width = 12) %>%
+                             withSpinner(color = "black",
+                                         type = 1,
+                                         size = 1)
                            
                     ), # END second column
                     
@@ -325,7 +342,10 @@ body <- dashboardBody(
                            style = "padding-top: 20px;",
                            
                            valueBoxOutput("track_output",
-                                          width = 12)
+                                          width = 12) %>%
+                             withSpinner(color = "black",
+                                         type = 1,
+                                         size = 1)
                            
                     ), # END third column
                     
@@ -334,7 +354,10 @@ body <- dashboardBody(
                            style = "padding-top: 20px;",
                            
                            valueBoxOutput("artist_output",
-                                          width = 12)
+                                          width = 12) %>%
+                             withSpinner(color = "black",
+                                         type = 1,
+                                         size = 1)
                            
                     ), # END fourth column
                     
@@ -361,22 +384,30 @@ body <- dashboardBody(
                      @media (max-width: 768px) {
                      
                      .spotify-table-box {
+                     
                      height: auto !important;
                      overflow: visible !important;
+                     
                      }
                      
                      .spotify-table-box .dataTables_wrapper {
+                     
                      width: 100% !important;
+                     
                      }
                      
                      .spotify-table-box table {
+                     
                      width: 100% !important;
-                     font-size: 16px !important;
+                     font-size: 16px !important
+                     
                      }
                      
                      .spotify-table-box table td,
                      .spotify-table-box table th {
+                     
                      padding: 8px 5px !important;
+                     
                      }
                      
                      }")),
@@ -389,7 +420,6 @@ body <- dashboardBody(
                          
                          # radioGroupButtons
                          div(style = "display: flex; justify-content: center; text-align: center; padding-top: 10px; font-family: Manrope;",
-                             
                              radioGroupButtons(inputId = "table_input",
                                                choices = c("Top 10 Artists", "Top 10 Tracks"),
                                                selected = "Top 10 Artists",
@@ -398,7 +428,6 @@ body <- dashboardBody(
                          
                          # DT
                          div(style = "font-family: Manrope; padding-top: 25px; padding-left: 10px; padding-right: 10px;",
-                             
                              DTOutput(outputId = "table_output") %>%
                                withSpinner(color = "black",
                                            type = 1,
@@ -420,7 +449,10 @@ body <- dashboardBody(
                          div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
                              "Top Track by Top Artist"),
                          
-                         uiOutput("song_output")
+                         uiOutput("song_output") %>%
+                           withSpinner(color = "black",
+                                       type = 1,
+                                       size = 1)
                          
                      ), # END box
                      
@@ -433,7 +465,11 @@ body <- dashboardBody(
                          div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
                              "Top Album"),
                          
-                         uiOutput("album_output")
+                         div(style  = "font-family: Manrope;",
+                             uiOutput("album_output") %>%
+                               withSpinner(color = "black",
+                                           type = 1,
+                                           size = 1))
                          
                      ) # END box
                      
@@ -450,18 +486,40 @@ body <- dashboardBody(
               # left column
               column(width = 1),
               
+              tags$head(tags$style(HTML("
+              
+              #month_output {
+              
+              height: 450px !important;
+              
+              }
+              
+              @media (max-width: 600px) {
+              
+              #month_output {
+              
+              height: 350px !important;
+              
+              }
+              
+              }"))), 
+              
+              
               # box
               box(width = 10,
                   solidHeader = TRUE,
                   style = "border: 4px solid #000000;",
                   
                   # title
-                  div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
+                  div(style = " font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
                       "Daily Streams"),
                   
-                  # daily streams lineplot
-                  plotOutput(outputId = "month_output") %>%
-                    withSpinner(color = "black", type = 1, size = 1)
+                  # lineplot
+                  plotOutput(outputId = "month_output",
+                             height = "450px") %>%
+                    withSpinner(color = "black",
+                                type = 1,
+                                size = 1)
                   
               ), # END box
               
@@ -475,6 +533,32 @@ body <- dashboardBody(
               
               # left buffer column
               column(width = 1),
+              
+              tags$head(tags$style(HTML("
+              
+              .key-findings-column {
+              
+              width: 50%;
+              float: left;
+              
+              }
+              
+              @media (max-width: 600px) {
+              
+              .key-findings-column {
+              
+              width: 100% !important;
+              float: none !important;
+              
+              }
+              
+              .key-findings-item {
+              
+              font-size: 14px !important;
+              
+              }
+              
+              }"))),
               
               # box
               box(width = 10,
@@ -490,41 +574,85 @@ body <- dashboardBody(
                     
                     # left column
                     column(width = 6,
+                           class = "key-findings-column",
                            
                            # highest streaming day
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center; color: #FFD700;", icon("star", class = "fa-solid fa-2x")),
-                               uiOutput("peak_output")),
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center; color: #FFD700;",
+                                   icon("star", class = "fa-solid fa-2x")),
+                               
+                               uiOutput("peak_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1)),
                            
                            # percentage of streams for highest streaming day
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center; color: #AAA9AD;", icon("percent", class = "fa-2x")),
-                               uiOutput("pct_output")),
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center; color: #AAA9AD;",
+                                   icon("percent", class = "fa-2x")),
+                               
+                               uiOutput("pct_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1)),
                            
                            # streaming streak
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center; color: #CF1920;", icon("fire-flame-curved", class = "fa-2x")),
-                               uiOutput("streak_output"))
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center; color: #CF1920;",
+                                   icon("fire-flame-curved", class = "fa-2x")),
+                               
+                               uiOutput("streak_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1))
                            
                     ), # END left column
                     
                     # right column
                     column(width = 6,
+                           class = "key-findings-column",
                            
                            # lowest streaming day(s)
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center; color: #47a4cf;", icon("circle", class = "fa-2x")),
-                               uiOutput("low_output")),
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center; color: #47a4cf;",
+                                   icon("circle", class = "fa-2x")),
+                               
+                               uiOutput("low_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1)),
                            
                            # quiet day(s)
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center;", icon("play", class = "fa-2x")),
-                               uiOutput("quiet_output")),
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center;",
+                                   icon("play", class = "fa-2x")),
+                               
+                               uiOutput("quiet_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1)),
                            
                            # average streams per day
-                           div(style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
-                               div(style = "width: 50px; text-align: center; color: #FF69B4;", icon("headphones", class = "fa-2x")),
-                               uiOutput("avg_output"))
+                           div(class = "key-findings-item",
+                               style = "display: flex; align-items: center; gap: 15px; margin-bottom: 25px; font-family: Manrope; font-size: 12px;",
+                               
+                               div(style = "width: 50px; min-width: 50px; text-align: center; color: #FF69B4;",
+                                   icon("headphones",class = "fa-2x")),
+                               
+                               uiOutput("avg_output") %>%
+                                 withSpinner(color = "black",
+                                             type = 1,
+                                             size = 1))
                            
                     ) # END right column
                     
@@ -546,36 +674,44 @@ body <- dashboardBody(
               # box
               box(width = 6,
                   solidHeader = TRUE,
-                  style = "border: 4px solid #000000; height: 500px;",
+                  style = "border: 4px solid #000000;",
                   
                   # title
-                  div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 25px;",
+                  div(style = "font-family: Manrope; font-weight: bold; font-size: 18px; text-align: center; padding-bottom: 10px;",
                       "Highest Streaming Day"),
                   
-                  # highest streaming day histogram
-                  plotOutput(outputId = "day_output") %>%
-                    withSpinner(color = "black", type = 1, size = 1)
+                  # lineplot
+                  plotOutput(outputId = "day_output",
+                             height = "450px") %>%
+                    withSpinner(color = "black",
+                                type = 1,
+                                size = 1)
                   
               ), # END box
               
               # box
               box(width = 4,
                   solidHeader = TRUE,
-                  style = "border: 4px solid #000000; height: 500px;",
+                  style = "border: 4px solid #000000; height: 510px;",
                   
                   # mobile adjustments
                   tags$style(HTML("
-                           @media (max-width: 768px) {
-                           
-                           .lorde-img{
-                           height: 325px !important;
-                           }
-                           
-                           }")),
+                  @media (max-width: 768px) {
+                  
+                  .lorde-img {
+                  
+                  height: 325px !important;
+                  
+                  }
+                  
+                  }")),
                   
                   # lorde output
-                  div(style = "font-family: Manrope; font-size: 14px; text-align:center; padding-top: 10px; padding-bottom: 10px; margin-top: 25px;",
-                      uiOutput(outputId = "time_output"))
+                  div(style = "font-family: Manrope; font-size: 14px; text-align: center; padding-top: 10px; padding-bottom: 10px; margin-top: 25px;",
+                      uiOutput(outputId = "time_output")%>%
+                        withSpinner(color = "black",
+                                    type = 1,
+                                    size = 1))
                   
               ), # END box
               
